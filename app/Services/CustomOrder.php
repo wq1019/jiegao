@@ -57,11 +57,12 @@ class CustomOrder
 
     protected function getSettingKey($modelInstance)
     {
+        $result = 'custom_order:';
         if ($modelInstance instanceof InterfaceTypeable) {
-            return 'custom_order:' . get_class($modelInstance) . ':type_name:' . $modelInstance->type_name;
-        } else {
-            return 'custom_order:' . get_class($modelInstance);
+            $result .= get_class($modelInstance) . ':type_name:' . $modelInstance->type_name;
+        } else if ($modelInstance != null) {
+            $result .= get_class($modelInstance);
         }
-
+        return $result;
     }
 }
