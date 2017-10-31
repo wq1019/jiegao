@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Backend\Api\Auth;
 
-use App\Exceptions\LoginFailed;
 use App\Exceptions\ResourceException;
 use App\Http\Controllers\ApiController;
 use Auth;
@@ -12,7 +11,7 @@ use Illuminate\Support\Arr;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Validator;
 use Lang;
-
+use Cache;
 
 class LoginController extends ApiController
 {
@@ -25,10 +24,52 @@ class LoginController extends ApiController
         $this->middleware('guest')->except('logout');
     }
 
+    public function captchaSrc()
+    {
+        return ['src' => captcha_src()];
+    }
+
+    public function needVerificationCodeRequest(Request $request)
+    {
+        return [
+            'need' => $this->needVerificationCode($request->ip())
+        ];
+    }
+
+    /**
+     * 是否需要验证码
+     * @return bool
+     */
+    protected function needVerificationCode($ip)
+    {
+        $key = $this->getAttemptLoginTimesKey($ip);
+        if (!Cache::has($key)) {
+            return false;
+        }
+        $times = Cache::get($key);
+        return $times > config('tiny.need_not_verification_code_times', 5);
+    }
+
+    protected function getAttemptLoginTimesKey($ip)
+    {
+        return 'attempt_login_times:' . $ip;
+    }
+
+    protected function addAttemptLoginTimes($ip)
+    {
+        $key = $this->getAttemptLoginTimesKey($ip);
+        $cacheTime = app('tiny.not_verification_code_time_interval', 60 * 24);
+        if (Cache::has($key)) {
+            Cache::increment($key);
+        } else {
+            Cache::put($key, 1, $cacheTime);
+        }
+    }
+
     /**
      * Handle a login request to the application.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\Response
      */
     public function login(Request $request)
@@ -42,6 +83,15 @@ class LoginController extends ApiController
             $this->fireLockoutEvent($request);
 
             return $this->sendLockoutResponse($request);
+        }
+
+        $ip = $request->ip();
+        $this->addAttemptLoginTimes($ip);
+        if ($this->needVerificationCode($ip)) {
+            // 验证码
+            $this->validate($request, [
+                'captcha' => 'required|captcha'
+            ]);
         }
 
         if ($this->attemptLogin($request)) {
@@ -78,7 +128,7 @@ class LoginController extends ApiController
 
         if ($validator->fails()) {
             $errors = $validator->errors();
-            if($errors->has($this->username())){
+            if ($errors->has($this->username())) {
                 $messages = $errors->getMessages();
                 $messages[$this->loginKey()] = $messages[$this->username()];
                 $errors = Arr::except($messages, $this->username());
@@ -90,7 +140,7 @@ class LoginController extends ApiController
     /**
      * Attempt to log the user into the application.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return bool
      */
     protected function attemptLogin(Request $request)
@@ -101,8 +151,9 @@ class LoginController extends ApiController
     }
 
 
-    public function username(){
-        if(!$this->userName){
+    public function username()
+    {
+        if (!$this->userName) {
             if (false === strpos(request($this->loginKey()), '@')) {
                 $this->userName = 'user_name';
             } else {
@@ -122,7 +173,7 @@ class LoginController extends ApiController
     protected function credentials(Request $request)
     {
         $credentials = $request->only($this->loginKey(), 'password');
-        if(!isset($credentials[$this->loginKey()])){
+        if (!isset($credentials[$this->loginKey()])) {
             $credentials[$this->loginKey()] = null;
         }
         return [
@@ -145,7 +196,7 @@ class LoginController extends ApiController
 
         if ($this->guard()->user()->isLocked()) {
             $this->logout($request);
-            return abort('423', Lang::get( 'auth.user_locked'));
+            return abort('423', Lang::get('auth.user_locked'));
         }
         return $this->response()->noContent();
     }
@@ -193,9 +244,7 @@ class LoginController extends ApiController
     {
         $this->guard()->logout();
 
-        $request->session()->flush();
-
-        $request->session()->regenerate();
+        $request->session()->invalidate();
 
         return $this->response()->noContent();
     }
@@ -209,4 +258,5 @@ class LoginController extends ApiController
     {
         return Auth::guard();
     }
+
 }

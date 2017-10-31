@@ -3,9 +3,9 @@
     <Menu mode="horizontal" theme="light" class="header">
       <Logo size="small" class="logo"></Logo>
     </Menu>
-    <Menu width="220px" class="menu" theme="light" active-name="1-2" :open-names="['home', '2']" @on-select="onSelect">
+    <Menu width="220px" class="menu" theme="light" :active-name="currentActiveKey" :open-names="['content', 'user']" @on-select="onSelect">
       <Menu-item class="top_menu_item" name="home"><Icon type="home"></Icon>首页</Menu-item>
-      <Submenu name="home">
+      <Submenu name="content">
         <template slot="title">
           <Icon type="ios-paper"></Icon>
           内容管理
@@ -16,7 +16,7 @@
         <Menu-item name="linkList">链接管理</Menu-item>
         <Menu-item name="tagList">标签管理</Menu-item>
       </Submenu>
-      <Submenu name="2">
+      <Submenu name="user">
         <template slot="title">
           <Icon type="ios-people"></Icon>
           用户管理
@@ -37,6 +37,16 @@
 import Logo from '../components/Logo.vue';
 export default {
   components: { Logo },
+  data () {
+    return {
+      currentActiveKey: this.$route.name
+    };
+  },
+  watch: {
+    '$route' () {
+      this.currentActiveKey = this.$route.name;
+    }
+  },
   methods: {
     onSelect (name) {
       this.$nextTick(() => {

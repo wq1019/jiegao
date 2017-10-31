@@ -3,6 +3,7 @@ let path = require('path');
 function resolve (dir) {
   return path.join(__dirname, dir);
 }
+
 mix.webpackConfig({
   module: {
     rules: [
@@ -20,7 +21,11 @@ mix.webpackConfig({
     ]
   }
 });
-mix.js('resources/assets/backend/app.js', 'public/js/backend').version();
+
+// 如果网站不是更目录 setResourceRoot 设置路径
+mix.setResourceRoot('/')
+    .js('resources/assets/backend/app.js', 'public/js/backend').version();
+
 mix.less('resources/assets/frontend/less/app.less', 'public/static/css')
     .js('resources/assets/frontend/js/app.js', 'public/static/js')
     .copy('resources/assets/frontend/images', 'public/static/images')

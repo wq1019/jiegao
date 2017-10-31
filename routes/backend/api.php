@@ -1,5 +1,6 @@
 <?php
-
+Route::get('auth/captcha_src', 'Auth\LoginController@captchaSrc');
+Route::get('auth/need_verification_code', 'Auth\LoginController@needVerificationCodeRequest');
 Route::post('auth/login', 'Auth\LoginController@login');
 Route::post('auth/logout', 'Auth\LoginController@logout');
 
@@ -67,5 +68,3 @@ Route::resource('attachments', 'AttachmentsController', [
 Route::resource('tags', 'TagsController', [
     'except'=> ['create', 'edit']
 ]);
-
-

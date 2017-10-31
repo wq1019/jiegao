@@ -118,15 +118,3 @@ if (!function_exists('file_size_for_humans')) {
         return round($bytes, 2) . ' ' . $units[$i];
     }
 }
-if (!function_exists('cdn')) {
-
-    function cdn($path)
-    {
-        $useCdn = (bool)config('cdn.use_cdn');
-        if ($useCdn) {
-            return Storage::cloud()->url($path);
-        } else {
-            return config('app.url') . '/' . trim($path, '/');
-        }
-    }
-}
