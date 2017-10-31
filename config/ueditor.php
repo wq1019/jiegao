@@ -11,7 +11,7 @@
 
 return [
     // 存储引擎: config/filesystem.php 中 disks， public 或 qiniu
-    'disk' => 'qiniu',
+    'disk' => 'public',
     'route' => [
         'name' => '/ueditor/server',
         'options' => [
@@ -28,7 +28,7 @@ return [
         /* 上传图片配置项 */
         'imageActionName' => 'upload-image', /* 执行上传图片的action名称 */
         'imageFieldName' => 'upfile', /* 提交的图片表单名称 */
-        'imageMaxSize' => 2 * 1024 * 1024, /* 上传大小限制，单位B */
+        'imageMaxSize' => 20 * 1024 * 1024, /* 上传大小限制，单位B */
         'imageAllowFiles' => ['.png', '.jpg', '.jpeg', '.gif', '.bmp'], /* 上传图片格式显示 */
         'imageCompressEnable' => true, /* 是否压缩图片,默认是true */
         'imageCompressBorder' => 1600, /* 图片压缩最长边限制 */
