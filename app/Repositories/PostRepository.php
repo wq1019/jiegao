@@ -27,8 +27,8 @@ class PostRepository extends BaseRepository
             $data['title'] = e((new AutoCorrect())->convert($data['title']));
         if (isset($data['excerpt']))
             $data['excerpt'] = e($data['excerpt']);
-        if (isset($data['content']))
-            $data['content'] = clean($data['content']);
+        /*if (isset($data['content']))
+            $data['content'] = clean($data['content']);*/
         // 处理置顶
         if (isset($data['top'])) {
             if ($data['top']) {
