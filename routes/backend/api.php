@@ -4,7 +4,6 @@ Route::post('auth/login', 'Auth\LoginController@login');
 Route::post('auth/logout', 'Auth\LoginController@logout');
 
 Route::post('ajax_upload_image', 'ImageController@upload');
-Route::post('wang_editor_upload_image', 'ImageController@wangEditorUpload');
 
 Route::resource('users', 'UsersController', [
     'except'=> ['create', 'edit']
