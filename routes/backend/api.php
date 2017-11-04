@@ -1,5 +1,5 @@
 <?php
-Route::get('auth/captcha_src', 'Auth\LoginController@captchaSrc');
+// Route::get('auth/captcha_src', 'Auth\LoginController@captchaSrc');
 Route::get('auth/need_verification_code', 'Auth\LoginController@needVerificationCodeRequest');
 Route::post('auth/login', 'Auth\LoginController@login');
 Route::post('auth/logout', 'Auth\LoginController@logout');

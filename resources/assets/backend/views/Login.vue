@@ -10,6 +10,10 @@
             <Form-item :error="errors.password">
               <Input @input.native="delete errors.password" v-model="loginInfo.password" type="password" placeholder="请输入密码" @keydown.native.enter="login"></Input>
             </Form-item>
+            <Form-item :error="errors.captcha" class="verification_code" v-if="needVerificationCode">
+              <Input @keydown.native.enter="login" @input.native="delete errors.captcha" v-model="loginInfo.captcha" placeholder="请输入验证码" style="width: 200px;"></Input>
+              <img @click="toggleVerificationCode" v-if="currentCaptchaSrc.length > 0" :src="currentCaptchaSrc">
+            </Form-item>
             <Form-item>
               <Button :loading="loading" class="login_btn" type="primary" long @click="login">确认提交</Button>
               <Checkbox v-model="loginInfo.remember">下次自动登录</Checkbox>
@@ -30,12 +34,30 @@ export default {
       loginInfo: {
         account: '',
         password: '',
+        captcha: '',
         remember: true
       },
+      needVerificationCode: false,
+      captchaSrc: '/captcha/default',
+      currentCaptchaSrc: '',
       errors: {}
     };
   },
+  mounted () {
+    this.checkNeedVerificationCode();
+  },
   methods: {
+    checkNeedVerificationCode () {
+      this.$http.get('auth/need_verification_code').then(res => {
+        this.needVerificationCode = res.data.need;
+        if (res.data.need) {
+          this.toggleVerificationCode();
+        }
+      });
+    },
+    toggleVerificationCode () {
+      this.currentCaptchaSrc = this.captchaSrc + '?' + Math.random();
+    },
     login () {
       this.loading = true;
       this.$http.post('auth/login', this.loginInfo).then(res => {
@@ -48,6 +70,7 @@ export default {
         }
         this.loading = false;
       }).catch(err => {
+        this.checkNeedVerificationCode();
         this.errors = err.response.data.errors;
         this.loading = false;
       });
@@ -79,6 +102,16 @@ export default {
     margin: 160px auto 68px;
     background: #fff;
     box-shadow: 0 1px 2px rgba(0,0,0,.2);
+    .verification_code{
+      position: relative;
+      img{
+        position: absolute;
+        right: 6px;
+        top: -1px;
+        width: 80px;
+        height: 35px;
+      }
+    }
     .login_btn{
       margin-bottom: 5px;
     }

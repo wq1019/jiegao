@@ -24,10 +24,10 @@ class LoginController extends ApiController
         $this->middleware('guest')->except('logout');
     }
 
-    public function captchaSrc()
-    {
-        return ['src' => captcha_src()];
-    }
+//    public function captchaSrc()
+//    {
+//        return ['src' => captcha_src()];
+//    }
 
     public function needVerificationCodeRequest(Request $request)
     {
@@ -58,7 +58,7 @@ class LoginController extends ApiController
     protected function addAttemptLoginTimes($ip)
     {
         $key = $this->getAttemptLoginTimesKey($ip);
-        $cacheTime = app('tiny.not_verification_code_time_interval', 60 * 24);
+        $cacheTime = config('tiny.not_verification_code_time_interval', 60 * 24);
         if (Cache::has($key)) {
             Cache::increment($key);
         } else {
@@ -116,7 +116,7 @@ class LoginController extends ApiController
     {
         $credentials = $this->credentials($request);
         $rules = [
-            'user_name' => ['bail', 'required', 'regex:/^[a-zA-Z0-9_]+$/', 'exists:users'],
+            'user_name' => ['bail', 'required', 'regex:/^[a-zA-Z0-9_]+$/'],
             'email' => ['bail', 'required', 'email', 'exists:users'],
             'password' => ['required']
         ];
@@ -209,6 +209,7 @@ class LoginController extends ApiController
      */
     protected function sendFailedLoginResponse(Request $request)
     {
+        // 用户名或密码错误
         throw new ResourceException(null, ['password' => Lang::get('auth.password_error')]);
     }
 

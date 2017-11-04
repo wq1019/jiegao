@@ -19,6 +19,7 @@ export default {
   },
   beforeRouteLeave (to, from, next) {
     const diffObjStr = JSON.stringify(diff.diff(this.formData));
+    console.log(diffObjStr);
     if (diffObjStr !== '{}') {
       this.$Modal.confirm({
         title: '确认离开？',
@@ -77,6 +78,7 @@ export default {
         this.title = this.getConfig('editPrefix') + this.getConfig('title');
       } else {
         diff.clear();
+        this.diffSave(this.formData);
         this.title = this.getConfig('addPrefix') + this.getConfig('title');
       }
     }
