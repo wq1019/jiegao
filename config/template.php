@@ -8,7 +8,8 @@ return [
 
     'theme_namespace' => 'theme',
 
-    'current_theme_path' => resource_path('views/frontend'),
+    'current_theme_path' => resource_path('views/jiegao'),
+    //'current_theme_path' => resource_path('views/frontend'),
 
     'templates' => [
 
