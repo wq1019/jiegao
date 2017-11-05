@@ -38,7 +38,7 @@ class Alert
     {
         static $alertConfig = null;
 
-        if(is_null($alertConfig)) $alertConfig = config('tiny.alert');
+        if (is_null($alertConfig)) $alertConfig = config('alert');
 
         if (!in_array($type, $alertConfig['allow_type_list'])) {
             $type = $alertConfig['default_type'];
