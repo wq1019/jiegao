@@ -34,17 +34,17 @@
           </Select>
         </Form-item>
         <Form-item v-if="formData.type === 'post'" label="列表模版" prop="list_template" :error="errors.list_template">
-          <Select v-model="formData.list_template">
+          <Select v-model="formData.list_template" key="list">
             <Option v-for="item in templates.list" :value="item.file_name" :key="item.file_name">{{item.title}}({{item.file_name}})</Option>
           </Select>
         </Form-item>
         <Form-item v-if="formData.type === 'post'" label="正文模版" prop="content_template" :error="errors.content_template">
-          <Select v-model="formData.content_template">
+          <Select v-model="formData.content_template" key="content">
               <Option v-for="item in templates.content" :value="item.file_name" :key="item.file_name">{{item.title}}({{item.file_name}})</Option>
           </Select>
         </Form-item>
         <Form-item v-if="formData.type === 'page'" label="单页模版" prop="page_templates" :error="errors.page_templates">
-          <Select v-model="formData.page_template">
+          <Select v-model="formData.page_template" key="page">
               <Option v-for="item in templates.page" :value="item.file_name" :key="item.file_name">{{item.title}}({{item.file_name}})</Option>
           </Select>
           <Button style="margin-left: 10px;" v-if="$route.params.id" @click="$router.push({name: 'page', params: { id: $route.params.id }})" icon="edit" type="primary">编辑单页</Button>
@@ -107,14 +107,17 @@ export default {
   methods: {
     changeType (type) {
       if (type === 'page') {
+        // 单网页
         this.formData.page_template = this.templates.page[0].file_name;
         this.formData.content_template = null;
         this.formData.list_template = null;
       } else if (type === 'post') {
+        // 列表
         this.formData.content_template = this.templates.content[0].file_name;
         this.formData.list_template = this.templates.list[0].file_name;
         this.formData.page_template = null;
       } else {
+        // 外部链接
         this.formData.page_template = null;
         this.formData.content_template = null;
         this.formData.list_template = null;

@@ -5,29 +5,11 @@
 @section('title'){{ Breadcrumbs::pageTitle(' - ', 'category', $category) }}@endsection
 
 @section('content')
-    @include('jiegao.layouts.particals.navigation')
+    @widget('navigation_bar')
     <!-- 列表正文start -->
     <div class="list_top_bg"></div>
     <div class="list_container container">
-        <div class="nav_menu">
-            <ul>
-                <li class="active">
-                    <span class="pendant"></span>
-                    <a href="#">招生就业</a>
-                    <span class="arrow"></span>
-                </li>
-                <li>
-                    <span class="pendant"></span>
-                    <a href="#">招生计划</a>
-                    <span class="arrow"></span>
-                </li>
-                <li>
-                    <span class="pendant"></span>
-                    <a href="#">就业工程</a>
-                    <span class="arrow"></span>
-                </li>
-            </ul>
-        </div>
+        @widget('navigation_sidebar')
         <div class="main_list">
             <div class="header">
                 <ol class="breadcrumb">

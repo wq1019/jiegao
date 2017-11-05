@@ -5,80 +5,26 @@
 @section('title'){{ Breadcrumbs::pageTitle(' - ', 'category', $category) }}@endsection
 
 @section('content')
-    @include('jiegao.layouts.particals.navigation')
+    @widget('navigation_bar')
     <!-- 列表正文start -->
     <div class="list_top_bg"></div>
     <div class="list_container container">
-        <div class="nav_menu">
-            <ul>
-                <li class="active">
-                    <span class="pendant"></span>
-                    <a href="#">招生就业</a>
-                    <span class="arrow"></span>
-                </li>
-                <li>
-                    <span class="pendant"></span>
-                    <a href="#">招生计划</a>
-                    <span class="arrow"></span>
-                </li>
-                <li>
-                    <span class="pendant"></span>
-                    <a href="#">就业工程</a>
-                    <span class="arrow"></span>
-                </li>
-            </ul>
-        </div>
+        @widget('navigation_sidebar')
         <div class="main_list">
             <div class="header">
                 <ol class="breadcrumb">
-                    <li>
-                        <a href="http://211.70.176.153">首页</a>
-                    </li>
-                    <li class="active">招生就业</li>
+                    {{ Breadcrumbs::render('category', $category) }}
                 </ol>
             </div>
             <ul class="post_list">
-                <li>
-                    <a href="#">【砥砺奋进 继往开来 】360集团组织骨干员工观看十九大</a>
-                    <span class="time">2017-11-1</span>
-                </li>
-                <li>
-                    <a href="#">【砥砺奋进 继往开来 】360集团组织骨干员工观看十九大</a>
-                    <span class="time">2017-11-1</span>
-                </li>
-                <li>
-                    <a href="#">【砥砺奋进 继往开来 】360集团组织骨干员工观看十九大</a>
-                    <span class="time">2017-11-1</span>
-                </li>
-                <li>
-                    <a href="#">【砥砺奋进 继往开来 】360集团组织骨干员工观看十九大</a>
-                    <span class="time">2017-11-1</span>
-                </li>
-                <li>
-                    <a href="#">【砥砺奋进 继往开来 】360集团组织骨干员工观看十九大</a>
-                    <span class="time">2017-11-1</span>
-                </li>
+                @foreach($posts as $post)
+                    <li>
+                        <a href="{!! $post->getPresenter()->url() !!}">{{$post->title}}</a>
+                        <span class="time">{!! $post->published_at !!}</span>
+                    </li>
+                @endforeach
             </ul>
-            <ul class="pagination">
-                <li class="disabled">
-                    <span>«</span>
-                </li>
-                <li class="active">
-                    <span>1</span>
-                </li>
-                <li>
-                    <a href="#">2</a>
-                </li>
-                <li>
-                    <a href="#">3</a>
-                </li>
-                <li>
-                    <a href="#">4</a>
-                </li>
-                <li>
-                    <a href="#">5</a>
-                </li>
-            </ul>
+            {!! $posts->fragment('list')->links() !!}
         </div>
     </div>
     <!-- 列表正文end -->

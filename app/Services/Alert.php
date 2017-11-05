@@ -36,18 +36,14 @@ class Alert
 
     public function setMessage($type, $message, $hasCloseButton = null, $needContainer = null)
     {
-        static $alertConfig = null;
-
-        if (is_null($alertConfig)) $alertConfig = config('alert');
-
-        if (!in_array($type, $alertConfig['allow_type_list'])) {
-            $type = $alertConfig['default_type'];
+        if (!in_array($type, $this->config['allow_type_list'])) {
+            $type = $this->config['default_type'];
         }
         if (is_null($hasCloseButton)) {
-            $hasCloseButton = $alertConfig['default_has_button'];
+            $hasCloseButton = $this->config['default_has_button'];
         }
         if (is_null($needContainer)) {
-            $needContainer = $alertConfig['default_need_container'];
+            $needContainer = $this->config['default_need_container'];
         }
         $this->isCurrentSession = true;
         $this->session->flash(
