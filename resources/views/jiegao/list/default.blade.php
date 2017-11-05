@@ -1,8 +1,8 @@
-@extends('jiegao.layouts.app');
+@extends('jiegao.layouts.app')
 
-@section('keywords'){{ setting('default_keywords') }}@endsection
-@section('description'){{ setting('default_description') }}@endsection
-@section('title'){{ setting('site_name') }}@endsection
+@section('keywords'){!! $category->getKeywords() !!}@endsection
+@section('description'){!! $category->getDescription() !!}@endsection
+@section('title'){{ Breadcrumbs::pageTitle(' - ', 'category', $category) }}@endsection
 
 @section('content')
     @include('jiegao.layouts.particals.navigation')

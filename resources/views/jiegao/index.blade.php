@@ -18,7 +18,12 @@
         <div class="container">
             <div class="about">
                 <div class="header">
-                    <h2>关于捷高</h2>
+                    @php
+                        $categoryRepository = app(App\Repositories\CategoryRepository::class);
+                        $about = $categoryRepository->findByCateName('关于捷高');
+                    //dd($about);
+                    @endphp
+                    <h2>{{$about->cate_name}}</h2>
                 </div>
                 <div class="info">
                     <img src="{!! cdn('jiegao/images/about.png') !!}">
@@ -28,69 +33,60 @@
                     </p>
                 </div>
             </div>
+            @php
+                $banners = Facades\App\Widgets\Banner::mergeConfig(['type' => 'corporate_environment'])->getData()['banners'];
+                // 当banner小于4个时前端轮播图会出现问题，因此在这里手动复制一个banner
+                if($banners->count() <4){
+                    $addBanners =clone $banners;
+                    foreach ($addBanners as $addBanner){
+                         $banners->push($addBanner);
+                    }
+                }
+            @endphp
             <div class="env_banner">
                 <div class="header">
                     <h2>公司环境</h2>
                     <div id="env_banner">
-                        <img lazy src="{!! cdn('jiegao/images/env.png') !!}">
-                        <img lazy src="{!! cdn('jiegao/images/env.png') !!}">
-                        <img lazy src="{!! cdn('jiegao/images/env.png') !!}">
-                        <img lazy src="{!! cdn('jiegao/images/env.png') !!}">
-                        <img lazy src="{!! cdn('jiegao/images/env.png') !!}">
+                        @foreach($banners as $banner)
+                            <div>
+                                <img lazy src="{!! image_url($banner->image) !!}">
+                                <div class="text" style="display: none;">{{$banner->title}}</div>
+                            </div>
+                        @endforeach
                     </div>
                     <div class="footer">
-                        <p>生产车间</p>
+                        <p id="env_banner_title">title</p>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    @php
+        $categoryRepository = app(App\Repositories\CategoryRepository::class);
+        $products = $categoryRepository->findByCateName('产品中心');
+    @endphp
     <div class="prod">
         <div class="container">
             <div class="header">
-                <h2>产品中心</h2>
+                <h2>{{$products->cate_name}}</h2>
                 <div class="line"></div>
             </div>
             <div class="main">
-                <div class="product_item">
-                    <a href="#">
-                        <img src="{!! cdn('jiegao/images/prod1.png') !!}" alt="">
-                        <div class="mask_wrap">
-                            <span>产品01</span>
-                            <div class="mask"></div>
-                        </div>
-                    </a>
-                </div>
-                <div class="product_item">
-                    <a href="#">
-                        <img src="{!! cdn('jiegao/images/prod2.png') !!}" alt="">
-                        <div class="mask_wrap">
-                            <span>产品02</span>
-                            <div class="mask"></div>
-                        </div>
-                    </a>
-                </div>
-                <div class="product_item">
-                    <a href="#">
-                        <img src="{!! cdn('jiegao/images/prod3.png') !!}" alt="">
-                        <div class="mask_wrap">
-                            <span>产品03</span>
-                            <div class="mask"></div>
-                        </div>
-                    </a>
-                </div>
-                <div class="product_item">
-                    <a href="#">
-                        <img src="{!! cdn('jiegao/images/prod4.png') !!}" alt="">
-                        <div class="mask_wrap">
-                            <span>产品04</span>
-                            <div class="mask"></div>
-                        </div>
-                    </a>
-                </div>
+                @foreach(Facades\App\Widgets\PostList::mergeConfig(['category'=>$products])->getData()['posts'] as $post)
+                    <div class="product_item">
+                        <a href="{!! $post->getPresenter()->url() !!}">
+                            <img src="{!! image_url($post->cover) !!}" alt="">
+                            <div class="mask_wrap">
+                                <span>{!! $post->title !!}</span>
+                                <div class="mask"></div>
+                            </div>
+                        </a>
+                    </div>
+                @endforeach
+
             </div>
             <div class="more">
-                <a class="btn more_btn" href="#">查看更多</a>
+                <a class="btn more_btn" {!! $products->getPresenter()->linkAttribute() !!}>查看更多</a>
             </div>
         </div>
     </div>
@@ -100,9 +96,9 @@
 @push('js')
     <script>
       $(function () {
-        var $banner = $("#banner");
-        if($banner.children().length == 0)
-          return;
+        var $banner = $('#banner')
+        if ($banner.children().length == 0)
+          return
         $banner.slick({
           dots: true,
           infinite: true,
@@ -114,9 +110,9 @@
           slidesToScroll: 3,
           arrows: false
         });
-        var $envBanner = $('#env_banner');
-        if($envBanner.children().length == 0)
-          return;
+        var $envBanner = $('#env_banner')
+        if ($envBanner.children().length == 0)
+          return
         $envBanner.slick({
           dots: false,
           infinite: true,
@@ -127,7 +123,17 @@
           slidesToShow: 3,
           slidesToScroll: 3,
           arrows: true
-        });
-      });
+        })
+        $envBannerTitle = $('#env_banner_title');
+        setEnvCurrentText();
+        $envBanner.on('afterChange',function(event, slick, currentSlide){
+          setEnvCurrentText();
+        })
+        function setEnvCurrentText () {
+          var $currentText = $envBanner.find('.slick-current .text');
+          $envBannerTitle.html($currentText.html());
+        }
+      })
+
     </script>
 @endpush

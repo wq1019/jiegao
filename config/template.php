@@ -9,7 +9,6 @@ return [
     'theme_namespace' => 'theme',
 
     'current_theme_path' => resource_path('views/jiegao'),
-    //'current_theme_path' => resource_path('views/frontend'),
 
     'templates' => [
 
@@ -28,8 +27,8 @@ return [
                 'default' => true
             ],
             [
-                'file_name' => 'team',
-                'title' => '团队列表模板'
+                'file_name' => 'product',
+                'title' => '产品列表模板'
             ]
         ],
         'content' => [
