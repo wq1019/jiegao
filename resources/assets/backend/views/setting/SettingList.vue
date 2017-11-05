@@ -1,33 +1,23 @@
 <template>
   <div class="setting_list">
-    <div class="option">
-        <span><Button @click="$router.push({name: 'addSetting'})" icon="plus-round" type="primary">添加</Button></span>
-    </div>
-    <TTable :columns="col" :data="settings"></TTable>
+    <ListWrapper ref="list" title="设置列表" :queryName="mixinConfig.action">
+      <span slot="option"><Button @click="$router.push({name: 'addSetting'})" icon="plus-round" type="primary">添加</Button></span>
+      <template slot-scope="props">
+        <TTable :columns="col" :data="props.data"></TTable>
+      </template>
+    </ListWrapper>
   </div>
 </template>
 
 <script>
+  import ListWrapper from '../../components/ListWrapper.vue';
   import HoverableTime from '../../components/HoverableTime.vue';
   import delMixin from '../../mixins/del';
   import TTable from '../../components/t-table';
 
   export default {
-    components: { HoverableTime, TTable },
+    components: { HoverableTime, TTable, ListWrapper },
     mixins: [delMixin],
-    mounted () {
-      this.getSettings();
-      this.$on('del-success', id => {
-        this.getSettings();
-      });
-    },
-    methods: {
-      getSettings () {
-        this.$http.get('settings').then(res => {
-          this.settings = res.data.data;
-        });
-      }
-    },
     data () {
       return {
         settings: [],
@@ -113,14 +103,4 @@
   };
 </script>
 <style lang="less" scoped>
-.setting_list{
-  >.option{
-    overflow: hidden;
-    margin-bottom: 20px;
-    >span{
-      float: right;
-      margin-right: 10px;
-    }
-  }
-}
 </style>

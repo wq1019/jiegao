@@ -2,7 +2,7 @@
   <div class="article_list">
     <ListWrapper :loading.sync="showPlaceholder" ref="list" :title="title" :queryName="`posts?include=user,category&category_id=${categoryId}&status=${status}${showTrashed ? '&only_trashed=true' : ''}`">
       <span slot="option"><Button @click="$router.push({name: 'addArticle'})" icon="plus-round" type="primary">添加</Button></span>
-      <template scope="props">
+      <template slot-scope="props">
         <div class="option_list">
           <RadioGroup v-model="status" type="button">
               <Radio label="all">全部</Radio>

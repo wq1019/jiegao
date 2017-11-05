@@ -1,5 +1,6 @@
 import diff from '../utils/diff';
 import mixinConfig from './mixinConfig';
+let isSubmitJump = false;
 export default {
   mixins: [mixinConfig],
   data () {
@@ -18,8 +19,11 @@ export default {
     };
   },
   beforeRouteLeave (to, from, next) {
+    if (!diff.oldObj || isSubmitJump) {
+      next();
+      return;
+    }
     const diffObjStr = JSON.stringify(diff.diff(this.formData));
-    console.log(diffObjStr);
     if (diffObjStr !== '{}') {
       this.$Modal.confirm({
         title: '确认离开？',
@@ -50,6 +54,7 @@ export default {
     submit () {
       this.$http[this.isAdd() ? this.getConfig('addMethod') : this.getConfig('editMethod')](this.getConfig('action'), diff.diff(this.formData)).then(res => {
         this.$Message.success(`${this.title}成功`);
+        isSubmitJump = true;
         this.$emit('on-success');
         this.$emit('on-loaded');
       }).catch(err => {
@@ -68,6 +73,7 @@ export default {
     },
     init () {
       if (!this.isAdd()) {
+        // 编辑表单
         this.$http.get(this.getConfig('action'), {
           params: this.getConfig('query')
         }).then(res => {
@@ -77,13 +83,14 @@ export default {
         });
         this.title = this.getConfig('editPrefix') + this.getConfig('title');
       } else {
+        // 添加表单
         diff.clear();
-        this.diffSave(this.formData);
         this.title = this.getConfig('addPrefix') + this.getConfig('title');
       }
     }
   },
   created () {
+    isSubmitJump = false;
     for (let key in this.formData) {
       this.$watch(`formData.${key}`, () => {
         if (this.errors[key]) {
