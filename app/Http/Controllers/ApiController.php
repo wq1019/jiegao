@@ -10,7 +10,8 @@ class ApiController extends Controller
     /**
      * @return Response
      */
-    public function response(){
+    public function response()
+    {
         return app(Response::class);
     }
 }

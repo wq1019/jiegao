@@ -7,8 +7,8 @@ use App\Events\PostHasBeenRead;
 use App\Http\Controllers\Controller;
 use App\Models\Post;
 use App\Services\Alert;
-use Illuminate\Http\Request;
 use Auth;
+use Illuminate\Http\Request;
 
 
 class PostsController extends Controller

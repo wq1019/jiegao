@@ -8,9 +8,9 @@ use Exception;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Validation\ValidationException;
+use Lang;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\HttpException;
-use Lang;
 
 class Handler extends ExceptionHandler
 {
@@ -74,24 +74,13 @@ class Handler extends ExceptionHandler
         return response()->json($this->errorFormat(new ResourceException(null, $exception->errors())), $exception->status);
     }
 
-    /**
-     * Convert the given exception to an array.
-     *
-     * @param  \Exception $e
-     * @return array
-     */
-    protected function convertExceptionToArray(Exception $e)
-    {
-        return $this->errorFormat($e);
-    }
-
     protected function errorFormat(Exception $e)
     {
         $errorFormat = config('api.errorFormat');
         $statusCode = $this->getStatusCode($e);
 
-        if (!$message = $e->getMessage() ) {
-            $message = sprintf('%d %s', $statusCode, isset(Response::$statusTexts[$statusCode])?Response::$statusTexts[$statusCode]:'Unknown status code');
+        if (!$message = $e->getMessage()) {
+            $message = sprintf('%d %s', $statusCode, isset(Response::$statusTexts[$statusCode]) ? Response::$statusTexts[$statusCode] : 'Unknown status code');
         }
 
         $replacements = [
@@ -123,6 +112,18 @@ class Handler extends ExceptionHandler
     }
 
     /**
+     * Get the status code from the exception.
+     *
+     * @param \Exception $exception
+     *
+     * @return int
+     */
+    protected function getStatusCode(Exception $exception)
+    {
+        return $this->isHttpException($exception) ? $exception->getStatusCode() : 500;
+    }
+
+    /**
      * Recursirvely remove any empty replacement values in the response array.
      *
      * @param array $input
@@ -147,22 +148,21 @@ class Handler extends ExceptionHandler
     }
 
     /**
-     * Get the status code from the exception.
+     * Convert the given exception to an array.
      *
-     * @param \Exception $exception
-     *
-     * @return int
+     * @param  \Exception $e
+     * @return array
      */
-    protected function getStatusCode(Exception $exception)
+    protected function convertExceptionToArray(Exception $e)
     {
-        return $this->isHttpException($exception) ? $exception->getStatusCode() : 500;
+        return $this->errorFormat($e);
     }
 
     /**
      * Convert an authentication exception into an unauthenticated response.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Illuminate\Auth\AuthenticationException  $exception
+     * @param  \Illuminate\Http\Request $request
+     * @param  \Illuminate\Auth\AuthenticationException $exception
      * @return \Illuminate\Http\Response
      */
     protected function unauthenticated($request, AuthenticationException $exception)

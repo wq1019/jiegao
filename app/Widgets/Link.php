@@ -4,9 +4,9 @@
 namespace App\Widgets;
 
 
+use App\Models\Link as LinkModel;
 use App\Services\CustomOrder;
 use App\Support\Widget\AbstractWidget;
-use App\Models\Link as LinkModel;
 
 class Link extends AbstractWidget
 {

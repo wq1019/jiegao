@@ -18,6 +18,13 @@ class TypeRepository extends BaseRepository
         return Type::class;
     }
 
+    public function preCreate(array &$data)
+    {
+        $data = $this->filterData($data);
+        $data['creator_id'] = auth()->id();
+        return $data;
+    }
+
     public function filterData(array &$data)
     {
         if (isset($data['model_name'])) {
@@ -31,14 +38,6 @@ class TypeRepository extends BaseRepository
             $data['description'] = e($data['description']);
         return $data;
     }
-
-    public function preCreate(array &$data)
-    {
-        $data = $this->filterData($data);
-        $data['creator_id'] = auth()->id();
-        return $data;
-    }
-
 
     public function preUpdate(array &$data)
     {

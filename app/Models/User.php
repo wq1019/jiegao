@@ -3,14 +3,14 @@
 namespace App\Models;
 
 use App\Models\Traits\Listable;
-use Illuminate\Notifications\Notifiable;
-use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Auth\Passwords\CanResetPassword;
-use Illuminate\Foundation\Auth\Access\Authorizable;
-use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
+use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
+use Illuminate\Foundation\Auth\Access\Authorizable;
+use Illuminate\Notifications\Notifiable;
+use Spatie\Permission\Traits\HasRoles;
 
 
 class User extends BaseModel implements
@@ -21,6 +21,8 @@ class User extends BaseModel implements
     use Notifiable, HasRoles, Listable;
     use Authenticatable, Authorizable, CanResetPassword;
 
+    protected static $allowSortFields = ['user_name', 'nick_name', 'created_at', 'locked_at'];
+    protected static $allowSearchFields = ['user_name', 'nick_name', 'email'];
     /**
      * The attributes that are mass assignable.
      *
@@ -29,7 +31,6 @@ class User extends BaseModel implements
     protected $fillable = [
         'user_name', 'nick_name', 'email', 'password', 'avatar', 'locked_at'
     ];
-
     /**
      * The attributes that should be hidden for arrays.
      *
@@ -38,10 +39,6 @@ class User extends BaseModel implements
     protected $hidden = [
         'password', 'remember_token',
     ];
-
-    protected static $allowSortFields = ['user_name', 'nick_name', 'created_at', 'locked_at'];
-    protected static $allowSearchFields = ['user_name', 'nick_name', 'email'];
-
     protected $dates = ['locked_at'];
 
     public function posts()

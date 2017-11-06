@@ -3,8 +3,8 @@
 namespace App\Widgets;
 
 
-use App\Support\Widget\AbstractWidget;
 use App\Services\Alert as AlertService;
+use App\Support\Widget\AbstractWidget;
 
 class Alert extends AbstractWidget
 {

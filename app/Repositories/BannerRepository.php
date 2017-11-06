@@ -18,13 +18,6 @@ class BannerRepository extends BaseRepository
         return Banner::class;
     }
 
-    public function filterData(array &$data)
-    {
-        if(isset($data['title']))
-            $data['title'] = e($data['title']);
-        return $data;
-    }
-
     public function preCreate(array &$data)
     {
         $this->filterData($data);
@@ -32,6 +25,12 @@ class BannerRepository extends BaseRepository
         return $data;
     }
 
+    public function filterData(array &$data)
+    {
+        if (isset($data['title']))
+            $data['title'] = e($data['title']);
+        return $data;
+    }
 
     public function preUpdate(array &$data)
     {

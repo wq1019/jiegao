@@ -3,7 +3,6 @@
 namespace App\Repositories;
 
 
-
 use App\Exceptions\ResourceException;
 use App\Models\Role;
 use Spatie\Permission\Exceptions\PermissionDoesNotExist;
@@ -21,23 +20,23 @@ class RoleRepository extends BaseRepository
         return Role::class;
     }
 
-    public function filterData(array &$data)
-    {
-        if(isset($data['display_name'])) {
-            $data['display_name'] = e($data['display_name']);
-        }
-        if(isset($data['description'])) {
-            $data['description'] = e($data['description']);
-        }
-        return $data;
-    }
-
     public function preCreate(array &$data)
     {
         return $this->filterData($data);
     }
 
-    public function created(&$data,Role $role)
+    public function filterData(array &$data)
+    {
+        if (isset($data['display_name'])) {
+            $data['display_name'] = e($data['display_name']);
+        }
+        if (isset($data['description'])) {
+            $data['description'] = e($data['description']);
+        }
+        return $data;
+    }
+
+    public function created(&$data, Role $role)
     {
         if (!empty($data['permissions'])) {
             try {

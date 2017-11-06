@@ -10,7 +10,6 @@ use App\Models\Post;
 use App\Repositories\PostRepository;
 use App\Transformers\Backend\PostTransformer;
 use Illuminate\Http\Request;
-use Auth;
 
 class PostsController extends ApiController
 {

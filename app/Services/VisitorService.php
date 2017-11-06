@@ -4,9 +4,9 @@ namespace App\Services;
 
 
 use App\Models\Visitor;
+use Cache;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Cache;
 use stdClass;
 
 class VisitorService
@@ -46,24 +46,6 @@ class VisitorService
     protected function increment(Visitor $visitor)
     {
         return $visitor->increment('views');
-    }
-
-
-    public function getPVUVByDateWithoutCache(Carbon $date)
-    {
-        return [
-            'page_view' => Visitor::withinOneday($date)->sum('views'),
-            'unique_visitor' => Visitor::withinOneday($date)->count()
-        ];
-    }
-
-    public function getPVUVByDateFromCache(Carbon $date)
-    {
-        $cacheKey = $this->getCacheKey($date);
-        if (!Cache::has($cacheKey)) {
-            Cache::put($cacheKey, config('cache.ttl'));
-        }
-        return Cache::get($cacheKey) ?: new stdClass();
     }
 
     public function getRecentlyPVUVFromCache()
@@ -122,13 +104,29 @@ class VisitorService
         return $PVUVData;
     }
 
-
     private function getCacheKey($date)
     {
         if ($date instanceof Carbon) {
             $date = $date->toDateString();
         }
         return 'visitor::pv_uv::' . $date;
+    }
+
+    public function getPVUVByDateWithoutCache(Carbon $date)
+    {
+        return [
+            'page_view' => Visitor::withinOneday($date)->sum('views'),
+            'unique_visitor' => Visitor::withinOneday($date)->count()
+        ];
+    }
+
+    public function getPVUVByDateFromCache(Carbon $date)
+    {
+        $cacheKey = $this->getCacheKey($date);
+        if (!Cache::has($cacheKey)) {
+            Cache::put($cacheKey, config('cache.ttl'));
+        }
+        return Cache::get($cacheKey) ?: new stdClass();
     }
 
 

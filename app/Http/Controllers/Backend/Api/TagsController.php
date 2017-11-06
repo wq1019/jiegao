@@ -6,8 +6,8 @@ namespace App\Http\Controllers\Backend\Api;
 use App\Http\Controllers\ApiController;
 use App\Http\Requests\Backend\TagCreateRequest;
 use App\Http\Requests\Backend\TagUpdateRequest;
-use App\Repositories\TagRepository;
 use App\Models\Tag;
+use App\Repositories\TagRepository;
 use App\Transformers\Backend\TagTransformer;
 
 class TagsController extends ApiController

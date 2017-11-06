@@ -7,8 +7,8 @@ namespace App\Support\Response;
 use Illuminate\Contracts\Support\Jsonable;
 use Illuminate\Contracts\Support\Responsable;
 use Illuminate\Http\Response as IlluminateResponse;
-use Symfony\Component\HttpKernel\Exception\HttpException;
 use stdClass;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 /**
  * Class Response
@@ -30,6 +30,12 @@ class Response implements Responsable
 
     protected $resource = null;
 
+    public function __construct($content = '', $status = 200, $headers = [])
+    {
+        $this->setContent($content);
+        $this->setStatus($status);
+        $this->setHeaders($headers);
+    }
 
     public function setContent($content)
     {
@@ -47,13 +53,6 @@ class Response implements Responsable
     {
         $this->headers = $headers;
         return $this;
-    }
-
-    public function __construct($content = '', $status = 200, $headers = [])
-    {
-        $this->setContent($content);
-        $this->setStatus($status);
-        $this->setHeaders($headers);
     }
 
     public function toResponse($request)
@@ -85,11 +84,6 @@ class Response implements Responsable
         $this->error($message, 404);
     }
 
-    public function __call($methodName, $arguments)
-    {
-        return (new TransformerResponse($this))->$methodName(...$arguments);
-    }
-
     /**
      * Return an error response.
      *
@@ -103,6 +97,11 @@ class Response implements Responsable
     public function error($message, $statusCode)
     {
         throw new HttpException($statusCode, $message);
+    }
+
+    public function __call($methodName, $arguments)
+    {
+        return (new TransformerResponse($this))->$methodName(...$arguments);
     }
 
     public function null()

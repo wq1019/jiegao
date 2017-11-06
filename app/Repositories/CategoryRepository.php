@@ -3,7 +3,6 @@
 namespace App\Repositories;
 
 use App\Models\Category;
-use App\Services\CategoryService;
 use Illuminate\Support\Arr;
 
 class CategoryRepository extends BaseRepository
@@ -17,6 +16,15 @@ class CategoryRepository extends BaseRepository
     public function model()
     {
         return Category::class;
+    }
+
+    public function preCreate(array &$data)
+    {
+        $data = $this->filterData($data);
+        // CategoryModel
+        $data['cate_slug'] = $this->model->generateSlug($data['cate_name']);
+        $data['creator_id'] = auth()->id();
+        return $data;
     }
 
     public function filterData(array &$data, $category = null)
@@ -40,16 +48,6 @@ class CategoryRepository extends BaseRepository
             $data['description'] = e($data['description']);
         return $data;
     }
-
-    public function preCreate(array &$data)
-    {
-        $data = $this->filterData($data);
-        // CategoryModel
-        $data['cate_slug'] = $this->model->generateSlug($data['cate_name']);
-        $data['creator_id'] = auth()->id();
-        return $data;
-    }
-
 
     public function preUpdate(array &$data, $category)
     {

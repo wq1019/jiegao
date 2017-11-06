@@ -2,7 +2,7 @@
 
 namespace App\FakerProviders;
 
-use \Faker\Provider\Image as BaseImage;
+use Faker\Provider\Image as BaseImage;
 
 class Image extends BaseImage
 {

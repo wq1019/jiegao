@@ -34,6 +34,11 @@ class Alert
         $this->session->keep(static::ALERT_KEY);
     }
 
+    public function setInfo($message)
+    {
+        $this->setMessage('info', $message);
+    }
+
     public function setMessage($type, $message, $hasCloseButton = null, $needContainer = null)
     {
         if (!in_array($type, $this->config['allow_type_list'])) {
@@ -50,15 +55,10 @@ class Alert
             static::ALERT_KEY, [
                 'type' => $type,
                 'message' => $message,
-                'hasCloseButton' => (boolean) $hasCloseButton,
-                'needContainer' => (boolean) $needContainer
+                'hasCloseButton' => (boolean)$hasCloseButton,
+                'needContainer' => (boolean)$needContainer
             ]
         );
-    }
-
-    public function setInfo($message)
-    {
-        $this->setMessage('info', $message);
     }
 
     public function setSuccess($message)

@@ -4,9 +4,9 @@
 namespace App\Widgets;
 
 
+use App\Models\Banner as BannerModel;
 use App\Services\CustomOrder;
 use App\Support\Widget\AbstractWidget;
-use App\Models\Banner as BannerModel;
 
 class Banner extends AbstractWidget
 {

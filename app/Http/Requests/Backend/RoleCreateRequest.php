@@ -26,9 +26,9 @@ class RoleCreateRequest extends Request
     {
         return [
             'name' => ['bail', 'required', 'alpha_num', 'between:2,30', 'unique:roles'],
-            'display_name' => ['nullable', 'string' ,'between:2,30'],
-            'description' => ['nullable', 'string','between:2,190'],
-            'order' => ['nullable' ,'integer'],
+            'display_name' => ['nullable', 'string', 'between:2,30'],
+            'description' => ['nullable', 'string', 'between:2,190'],
+            'order' => ['nullable', 'integer'],
             'permissions' => ['nullable', 'array']
         ];
     }

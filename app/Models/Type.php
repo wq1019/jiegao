@@ -8,14 +8,12 @@ use Illuminate\Database\Eloquent\Builder;
 class Type extends BaseModel
 {
 
-    protected $fillable = ['name', 'display_name', 'description', 'model_name', 'creator_id'];
-
-
     public static $modelMapWithType = [
         'link' => Link::class,
         'banner' => Banner::class,
         'setting' => Setting::class,
     ];
+    protected $fillable = ['name', 'display_name', 'description', 'model_name', 'creator_id'];
 
     public function scopeByModel(Builder $query, $model)
     {

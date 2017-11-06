@@ -16,7 +16,6 @@ use App\Transformers\Backend\CategoryTransformer;
 use App\Transformers\Backend\PageTransformer;
 use App\Transformers\Backend\VisualCategoryTransformer;
 use Illuminate\Http\Request;
-use League\Fractal\Resource\NullResource;
 
 class CategoriesController extends ApiController
 {
@@ -73,29 +72,13 @@ class CategoriesController extends ApiController
         }
     }
 
-    private function updatePage(Post $page, Request $request, PageRepository $pageRepository)
+    private function needPage(Category $category)
     {
-        // 更新单页
-        $data = $this->validate(
-            $request, [
-                'title' => ['nullable', 'string', 'between:1,100'],
-                'content' => ['nullable', 'string'],
-            ]
-        );
-
-        return $pageRepository->update($data, $page);
-    }
-
-    private function storePage(Category $category, Request $request, PageRepository $pageRepository)
-    {
-        $data = $this->validate(
-            $request, [
-                'title' => ['required', 'string', 'between:1,100'],
-                'content' => ['required', 'string'],
-            ]
-        );
-        $data['category_id'] = $category->id;
-        return $pageRepository->create($data);
+        if (!$category->isPage()) {
+            // todo 本地化
+            return $this->response()->errorNotFound('该栏目不是单网页');
+        }
+        return true;
     }
 
     public function savePage(Category $category, Request $request, PageRepository $pageRepository)
@@ -112,12 +95,28 @@ class CategoriesController extends ApiController
         return $this->response()->noContent();
     }
 
-    private function needPage(Category $category)
+    private function storePage(Category $category, Request $request, PageRepository $pageRepository)
     {
-        if (!$category->isPage()) {
-            // todo 本地化
-            return $this->response()->errorNotFound('该栏目不是单网页');
-        }
-        return true;
+        $data = $this->validate(
+            $request, [
+                'title' => ['required', 'string', 'between:1,100'],
+                'content' => ['required', 'string'],
+            ]
+        );
+        $data['category_id'] = $category->id;
+        return $pageRepository->create($data);
+    }
+
+    private function updatePage(Post $page, Request $request, PageRepository $pageRepository)
+    {
+        // 更新单页
+        $data = $this->validate(
+            $request, [
+                'title' => ['nullable', 'string', 'between:1,100'],
+                'content' => ['nullable', 'string'],
+            ]
+        );
+
+        return $pageRepository->update($data, $page);
     }
 }

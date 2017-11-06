@@ -3,43 +3,43 @@
 namespace App\Support\Response;
 
 
+use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Contracts\Support\Responsable;
+use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 use League\Fractal\Manager as FractalManager;
 use League\Fractal\Pagination\IlluminatePaginatorAdapter;
+use League\Fractal\Resource\Collection as FractalCollection;
 use League\Fractal\Resource\Item;
 use League\Fractal\Scope;
-use League\Fractal\Resource\Collection as FractalCollection;
-use Illuminate\Contracts\Pagination\Paginator;
-use Illuminate\Support\Collection;
-use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 
 
 class TransformerResponse implements Responsable
 {
+    /**
+     * @var FractalManager
+     */
+    protected static $fractalManager;
     /**
      * The include query string key.
      *
      * @var string
      */
     protected $includeKey = 'include';
-
     /**
      * The include separator.
      *
      * @var string
      */
     protected $includeSeparator = ',';
-
     /**
      * Indicates if eager loading is enabled.
      *
      * @var bool
      */
     protected $eagerLoading = true;
-
     protected $transformer;
-
     protected $resource = null;
     protected $meta = [];
     protected $response;
@@ -49,19 +49,14 @@ class TransformerResponse implements Responsable
         $this->response = $response;
     }
 
-    /**
-     * @var FractalManager
-     */
-    protected static $fractalManager;
+    public static function getFractalManager()
+    {
+        return static::$fractalManager;
+    }
 
     public static function setFractalManager(FractalManager $fractalManager)
     {
         static::$fractalManager = $fractalManager;
-    }
-
-    public static function getFractalManager()
-    {
-        return static::$fractalManager;
     }
 
     /**
@@ -104,6 +99,13 @@ class TransformerResponse implements Responsable
         return $this;
     }
 
+    public function toResponse($request)
+    {
+        $this->resource->setMeta($this->meta);
+        $this->response->setContent($this->fractalCreateData());
+        return $this->response->toResponse($request);
+    }
+
     private function fractalCreateData($scopeIdentifier = null, Scope $parentScopeInstance = null)
     {
 
@@ -121,24 +123,60 @@ class TransformerResponse implements Responsable
         return static::$fractalManager->createData($this->resource, $scopeIdentifier, $parentScopeInstance)->toArray();
     }
 
-    public function toResponse($request)
+    /**
+     * Parse the includes.
+     *
+     * @param Request $request
+     *
+     * @return void
+     */
+    public function parseFractalIncludes(Request $request)
     {
-        $this->resource->setMeta($this->meta);
-        $this->response->setContent($this->fractalCreateData());
-        return $this->response->toResponse($request);
+        $includes = $request->input($this->includeKey);
+
+        if (!is_array($includes)) {
+            $includes = array_filter(explode($this->includeSeparator, $includes));
+        }
+
+        static::$fractalManager->parseIncludes($includes);
     }
 
     /**
-     * Set the meta data for the binding.
+     * Eager loading is only performed when the response is or contains an
+     * Eloquent collection and eager loading is enabled.
      *
-     * @param array $meta
+     * @param mixed $response
      *
-     * @return TransformerResponse
+     * @return bool
      */
-    public function setMeta(array $meta)
+    protected function shouldEagerLoad($data)
     {
-        $this->meta = $meta;
-        return $this;
+        if ($data instanceof Paginator) {
+            $data = $data->getCollection();
+        }
+
+        return $this->eagerLoading && $data instanceof EloquentCollection;
+    }
+
+    /**
+     * Get includes as their array keys for eager loading.
+     *
+     * @param \League\Fractal\TransformerAbstract $transformer
+     * @param string|array $requestedIncludes
+     *
+     * @return array
+     */
+    protected function mergeEagerLoads($transformer, $requestedIncludes)
+    {
+        $includes = array_merge($requestedIncludes, $transformer->getDefaultIncludes());
+        $includes = array_intersect($includes, $transformer->getAvailableIncludes());
+        $eagerLoads = [];
+
+        foreach ($includes as $key => $value) {
+            $eagerLoads[] = camel_case(is_string($key) ? $key : $value);
+        }
+
+        return $eagerLoads;
     }
 
     /**
@@ -165,65 +203,22 @@ class TransformerResponse implements Responsable
         return $this->meta;
     }
 
+    /**
+     * Set the meta data for the binding.
+     *
+     * @param array $meta
+     *
+     * @return TransformerResponse
+     */
+    public function setMeta(array $meta)
+    {
+        $this->meta = $meta;
+        return $this;
+    }
+
     public function __call($method, $arguments)
     {
         return $this->response->$method(...$arguments);
-    }
-
-    /**
-     * Eager loading is only performed when the response is or contains an
-     * Eloquent collection and eager loading is enabled.
-     *
-     * @param mixed $response
-     *
-     * @return bool
-     */
-    protected function shouldEagerLoad($data)
-    {
-        if ($data instanceof Paginator) {
-            $data = $data->getCollection();
-        }
-
-        return $this->eagerLoading && $data instanceof EloquentCollection;
-    }
-
-    /**
-     * Parse the includes.
-     *
-     * @param Request $request
-     *
-     * @return void
-     */
-    public function parseFractalIncludes(Request $request)
-    {
-        $includes = $request->input($this->includeKey);
-
-        if (!is_array($includes)) {
-            $includes = array_filter(explode($this->includeSeparator, $includes));
-        }
-
-        static::$fractalManager->parseIncludes($includes);
-    }
-
-    /**
-     * Get includes as their array keys for eager loading.
-     *
-     * @param \League\Fractal\TransformerAbstract $transformer
-     * @param string|array $requestedIncludes
-     *
-     * @return array
-     */
-    protected function mergeEagerLoads($transformer, $requestedIncludes)
-    {
-        $includes = array_merge($requestedIncludes, $transformer->getDefaultIncludes());
-        $includes = array_intersect($includes, $transformer->getAvailableIncludes());
-        $eagerLoads = [];
-
-        foreach ($includes as $key => $value) {
-            $eagerLoads[] = camel_case(is_string($key) ? $key : $value);
-        }
-
-        return $eagerLoads;
     }
 
     /**

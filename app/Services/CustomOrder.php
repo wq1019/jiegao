@@ -4,7 +4,6 @@ namespace App\Services;
 
 
 use App\Models\Banner;
-use App\Models\Category;
 use App\Models\InterfaceTypeable;
 use App\Models\Link;
 use Illuminate\Support\Collection;
@@ -34,6 +33,17 @@ class CustomOrder
         });
     }
 
+    protected function getSettingKey($modelInstance)
+    {
+        $result = 'custom_order:';
+        if ($modelInstance instanceof InterfaceTypeable) {
+            $result .= get_class($modelInstance) . ':type_name:' . $modelInstance->type_name;
+        } else if ($modelInstance != null) {
+            $result .= get_class($modelInstance);
+        }
+        return $result;
+    }
+
     public function setOrder(array $indexOrder, $model)
     {
         if (count($indexOrder) <= 0) return;
@@ -53,16 +63,5 @@ class CustomOrder
                 'type_name' => 'system'
             ]
         ]);
-    }
-
-    protected function getSettingKey($modelInstance)
-    {
-        $result = 'custom_order:';
-        if ($modelInstance instanceof InterfaceTypeable) {
-            $result .= get_class($modelInstance) . ':type_name:' . $modelInstance->type_name;
-        } else if ($modelInstance != null) {
-            $result .= get_class($modelInstance);
-        }
-        return $result;
     }
 }

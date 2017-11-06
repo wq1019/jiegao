@@ -12,6 +12,7 @@ class Category extends BaseModel implements PresentableInterface
 {
     use HasSlug;
 
+    const TYPE_POST = 'post', TYPE_PAGE = 'page', TYPE_LINK = 'link';
     protected $casts = [
         'is_nav' => 'boolean',
         'is_target_blank' => 'boolean'
@@ -19,9 +20,6 @@ class Category extends BaseModel implements PresentableInterface
     protected $fillable = ['type', 'parent_id', 'image', 'cate_name', 'order',
         'description', 'url', 'is_target_blank', 'cate_slug', 'is_nav',
         'page_template', 'list_template', 'content_template', 'creator_id'];
-
-
-    const TYPE_POST = 'post', TYPE_PAGE = 'page', TYPE_LINK = 'link';
 
     /**
      * 数据模型的启动方法
@@ -32,11 +30,6 @@ class Category extends BaseModel implements PresentableInterface
     {
         parent::boot();
         static::observe(ClearNavigationCache::class);
-    }
-
-    public function posts()
-    {
-        return $this->hasMany(Post::class);
     }
 
     /**
@@ -62,6 +55,11 @@ class Category extends BaseModel implements PresentableInterface
                 break;
         }
         return $query;
+    }
+
+    public function posts()
+    {
+        return $this->hasMany(Post::class);
     }
 
     /**
@@ -150,7 +148,7 @@ class Category extends BaseModel implements PresentableInterface
             return false;
         }
         return $this->id == $category->id;*/
-        return !is_null($category) ? $this->id == $category->id ? true: false: false;
+        return !is_null($category) ? $this->id == $category->id ? true : false : false;
     }
 
     /**
@@ -239,6 +237,6 @@ class Category extends BaseModel implements PresentableInterface
     public function getDescription()
     {
         //\Breadcrumbs::
-        return $this->description?:setting('default_description');
+        return $this->description ?: setting('default_description');
     }
 }

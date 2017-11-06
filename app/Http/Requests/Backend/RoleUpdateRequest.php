@@ -27,9 +27,9 @@ class RoleUpdateRequest extends Request
         $role = $this->route()->parameter('role');
         return [
             'name' => ['bail', 'nullable', 'alpha_num', 'between:2,30', Rule::unique('roles')->ignore($role->id)],
-            'display_name' => ['nullable', 'string' ,'between:2,30'],
-            'description' => ['nullable', 'string','between:2,190'],
-            'order' => ['nullable' ,'integer'],
+            'display_name' => ['nullable', 'string', 'between:2,30'],
+            'description' => ['nullable', 'string', 'between:2,190'],
+            'order' => ['nullable', 'integer'],
             'permissions' => ['nullable', 'array']
         ];
     }

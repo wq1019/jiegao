@@ -2,7 +2,6 @@
 
 namespace App\Transformers\Backend;
 
-use App\Models\Link;
 use App\Models\Setting;
 use League\Fractal\TransformerAbstract;
 

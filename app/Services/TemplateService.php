@@ -3,8 +3,8 @@
 namespace App\Services;
 
 use Illuminate\Support\Arr;
-use View;
 use InvalidArgumentException;
+use View;
 
 class TemplateService
 {
@@ -14,14 +14,6 @@ class TemplateService
     {
         $this->config = $config;
         View::prependNamespace($config['theme_namespace'], $config['current_theme_path']);
-    }
-
-    public function getDefaultTemplate($templateType)
-    {
-        $templates = $this->config['templates'][$templateType] ?? [];
-        if (empty($templates))
-            return null;
-        return $templates[$this->getDefaultTemplateIndex($templates)];
     }
 
     public function getTemplates($templateTypes = [])
@@ -80,5 +72,13 @@ class TemplateService
 
 
         return $view;
+    }
+
+    public function getDefaultTemplate($templateType)
+    {
+        $templates = $this->config['templates'][$templateType] ?? [];
+        if (empty($templates))
+            return null;
+        return $templates[$this->getDefaultTemplateIndex($templates)];
     }
 }

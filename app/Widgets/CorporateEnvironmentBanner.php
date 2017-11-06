@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Widgets;
 
 class CorporateEnvironmentBanner extends Banner

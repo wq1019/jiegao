@@ -5,8 +5,8 @@ namespace App\Repositories;
 
 use App\Exceptions\ResourceException;
 use App\Models\User;
-use Hash;
 use DB;
+use Hash;
 use Spatie\Permission\Exceptions\PermissionDoesNotExist;
 use Spatie\Permission\Exceptions\RoleDoesNotExist;
 
@@ -21,13 +21,6 @@ class UserRepository extends BaseRepository
     public function model()
     {
         return User::class;
-    }
-
-    public function filterData(array &$data)
-    {
-        if (isset($data['nick_name']))
-            $data['nick_name'] = e($data['nick_name']);
-        return $data;
     }
 
     public function create(array $data)
@@ -57,6 +50,13 @@ class UserRepository extends BaseRepository
         return $user;
     }
 
+    public function filterData(array &$data)
+    {
+        if (isset($data['nick_name']))
+            $data['nick_name'] = e($data['nick_name']);
+        return $data;
+    }
+
     public function perUpdate(array &$data)
     {
         $this->filterData($data);
@@ -65,7 +65,8 @@ class UserRepository extends BaseRepository
         }
     }
 
-    public function updated(array &$data,User $user){
+    public function updated(array &$data, User $user)
+    {
         if (!empty($data['roles'])) {
             try {
                 $user->syncRoles($data['roles']);

@@ -5,13 +5,13 @@ namespace App\Http\Controllers\Backend\Api\Auth;
 use App\Exceptions\ResourceException;
 use App\Http\Controllers\ApiController;
 use Auth;
+use Cache;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+use Lang;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Validator;
-use Lang;
-use Cache;
 
 class LoginController extends ApiController
 {
@@ -53,17 +53,6 @@ class LoginController extends ApiController
     protected function getAttemptLoginTimesKey($ip)
     {
         return 'attempt_login_times:' . $ip;
-    }
-
-    protected function addAttemptLoginTimes($ip)
-    {
-        $key = $this->getAttemptLoginTimesKey($ip);
-        $cacheTime = config('tiny.not_verification_code_time_interval', 60 * 24);
-        if (Cache::has($key)) {
-            Cache::increment($key);
-        } else {
-            Cache::put($key, 1, $cacheTime);
-        }
     }
 
     /**
@@ -138,33 +127,6 @@ class LoginController extends ApiController
     }
 
     /**
-     * Attempt to log the user into the application.
-     *
-     * @param  \Illuminate\Http\Request $request
-     * @return bool
-     */
-    protected function attemptLogin(Request $request)
-    {
-        return $this->guard()->attempt(
-            $this->credentials($request), $request->has('remember')
-        );
-    }
-
-
-    public function username()
-    {
-        if (!$this->userName) {
-            if (false === strpos(request($this->loginKey()), '@')) {
-                $this->userName = 'user_name';
-            } else {
-                $this->userName = 'email';
-            }
-        }
-        return $this->userName;
-    }
-
-
-    /**
      * Get the needed authorization credentials from the request.
      *
      * @param  \Illuminate\Http\Request $request
@@ -181,6 +143,76 @@ class LoginController extends ApiController
             'password' => $credentials['password']
         ];
 
+    }
+
+    /**
+     * Get the login username to be used by the controller.
+     *
+     * @return string
+     */
+    public function loginKey()
+    {
+        return 'account';
+    }
+
+    public function username()
+    {
+        if (!$this->userName) {
+            if (false === strpos(request($this->loginKey()), '@')) {
+                $this->userName = 'user_name';
+            } else {
+                $this->userName = 'email';
+            }
+        }
+        return $this->userName;
+    }
+
+    /**
+     * Redirect the user after determining they are locked out.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    protected function sendLockoutResponse(Request $request)
+    {
+        $seconds = $this->limiter()->availableIn(
+            $this->throttleKey($request)
+        );
+        throw new HttpException(423, Lang::get('auth.throttle', ['seconds' => $seconds]));
+    }
+
+    protected function addAttemptLoginTimes($ip)
+    {
+        $key = $this->getAttemptLoginTimesKey($ip);
+        $cacheTime = config('tiny.not_verification_code_time_interval', 60 * 24);
+        if (Cache::has($key)) {
+            Cache::increment($key);
+        } else {
+            Cache::put($key, 1, $cacheTime);
+        }
+    }
+
+    /**
+     * Attempt to log the user into the application.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @return bool
+     */
+    protected function attemptLogin(Request $request)
+    {
+        return $this->guard()->attempt(
+            $this->credentials($request), $request->has('remember')
+        );
+    }
+
+    /**
+     * Get the guard to be used during authentication.
+     *
+     * @return \Illuminate\Contracts\Auth\StatefulGuard
+     */
+    protected function guard()
+    {
+        return Auth::guard();
     }
 
     /**
@@ -202,42 +234,6 @@ class LoginController extends ApiController
     }
 
     /**
-     * Get the failed login response instance.
-     *
-     * @param  \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    protected function sendFailedLoginResponse(Request $request)
-    {
-        // 用户名或密码错误
-        throw new ResourceException(null, ['password' => Lang::get('auth.password_error')]);
-    }
-
-    /**
-     * Redirect the user after determining they are locked out.
-     *
-     * @param  \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    protected function sendLockoutResponse(Request $request)
-    {
-        $seconds = $this->limiter()->availableIn(
-            $this->throttleKey($request)
-        );
-        throw new HttpException(423, Lang::get('auth.throttle', ['seconds' => $seconds]));
-    }
-
-    /**
-     * Get the login username to be used by the controller.
-     *
-     * @return string
-     */
-    public function loginKey()
-    {
-        return 'account';
-    }
-
-    /**
      * Log the user out of the application.
      *
      */
@@ -251,13 +247,15 @@ class LoginController extends ApiController
     }
 
     /**
-     * Get the guard to be used during authentication.
+     * Get the failed login response instance.
      *
-     * @return \Illuminate\Contracts\Auth\StatefulGuard
+     * @param  \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\RedirectResponse
      */
-    protected function guard()
+    protected function sendFailedLoginResponse(Request $request)
     {
-        return Auth::guard();
+        // 用户名或密码错误
+        throw new ResourceException(null, ['password' => Lang::get('auth.password_error')]);
     }
 
 }

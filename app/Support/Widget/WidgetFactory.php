@@ -53,6 +53,16 @@ class WidgetFactory
         return studly_case(str_replace('.', '\\', $widgetName));
     }
 
+    protected function getContentFromCache()
+    {
+        if ($cacheTime = $this->getCacheTime()) {
+            Cache::remember($this->widget->cacheKey($this->widgetConfig), $cacheTime, function () {
+                return $this->getContent();
+            });
+        }
+        return $this->getContent();
+    }
+
     protected function getCacheTime()
     {
         return !is_null($this->widget) ? $this->widget->cacheTime : fasle;
@@ -62,16 +72,6 @@ class WidgetFactory
     {
         $content = app()->call([$this->widget, 'render'], ['params' => $this->widgetParams]);
         return is_object($content) ? $content->__toString() : $content;
-    }
-
-    protected function getContentFromCache()
-    {
-        if ($cacheTime = $this->getCacheTime()) {
-            Cache::remember($this->widget->cacheKey($this->widgetConfig), $cacheTime, function () {
-                return $this->getContent();
-            });
-        }
-        return $this->getContent();
     }
 
 }

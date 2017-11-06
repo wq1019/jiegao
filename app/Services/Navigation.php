@@ -18,26 +18,20 @@ class Navigation
      */
     protected $activeTopNav;
 
-    public function getAllNavWithoutCache()
-    {
-        return Category::nav()->topCategories()->with(['children' => function ($query) {
-            $query->nav();
-        }])->ordered()->ancient()->get();
-    }
-
-    public function getAllNav()
-    {
-        if (is_null($this->allNav)) {
-            $this->allNav = Cache::remember('all_nav', config('cache.ttl'), function () {
-                return $this->getAllNavWithoutCache();
-            });
-        }
-        return $this->allNav;
-    }
-
     public function clearCache()
     {
         return Cache::forget('all_nav');
+    }
+
+    /**
+     * 获取当前导航
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @return Category
+     */
+    public function getActiveNav()
+    {
+        return $this->activeNav;
     }
 
     /**
@@ -52,17 +46,6 @@ class Navigation
             $this->activeTopNav = $activeNav;
         }
         $this->activeNav = $activeNav;
-    }
-
-    /**
-     * 获取当前导航
-     *
-     * @param  \Illuminate\Http\Request $request
-     * @return Category
-     */
-    public function getActiveNav()
-    {
-        return $this->activeNav;
     }
 
     /**
@@ -85,5 +68,22 @@ class Navigation
         } else {
             return collect();
         }
+    }
+
+    public function getAllNav()
+    {
+        if (is_null($this->allNav)) {
+            $this->allNav = Cache::remember('all_nav', config('cache.ttl'), function () {
+                return $this->getAllNavWithoutCache();
+            });
+        }
+        return $this->allNav;
+    }
+
+    public function getAllNavWithoutCache()
+    {
+        return Category::nav()->topCategories()->with(['children' => function ($query) {
+            $query->nav();
+        }])->ordered()->ancient()->get();
     }
 }

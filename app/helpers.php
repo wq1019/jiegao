@@ -1,7 +1,7 @@
 <?php
 
-use App\Services\SettingCacheService;
 use App\Repositories\SettingRepository;
+use App\Services\SettingCacheService;
 use App\Services\TemplateService;
 
 if (!function_exists('setting')) {

@@ -20,6 +20,24 @@ class ClearNavigationCache
             $this->navigation->clearCache();
     }
 
+    /**
+     * 是否曾经是导航栏
+     */
+    private function isUsedToBeNav($category)
+    {
+        foreach ($this->navigation->getAllNav() as $nav) {
+            if ($category->is($nav)) return true;
+            if ($nav->hasChildren()) {
+                foreach ($nav->children as $navChild) {
+                    if ($category->is($navChild)) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
     public function deleted($category)
     {
         if ($category->is_nav || $this->isUsedToBeNav($category))
@@ -30,23 +48,5 @@ class ClearNavigationCache
     {
         if ($category->is_nav || $this->isUsedToBeNav($category))
             $this->navigation->clearCache();
-    }
-
-    /**
-     * 是否曾经是导航栏
-     */
-    private function isUsedToBeNav($category)
-    {
-        foreach ($this->navigation->getAllNav() as $nav) {
-            if ($category->is($nav)) return true;
-            if ($nav->hasChildren()) {
-                foreach ($nav->children as $navChild) {
-                    if($category->is($navChild)){
-                        return true;
-                    }
-                }
-            }
-        }
-        return false;
     }
 }

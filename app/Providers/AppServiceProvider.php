@@ -3,20 +3,20 @@
 namespace App\Providers;
 
 
+use App\FakerProviders\Image;
+use App\FakerProviders\Internet;
+use Blade;
+use Breadcrumbs;
+use Carbon\Carbon;
+use DB;
 use Faker\Generator as Faker;
 use Illuminate\Support\ServiceProvider;
-use App\FakerProviders\Internet;
-use App\FakerProviders\Image;
-use DB;
+use League\Fractal\Manager as FractalManager;
 use League\Glide\Responses\LaravelResponseFactory;
 use League\Glide\ServerFactory;
 use Log;
-use League\Fractal\Manager as FractalManager;
-use Storage;
-use Carbon\Carbon;
 use Schema;
-use Blade;
-use Breadcrumbs;
+use Storage;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -49,7 +49,7 @@ class AppServiceProvider extends ServiceProvider
             $breadcrumb = Breadcrumbs::generate($name, ...$params);
             if ($breadcrumb->isNotEmpty()) {
                 $title = $breadcrumb->slice(1)->reverse()->implode('title', $delimiter) . $delimiter;
-            }else{
+            } else {
                 $title = '';
             }
 

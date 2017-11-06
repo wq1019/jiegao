@@ -15,26 +15,6 @@ class ImageController extends ApiController
         $this->middleware('auth');
     }
 
-    public function upload(Request $request)
-    {
-        $config = config('images');
-        $image = $request->file($config['upload_key']);
-        if (!is_null($image) && $image->isValid()) {
-            $image->hashName($image);
-            $hashName = $this->hashName($image);
-            $image->storeAs($config['source_path_prefix'], $hashName, ['disk' => $config['source_disk']]);
-            
-            $imageId = ltrim(strstr($hashName, DIRECTORY_SEPARATOR), DIRECTORY_SEPARATOR);
-            return [
-                'image' => $imageId,
-                'image_url' => image_url($imageId)
-            ];
-        }
-        $error = $image ? $image->getErrorMessage() : '图片上传失败';
-        throw new ResourceException($error, [$config['upload_key'] => $error]);
-    }
-
-    // todo 同时上传多张图片
     public function wangEditorUpload(Request $request)
     {
         $errno = 0;
@@ -53,6 +33,27 @@ class ImageController extends ApiController
             'data' => $data,
             'error' => $error
         ];
+    }
+
+    // todo 同时上传多张图片
+
+    public function upload(Request $request)
+    {
+        $config = config('images');
+        $image = $request->file($config['upload_key']);
+        if (!is_null($image) && $image->isValid()) {
+            $image->hashName($image);
+            $hashName = $this->hashName($image);
+            $image->storeAs($config['source_path_prefix'], $hashName, ['disk' => $config['source_disk']]);
+
+            $imageId = ltrim(strstr($hashName, DIRECTORY_SEPARATOR), DIRECTORY_SEPARATOR);
+            return [
+                'image' => $imageId,
+                'image_url' => image_url($imageId)
+            ];
+        }
+        $error = $image ? $image->getErrorMessage() : '图片上传失败';
+        throw new ResourceException($error, [$config['upload_key'] => $error]);
     }
 
     protected function hashName(UploadedFile $image)

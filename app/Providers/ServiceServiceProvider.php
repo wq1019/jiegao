@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Services\Alert;
 use App\Services\CategoryService;
 use App\Services\CustomOrder;
 use App\Services\Navigation;
@@ -11,7 +12,6 @@ use App\Services\SlugGenerator;
 use App\Services\TagService;
 use App\Services\TemplateService;
 use App\Services\VisitorService;
-use App\Services\Alert;
 use Illuminate\Support\ServiceProvider;
 
 class ServiceServiceProvider extends ServiceProvider
@@ -43,18 +43,18 @@ class ServiceServiceProvider extends ServiceProvider
             return new VisitorService($app->make('request'));
         });
 
-        $this->app->singleton(Alert::class, function  ($app) {
+        $this->app->singleton(Alert::class, function ($app) {
             return new Alert($app->make('session.store'), $app->make('config')->get('alert'));
         });
 
-        $this->app->singleton(Navigation::class, function  () {
+        $this->app->singleton(Navigation::class, function () {
             return new Navigation();
         });
 
         // TemplateService 中注册了 theme 视图命名空间， 因此不管有没有使用此类都需要创建此类
         $this->app->instance(TemplateService::class, new TemplateService(config('template')));
 
-        $this->app->singleton(TagService::class, function  () {
+        $this->app->singleton(TagService::class, function () {
             return new TagService();
         });
     }

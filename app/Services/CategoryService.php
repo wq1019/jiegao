@@ -8,20 +8,6 @@ class CategoryService
 {
 
     // todo cache
-    public function getAllByType($type)
-    {
-        $topicCategories = Category::topCategories()->ordered()->ancient()->get();
-        $topicCategories->load(['children' => function ($query) use ($type) {
-            $query->byType($type)->ordered()->ancient();
-        }]);
-        if (!is_null($type)) {
-            $topicCategories = $topicCategories->filter(function ($category) use ($type) {
-                return $category->type == $type || $category->children->isNotEmpty();
-            });
-        }
-        return $topicCategories;
-    }
-
     public function visualOutput($type = null, $indentStr = '-')
     {
 
@@ -34,5 +20,19 @@ class CategoryService
             }
         }
         return $collect;
+    }
+
+    public function getAllByType($type)
+    {
+        $topicCategories = Category::topCategories()->ordered()->ancient()->get();
+        $topicCategories->load(['children' => function ($query) use ($type) {
+            $query->byType($type)->ordered()->ancient();
+        }]);
+        if (!is_null($type)) {
+            $topicCategories = $topicCategories->filter(function ($category) use ($type) {
+                return $category->type == $type || $category->children->isNotEmpty();
+            });
+        }
+        return $topicCategories;
     }
 }

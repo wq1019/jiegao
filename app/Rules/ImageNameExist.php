@@ -18,7 +18,7 @@ class ImageNameExist implements Rule
     public function passes($attribute, $value)
     {
         $config = config('images');
-        $imageRealPath = $config['source_path_prefix']. DIRECTORY_SEPARATOR . substr($value, 0, 2) . DIRECTORY_SEPARATOR . $value;
+        $imageRealPath = $config['source_path_prefix'] . DIRECTORY_SEPARATOR . substr($value, 0, 2) . DIRECTORY_SEPARATOR . $value;
         return Storage::disk($config['source_disk'])->exists($imageRealPath);
     }
 

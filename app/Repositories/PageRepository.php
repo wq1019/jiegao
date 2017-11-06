@@ -5,9 +5,9 @@ namespace App\Repositories;
 
 use App\Models\Category;
 use App\Models\Post;
+use Auth;
 use Carbon\Carbon;
 use Naux\AutoCorrect;
-use Auth;
 
 class PageRepository extends BaseRepository
 {
@@ -21,15 +21,6 @@ class PageRepository extends BaseRepository
         return Post::class;
     }
 
-    public function filterData(array &$data)
-    {
-        if (isset($data['title']))
-            $data['title'] = e((new AutoCorrect())->convert($data['title']));
-        if (isset($data['content']))
-            $data['content'] = clean($data['content']);
-        return $data;
-    }
-
     public function preCreate(array &$data)
     {
         $this->filterData($data);
@@ -40,17 +31,16 @@ class PageRepository extends BaseRepository
         return $data;
     }
 
+    public function filterData(array &$data)
+    {
+        if (isset($data['title']))
+            $data['title'] = e((new AutoCorrect())->convert($data['title']));
+        if (isset($data['content']))
+            $data['content'] = clean($data['content']);
+        return $data;
+    }
+
     public function created(&$data, $post)
-    {
-        $this->updateOrCreatePostContent($post, $data);
-    }
-
-    public function preUpdate(array &$data)
-    {
-        return $this->filterData($data);
-    }
-
-    public function updated(&$data, $post)
     {
         $this->updateOrCreatePostContent($post, $data);
     }
@@ -69,6 +59,16 @@ class PageRepository extends BaseRepository
                 ]
             );
         }
+    }
+
+    public function preUpdate(array &$data)
+    {
+        return $this->filterData($data);
+    }
+
+    public function updated(&$data, $post)
+    {
+        $this->updateOrCreatePostContent($post, $data);
     }
 
 }
