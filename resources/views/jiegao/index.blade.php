@@ -17,17 +17,13 @@
         <div class="container">
             <div class="about">
                 <div class="header">
-                    @php
-                        $categoryRepository = app(App\Repositories\CategoryRepository::class);
-                        $about = $categoryRepository->findByCateName('关于捷高');
-                    @endphp
-                    <h2>{{$about->cate_name}}</h2>
+                    <h2>关于捷高</h2>
                 </div>
                 <div class="info">
+                    {{--todo 这里的图片先写死--}}
                     <img src="{!! cdn('jiegao/images/about.png') !!}">
                     <p class="text">
-                        我们的流线式网页布局设计方案和可视化图文内容编辑模式让网站制作和维护成为一件轻松惬意的事。无论您是普通互联页设计出最制作人页设计出最制作人作人页设计出最制作人页设计出最制作人作人计出最制作人作人页设人
-                        我们的流线式网页布局设计方案和可视化图文内容编辑模式让网站制作和维护成为一件轻松惬意的事。无论您是普通互联页设计出最制作人页设计出最制作人作人页设计出最制作人页设计出最制作人作人计出最制作人作人页设人
+                        {{setting('about_me')}}
                     </p>
                 </div>
             </div>
@@ -106,6 +102,5 @@
           $envBannerTitle.html($currentText.html());
         }
       })
-
     </script>
 @endpush

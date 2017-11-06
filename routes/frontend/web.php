@@ -7,4 +7,6 @@ Route::middleware('record_visitor')->group(function (){
     Route::get('/categories/{slug}', 'CategoriesController@show')->name('category.show');
 
     Route::get('/posts/{slug}', 'PostsController@show')->name('post.show');
+
+    Route::get('search', 'SearchController@search')->name('search');
 });

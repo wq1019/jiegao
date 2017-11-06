@@ -52,7 +52,7 @@ trait Listable
      */
     public function scopeWithSimpleSearch($query, $keywords = null, $searchScope = [])
     {
-        $keywords = is_null($keywords) ? request('keywords', null) : $keywords;
+        $keywords = is_null($keywords) ? e(request('keywords', null)) : $keywords;
         $searchScope = empty($searchScope) ? request('search_scope', []) : $searchScope;
 
         if (empty($searchScope) || $searchScope === 'all') {

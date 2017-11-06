@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Http\Controllers\Frontend\Web;
-
 
 use App\Events\VisitedPostList;
 use App\Http\Controllers\Controller;

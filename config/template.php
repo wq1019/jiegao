@@ -36,6 +36,10 @@ return [
                 'file_name' => 'default',
                 'title' => '默认正文模板',
                 'default' => true
+            ],[
+                'file_name' => 'product',
+                'title' => '产品正文模板',
+                'default' => true
             ]
         ]
     ]

@@ -1,8 +1,8 @@
 @extends('jiegao.layouts.app')
 
-{{--@section('keywords'){!! $category->getKeywords() !!}@endsection
-@section('description'){!! $category->getDescription() !!}@endsection
-@section('title'){{ Breadcrumbs::pageTitle(' - ', 'category', $category) }}@endsection--}}
+@section('keywords'){!! $post->getKeywords() !!}@endsection
+@section('description'){!! $post->getDescription() !!}@endsection
+@section('title'){!! $post->title !!}@endsection
 
 @section('content')
     @widget('navigation_bar')
@@ -12,23 +12,23 @@
         @widget('navigation_sidebar')
         <div class="main_list">
             <div class="header">
-                {{--{{ Breadcrumbs::render('category', $category) }}--}}
+                {!! Breadcrumbs::render('post', $post) !!}
             </div>
             <div class="content">
                 <div class="title_container">
-                    <h1>计算机学院：分党委组织师生收看党的十九大开幕式</h1>
+                    <h1>{!! $post->title !!}</h1>
                     <p class="info">
-                        <span>2017-10-21 20:53:19</span>
-                        <span>102 人阅读</span>
+                        <span>{!! $post->published_at !!}</span>
+                        <span>{!! $post->views_count !!} 人阅读</span>
                         <span class="avatar">
                             上传：
-                            <img lazy="" src="http://211.70.176.153/images/default_avatar.jpg">
-                            <span class="uname">计算机学院</span>
+                            <img lazy src="{!! image_url($post->user->avatar, 'avatar_xs', cdn('jiegao/images/default_avatar.jpg')) !!}">
+                            <span class="uname">{!! isset($post->user->nick_name)?$post->user->nick_name:$post->user->user_name !!}</span>
                         </span>
                     </p>
                 </div>
                 <div class="text">
-                    asdsadsad
+                    {!! $post->postContent->content !!}
                 </div>
             </div>
         </div>
