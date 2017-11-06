@@ -78,9 +78,14 @@ abstract class BaseRepository
         }
     }
 
+    private $slugCacheMap = [];
+
     public function findBySlug(string $slug)
     {
-        return $this->model->bySlug($slug)->firstOrFail();
+        if (!isset($this->slugCacheMap[$slug])) {
+            $this->slugCacheMap[$slug] = $this->model->bySlug($slug)->firstOrFail();
+        }
+        return $this->slugCacheMap[$slug];
     }
 
 }

@@ -21,6 +21,30 @@ class PostRepository extends BaseRepository
         return Post::class;
     }
 
+    public function filterData(array &$data)
+    {
+        if (isset($data['title']))
+            $data['title'] = e((new AutoCorrect())->convert($data['title']));
+        if (isset($data['excerpt']))
+            $data['excerpt'] = e($data['excerpt']);
+        if (isset($data['content']))
+            $data['content'] = clean($data['content']);
+        // 处理置顶
+        if (isset($data['top'])) {
+            if ($data['top']) {
+                $data['top'] = Carbon::now();
+            } else {
+                $data['top'] = null;
+            }
+        }
+        if (isset($data['published_at']))
+            $data['published_at'] = new Carbon($data['published_at']);
+        if (isset($data['fields']))
+            $data['fields'] = json_encode($data['fields']);
+
+        return $data;
+    }
+
     public function preCreate(array &$data)
     {
         $this->filterData($data);
@@ -36,33 +60,11 @@ class PostRepository extends BaseRepository
         if (!isset($data['status']))
             $data['status'] = Post::STATUS_DRAFT;
 
-        if (!isset($data['excerpt'])) {
+        if (!isset($data['excerpt']))
             $data['excerpt'] = $postService->makeExcerpt($data['content']);
-        }
+
         $data['user_id'] = Auth::id();
         $data['slug'] = $this->model->generateSlug($data['title']);
-        return $data;
-    }
-
-    public function filterData(array &$data)
-    {
-        if (isset($data['title']))
-            $data['title'] = e((new AutoCorrect())->convert($data['title']));
-        if (isset($data['excerpt']))
-            $data['excerpt'] = e($data['excerpt']);
-        /*if (isset($data['content']))
-            $data['content'] = clean($data['content']);*/
-        // 处理置顶
-        if (isset($data['top'])) {
-            if ($data['top']) {
-                $data['top'] = Carbon::now();
-            } else {
-                $data['top'] = null;
-            }
-        }
-        if (isset($data['published_at']))
-            $data['published_at'] = new Carbon($data['published_at']);
-
         return $data;
     }
 

@@ -27,7 +27,7 @@ class CategoryTransformer extends TransformerAbstract
             'page_template' => $category->page_template,
             'list_template' => $category->list_template,
             'content_template' => $category->content_template,
-            'setting' => $category->setting,
+            // 'setting' => $category->setting,
             'is_target_blank' => $category->is_target_blank,
             'created_at' => $category->created_at->toDateTimeString(),
             'updated_at' => $category->updated_at->toDateTimeString()

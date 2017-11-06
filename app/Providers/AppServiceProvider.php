@@ -55,6 +55,7 @@ class AppServiceProvider extends ServiceProvider
 
             return $title . setting('site_name');
         });
+
     }
 
     /**

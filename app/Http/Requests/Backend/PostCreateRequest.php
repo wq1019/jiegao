@@ -43,7 +43,8 @@ class PostCreateRequest extends Request
             'published_at' => ['nullable', 'date'],
             'top' => ['nullable'],
             'attachment_ids' => ['nullable', 'array'],
-            'tag_ids' => ['nullable', 'array']
+            'tag_ids' => ['nullable', 'array'],
+            'fields' => ['nullable', 'array']
         ];
     }
 }

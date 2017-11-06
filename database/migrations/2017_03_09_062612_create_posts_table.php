@@ -34,8 +34,7 @@ class CreatePostsTable extends Migration
             $table->integer('order')->default(0)->index()->comment('排序字段');
             // 内容模板
             $table->string('template')->nullable();
-            //文章的一些其他配置
-            // $table->mediumText('setting')->nullable();
+            
             $table->softDeletes();
             // 发布时间
             $table->timestamp('published_at')->nullable();

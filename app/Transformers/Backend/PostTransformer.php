@@ -27,6 +27,7 @@ class PostTransformer extends TransformerAbstract
             'order' => $post->order,
             'top' => !is_null($post->top),
             'top_time' => is_null($post->top) ? null : $post->top->toDateTimeString(),
+            // 'fields' => $post->fields,
             'published_at' => $post->published_at->toDateTimeString(),
             'created_at' => $post->created_at->toDateTimeString(),
             'updated_at' => $post->updated_at->toDateTimeString()
