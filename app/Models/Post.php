@@ -173,6 +173,21 @@ class Post extends BaseModel implements PresentableInterface
         return setting('post_slug_mode');
     }
 
+    private $fieldsCache = null;
+
+    public function getFieldsAttribute($fields)
+    {
+        if (is_null($this->fieldsCache)) {
+            $this->fieldsCache = json_decode($fields, true);
+        }
+        return $this->fieldsCache;
+    }
+
+    public function getFieldByKey($key)
+    {
+        return $this->fields[$key];
+    }
+
     /**
      * meta keywords
      * @return string
@@ -191,4 +206,5 @@ class Post extends BaseModel implements PresentableInterface
     {
         return $this->excerpt ?: setting('default_description');
     }
+
 }

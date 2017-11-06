@@ -109,17 +109,22 @@ export default {
       const self = this;
       this.$Modal.confirm({
         title: '确认删除该字段',
-        content: '删除该字段后将无法还原！',
+        content: '确认删除？',
         onOk: () => {
           self.formData.fields.splice(index, 1);
+          this.$forceUpdate();
         }
       });
     },
     addField () {
+      if (!this.formData.fields) {
+        this.formData.fields = [];
+      }
       this.formData.fields.push({
         key: '',
         value: ''
       });
+      this.$forceUpdate();
     }
   },
   data () {
