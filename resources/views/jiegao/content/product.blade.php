@@ -20,18 +20,12 @@
                 </div>
                 <div class="info">
                     <h1>{{$post->title}}</h1>
-                    <div class="item">
-                        <span class="bold">品牌：</span>
-                        <span>捷高</span>
-                    </div>
-                    <div class="item">
-                        <span class="bold">型号：</span>
-                        <span>HLH-102A</span>
-                    </div>
-                    <div class="item">
-                        <span class="bold">描述：</span>
-                        <span>这是一款装在光纤熔接机上的不锈钢加热片，功能：加热，热熔。阻值可根据客户要求定做，目前有5R，7.7R的阻值两款。</span>
-                    </div>
+                    @foreach($post->fields as $field)
+                        <div class="item">
+                            <span class="bold">{{$field['key']}}：</span>
+                            <span>{{$field['value']}}</span>
+                        </div>
+                    @endforeach
                 </div>
                 <div class="describe">
                     <h4>

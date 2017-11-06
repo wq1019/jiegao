@@ -178,7 +178,10 @@ class Post extends BaseModel implements PresentableInterface
     public function getFieldsAttribute($fields)
     {
         if (is_null($this->fieldsCache)) {
-            $this->fieldsCache = json_decode($fields, true);
+            if($fields)
+                $this->fieldsCache = json_decode($fields, true);
+            else
+                $this->fieldsCache = [];
         }
         return $this->fieldsCache;
     }

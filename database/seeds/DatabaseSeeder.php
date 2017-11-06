@@ -22,7 +22,7 @@ class DatabaseSeeder extends Seeder
             });
         });
 
-        DB::table('users')->where('id', 1)->update(['user_name' => 'tiny', 'email' => 'tiny@test.com', 'locked_at' => null]);
+        DB::table('users')->where('id', 1)->update(['user_name' => 'tiny','nick_name' => 'tiny', 'email' => 'tiny@test.com', 'locked_at' => null]);
 
         $this->call(PermissionsTableSeeder::class);
         $this->call(RolesTableSeeder::class);
