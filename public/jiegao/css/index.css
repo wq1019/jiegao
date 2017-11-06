@@ -18,23 +18,44 @@ body{
 .head .logo>img{
     margin-top: 21px;
 }
-.head .phone{
-    color: #22A7FF;
+
+.head .right{
     float: right;
-    border: 1px #22A7FF solid; 
+}
+.head .right span{
+    font-family: 'Microsoft YaHei';
+    font-size: 14px;
+    line-height: 100px;
+    margin-right: 15px;
+    color:#fd0100;
+}
+.head .right input{
+    padding: 0 20px 0 10px;
     border-radius: 3px;
-    line-height: 35px;
-    padding: 0 8px;
+    border: 1px solid #e4e4e4;
+    outline: 0;
+    transition: border-color .3s,width .3s;
+    width: 160px;
+    height: 35px;
+    font-size: 14px;
+}
+.head .right input:focus {
+    transition: box-shadow .3s;
+    box-shadow: 0 1px 8px #eee;
+}
+.head .right .search{
+    position: relative;
+    float: right;
     margin-top: 30px;
 }
-.head .phone>.phone_icon{
-    float: left;
-    height: 19px;
+.head .right .search .search_icon{
+    background-image: url(../images/search_icon.png);
     width: 20px;
-    margin-top: 7px;
-    margin-right: 5px;
-    background-image: url(../images/phone_icon.png);
-    background-repeat: no-repeat;
+    height: 20px;
+    display: block;
+    position: absolute;
+    right: 11px;
+    top: 9px;
 }
 .nav{
     height: 60px;
@@ -51,8 +72,9 @@ body{
 .nav ul>li{
     float: left;
     width: 150px;
+    position: relative;
 }
-.nav ul a:hover{
+.nav ul a:hover, .nav ul a.active{
     background-color: #135A8A;
 }
 .nav ul a{
@@ -61,6 +83,17 @@ body{
     display: block;
     color: #fff;
     text-decoration: none;
+}
+.nav ul>li .child{
+    position: absolute;
+    width: 150px;
+    top: 70px;
+    left: 0;
+    display:none;
+    opacity:0;
+    filter:alpha(opacity=0);
+    background-color: #1872B0;
+    z-index: 99;
 }
 .banner .slick-dots{
     position: absolute;
@@ -307,7 +340,10 @@ body{
     border-top: 1px solid #B3B3B3;
     line-height: 80px;
 }
-
+.bottom_footer .copy>a{
+    color: #ccc;
+    text-decoration: none;
+}
 /* 列表页css */
 .list_top_bg {
     width: 1600px;
@@ -316,7 +352,7 @@ body{
     margin-bottom: 40px;
     background-image: url('../images/list_top_bg.png');
 }
-@media screen and (max-width: 1366px){
+@media screen and (max-width: 1600px){
     .list_top_bg {
         width: 100%;
     }
@@ -418,13 +454,49 @@ body{
     color: #ccc;
     content: "/\00a0";
 }
+.main_list .content{
+    background-color: #fff;
+}
+.main_list .content .title_container {
+    padding: 10px 0 15px;
+    margin: 0 10px;
+    border-bottom: 1px dashed #eee;
+}
+.main_list .content .title_container>h1{
+    font-size: 20px;
+    text-align: center;
+}
+.main_list .content .title_container>.info{
+    margin-top: 15px;
+    text-align: center;
+}
+.main_list .content .title_container>.info span {
+    font-size: 12px;
+    margin-right: 15px;
+    color: #666;
+}
 .post_list{
     background-color: #fff;
     padding: 5px 20px;
     list-style: none;
     margin: 0;
 }
-
+.main_list .content .title_container .avatar img {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    position: relative;
+    top: 7px;
+}
+.main_list .content .title_container .avatar .uname {
+    margin-left: 6px;
+}
+.main_list .content .text{
+    padding: 20px 10px;
+}
+.main_list .content .text img{
+    max-width: 100%;
+}
 .post_list li{
     position: relative;
     border-bottom: 1px dashed #eee;

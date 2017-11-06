@@ -4,7 +4,6 @@
     <link rel="stylesheet" type="text/css" href="{!! cdn('jiegao/lib/slick/slick-theme.min.css') !!}">
 @endsection
 @section('js')
-    <script type="text/javascript" src="{!! cdn('jiegao/lib/jquery/jquery.min.js') !!}"></script>
     <script type="text/javascript" src="{!! cdn('jiegao/lib/slick/slick.min.js') !!}"></script>
 @endsection
 @section('keywords'){{ setting('default_keywords') }}@endsection
@@ -46,7 +45,7 @@
                 <div class="line"></div>
             </div>
             <div class="main">
-                @foreach(Facades\App\Widgets\PostList::mergeConfig(['category'=>$products])->getData()['posts'] as $post)
+                @foreach(Facades\App\Widgets\PostList::mergeConfig(['category'=>$products,'limit'=>4])->getData()['posts'] as $post)
                     <div class="product_item">
                         <a href="{!! $post->getPresenter()->url() !!}">
                             <img src="{!! image_url($post->cover) !!}" alt="">
@@ -57,7 +56,6 @@
                         </a>
                     </div>
                 @endforeach
-
             </div>
             <div class="more">
                 <a class="btn more_btn" {!! $products->getPresenter()->linkAttribute() !!}>查看更多</a>

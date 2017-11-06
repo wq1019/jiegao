@@ -9,6 +9,7 @@
     <meta name="keywords" content="@section('keywords')@show">
     <link rel="stylesheet" type="text/css" href="{{cdn('jiegao/css/normalize.min.css')}}">
     <link rel="stylesheet" type="text/css" href="{{cdn('jiegao/css/index.css')}}">
+    <script type="text/javascript" src="{!! cdn('jiegao/lib/jquery/jquery.min.js') !!}"></script>
     @yield('css')
     @yield('js')
 </head>

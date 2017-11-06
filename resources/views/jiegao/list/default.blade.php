@@ -12,9 +12,7 @@
         @widget('navigation_sidebar')
         <div class="main_list">
             <div class="header">
-                <ol class="breadcrumb">
-                    {{ Breadcrumbs::render('category', $category) }}
-                </ol>
+                {{ Breadcrumbs::render('category', $category) }}
             </div>
             <ul class="post_list">
                 @foreach($posts as $post)
