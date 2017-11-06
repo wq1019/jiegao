@@ -6,11 +6,30 @@
       <div class="left">
         <CategorySelectPanel :cateError="errors.category_id" :cid.sync="formData.category_id" class="type_panel"></CategorySelectPanel>
         <Panel title="标签" full size="small" class="cover">
-          <TagAutoComplete :oldTags="formData
-          .tags.data" @tag_ids="ids => formData.tag_ids = ids" />
+          <TagAutoComplete :oldTags="formData.tags.data" @tag_ids="ids => formData.tag_ids = ids" />
         </Panel>
         <Panel title="封面" full size="small" class="cover">
           <UploadPicture :url="formData.cover_url" @on-remove="() => formData.cover = null" @on-success="cover => formData.cover = cover"></UploadPicture>
+        </Panel>
+        <Panel title="自定义字段" full size="small" close class="cover">
+          <Form class="fields" :model="formData" label-position="top">
+            <Row :gutter="16" v-for="(item, index) in formData.fields" :key="index" class="field_item">
+              <Col span="11">
+                <Form-item label="字段名">
+                  <Input v-model="item.key" placeholder="请输入字段名"></Input>
+                </Form-item>
+              </Col>
+              <Col span="11">
+                <Form-item label="字段值">
+                  <Input v-model="item.value" placeholder="请输入字段值"></Input>
+                </Form-item>
+              </Col>
+              <Col span="2">
+                <Button @click="delField(index)" type="error" class="del_btn" size="small" >删除</Button>
+              </Col>
+            </Row>
+            <Button type="primary" icon="plus-round" @click="addField">添加字段</Button>
+          </Form>
         </Panel>
       </div>
       <Panel title="发布" full size="small" width="300px">
@@ -85,6 +104,22 @@ export default {
       this.loading = true;
       this.formData.status = status;
       this.confirm();
+    },
+    delField (index) {
+      const self = this;
+      this.$Modal.confirm({
+        title: '确认删除该字段',
+        content: '删除该字段后将无法还原！',
+        onOk: () => {
+          self.formData.fields.splice(index, 1);
+        }
+      });
+    },
+    addField () {
+      this.formData.fields.push({
+        key: '',
+        value: ''
+      });
     }
   },
   data () {
@@ -106,7 +141,8 @@ export default {
         'attachments': [],
         'attachment_ids': [],
         'tags': [],
-        'tag_ids': []
+        'tag_ids': [],
+        'fields': []
       },
       contentTemplates: [],
       loading: false
@@ -168,6 +204,11 @@ export default {
         height: auto;
         max-width: 650px;
         margin-bottom: 30px;
+        .fields{
+          .del_btn{
+            margin-top: 27px;
+          }
+        }
       }
     }
   }

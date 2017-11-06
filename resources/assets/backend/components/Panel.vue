@@ -1,14 +1,18 @@
 <template>
   <div class="panel" :style="{'width': width}" :class="size">
-    <header>
+    <header @click="closed = !closed">
       <h1>{{title}}</h1>
+      <Icon :class="{'close': closed}" size="16" color="#999" class="icon" type="chevron-down"></Icon>
     </header>
-    <main class="body_wrapper">
-      <div class="body" :class="{'full': full}">
-        <slot></slot>
-      </div>
-    </main>
-    </el-row>
+
+    <transition name="slide-fade">
+      <main v-show="!closed" class="body_wrapper">
+        <div class="body" :class="{'full': full}">
+          <slot></slot>
+        </div>
+      </main>
+    </transition>
+
   </div>
 </template>
 
@@ -31,11 +35,31 @@ export default{
     full: {
       type: Boolean,
       default: false
+    },
+    close: {
+      type: Boolean,
+      default: false
     }
+  },
+  data () {
+    return {
+      closed: this.close
+    };
   }
 };
 </script>
 <style scoped lang="less">
+  .slide-fade-enter-active {
+    transition: all .3s ease;
+  }
+  .slide-fade-leave-active {
+    transition: all .3s ease;
+  }
+  .slide-fade-enter, .slide-fade-leave-to
+  /* .slide-fade-leave-active for below version 2.1.8 */ {
+    transform: translateX(10px);
+    opacity: 0;
+  }
   .panel{
     margin-bottom: 20px;
     border-radius: 4px;
@@ -44,6 +68,11 @@ export default{
     background-color: #fff;
     &.small{
       header{
+        position: relative;
+        cursor: pointer;
+        &:active{
+          background-color: #f9f9f9;
+        }
         h1{
           height: 45px;
           font-size: 16px;
@@ -52,11 +81,24 @@ export default{
           padding: 0;
           padding-left: 15px;
         }
+        .icon{
+          top: 14px;
+          right: 14px;
+        }
       } 
     }
     header{
       position: relative;
       border-bottom: 1px solid #eee;
+      .icon{
+        position:  absolute;
+        top: 24px;
+        right: 19px;
+        transition: transform .3s;
+        &.close{
+          transform: rotate(180deg);
+        }
+      }
       >h1{
         padding: 20px;
         font-weight: 700;

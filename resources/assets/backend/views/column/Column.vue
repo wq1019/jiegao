@@ -128,7 +128,7 @@ export default {
     this.$http.get('templates').then(res => {
       this.templates = res.data;
       if (this.formData.type) {
-        if (!this.isAdd()) {
+        if (this.isAdd()) {
           this.changeType(this.formData.type);
         }
       }
