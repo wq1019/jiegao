@@ -1,10 +1,10 @@
 <div class="banner" id="banner">
     @php
         // 当banner小于4个时前端轮播图会出现问题，因此在这里手动复制一个banner
-        if($banners->count() <4){
-            $addBanners =clone $banners;
-            foreach ($addBanners as $addBanner){
-                 $banners->push($addBanner);
+        $count = $banners->count();
+        if($count < 4){
+            for ($i = 1; $i <= 4-$count; $i++) {
+                $banners->push($banners[$i-1]);
             }
         }
     @endphp
