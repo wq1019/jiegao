@@ -45,7 +45,7 @@ class CategoriesController extends ApiController
     public function index(Request $request, CategoryService $categoryService)
     {
         $topicCategories = $categoryService->getAllByType($request->get('type', null));
-        return $this->response()->collection($topicCategories, new CategoryTransformer())->disableEagerLoading();
+        return $this->response()->collection($topicCategories, (new CategoryTransformer())->setDefaultIncludes(['children']))->disableEagerLoading();
     }
 
     public function visualOutput(Request $request, CategoryService $categoryService)

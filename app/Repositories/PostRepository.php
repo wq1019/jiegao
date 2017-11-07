@@ -37,8 +37,9 @@ class PostRepository extends BaseRepository
                 $data['top'] = null;
             }
         }
+
         if (isset($data['published_at']))
-            $data['published_at'] = new Carbon($data['published_at']);
+            $data['published_at'] = Carbon::createFromTimestamp(strtotime($data['published_at']));
         if (isset($data['fields']))
             $data['fields'] = json_encode($data['fields']);
 

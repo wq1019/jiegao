@@ -7,7 +7,8 @@ use League\Fractal\TransformerAbstract;
 
 class CategoryTransformer extends TransformerAbstract
 {
-    protected $defaultIncludes = ['children'];
+    // todo 此处注释是否有问题
+    // protected $defaultIncludes = ['children'];
     protected $availableIncludes = ['children'];
 
     public function transform(Category $category)
