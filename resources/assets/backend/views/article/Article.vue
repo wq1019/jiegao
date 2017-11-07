@@ -174,8 +174,10 @@ export default {
       }
     }).then(res => {
       this.contentTemplates = res.data.content;
-      if (this.contentTemplates[0]) {
-        this.formData.template = this.contentTemplates[0].file_name;
+      if (this.isAdd()) {
+        if (this.contentTemplates[0]) {
+          this.formData.template = this.contentTemplates[0].file_name;
+        }
       }
     });
   }
