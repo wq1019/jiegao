@@ -15,12 +15,14 @@
                 {{ Breadcrumbs::render('category', $category) }}
             </div>
             <ul class="post_list">
-                @foreach($posts as $post)
+                @forelse($posts as $post)
                     <li>
                         <a href="{!! $post->getPresenter()->url() !!}">{{$post->title}}</a>
                         <span class="time">{!! $post->published_at->format('Y年m月d日')!!}</span>
                     </li>
-                @endforeach
+                @empty
+                    <p class="no_data">暂无数据</p>
+                @endforelse
             </ul>
             {!! $posts->fragment('list')->links() !!}
         </div>

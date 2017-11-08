@@ -13,18 +13,8 @@
                 {!! Breadcrumbs::render('category', $category) !!}
             </div>
             <div class="content">
-                <div class="title_container">
+                <div class="title_container page">
                     <h1>{!! $page->title !!}</h1>
-                    <p class="info">
-                        <span>{!! $page->published_at->format('Y年m月d日')!!}</span>
-                        <span>{!! $page->views_count !!} 人阅读</span>
-                        <span class="avatar">
-                            上传：
-                            <img lazy
-                                 src="{!! image_url($page->user->avatar, 'avatar_xs', cdn('jiegao/images/default_avatar.jpg')) !!}">
-                            <span class="uname">{!! isset($page->user->nick_name)?$page->user->nick_name:$page->user->user_name !!}</span>
-                        </span>
-                    </p>
                 </div>
                 <div class="text">
                     {!! $page->postContent->content !!}

@@ -18,5 +18,9 @@ return [
     'need_not_verification_code_times' => 3,
 
     // 尝试登录不需要验证码的时间间隔
-    'not_verification_code_time_interval' => 60*24
+    'not_verification_code_time_interval' => 60*24,
+
+    // 搜索时标记关键字颜色
+    'keywords_color' =>env('KEYWORDS_COLOR', 'red'),
+
 ];

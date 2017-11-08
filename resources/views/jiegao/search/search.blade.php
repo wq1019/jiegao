@@ -27,7 +27,7 @@
             <ul class="post_list">
                 @foreach($posts as $post)
                     <li>
-                        <a href="{!! $post->getPresenter()->url() !!}">{!! sign_color($post->title, $keyword, '#FF7F24') !!}</a>
+                        <a href="{!! $post->getPresenter()->url() !!}">{!! sign_color($post->title, $keyword, config('tiny.keywords_color')) !!}</a>
                         <span class="time">{!! $post->published_at->format('Y年m月d日')!!}</span>
                     </li>
                 @endforeach

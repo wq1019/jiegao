@@ -33,10 +33,11 @@ class PageRepository extends BaseRepository
 
     public function filterData(array &$data)
     {
+
         if (isset($data['title']))
             $data['title'] = e((new AutoCorrect())->convert($data['title']));
         if (isset($data['content']))
-            $data['content'] = clean($data['content']);
+            $data['content'] = clean($data['content'], 'baidu_ueditor');
         return $data;
     }
 

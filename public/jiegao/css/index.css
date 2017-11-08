@@ -133,6 +133,8 @@ body{
 }
 .content .about .info{
     padding: 20px;
+    height: 190px;
+    overflow: hidden;
 }
 
 .content .about .info>img{
@@ -463,6 +465,9 @@ body{
     margin: 0 10px;
     border-bottom: 1px dashed #eee;
 }
+.main_list .content .title_container.page{
+    border: 0;
+}
 .main_list .content .title_container>h1{
     font-size: 20px;
     text-align: center;
@@ -516,6 +521,7 @@ body{
 }
 .main_list .content_prod .info{
     padding-left: 230px;
+    height: 200px;
 }
 .main_list .content_prod .info h1{
     font-size: 16px;
@@ -549,6 +555,12 @@ body{
     margin-top:10px;
     background-color: #2875b1;
 }
+.main_list .no_data{
+    font-size: 20px;
+    color: #aaa;
+    text-align: center;
+    line-height: 50px;
+}
 .post_list li{
     position: relative;
     border-bottom: 1px dashed #eee;
@@ -558,6 +570,7 @@ body{
 .post_list li:last-child{
     border-bottom: none;
 }
+
 .post_list li>a{
     text-decoration: none;
     display: block;

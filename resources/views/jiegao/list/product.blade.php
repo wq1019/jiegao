@@ -15,14 +15,16 @@
                 {{ Breadcrumbs::render('category', $category) }}
             </div>
             <ul class="prod_list">
-                @foreach($posts as $post)
+                @forelse($posts as $post)
                     <li>
                         <a href="{!! $post->getPresenter()->url() !!}">
                             <img src="{{image_url($post->cover)}}" alt="{{$post->title}}">
                             <h2>{{$post->title}}</h2>
                         </a>
                     </li>
-                @endforeach
+                @empty
+                    <p class="no_data">暂无数据</p>
+                @endforelse
             </ul>
             {!! $posts->fragment('list')->links() !!}
         </div>
