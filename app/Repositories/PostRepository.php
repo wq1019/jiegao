@@ -28,7 +28,7 @@ class PostRepository extends BaseRepository
         if (isset($data['excerpt']))
             $data['excerpt'] = e($data['excerpt']);
         if (isset($data['content']))
-            $data['content'] = clean($data['content'],'baidu_ueditor');
+            $data['content'] = clean($data['content'], 'baidu_ueditor');
         // 处理置顶
         if (isset($data['top'])) {
             if ($data['top']) {
