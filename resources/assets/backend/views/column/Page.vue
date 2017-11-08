@@ -27,7 +27,7 @@ export default {
     confirm () {
       this.$http.post(`categories/${this.$route.params.id}/page`, mainDiff.diff(this.formData)).then(res => {
         this.$Message.success(`编辑单页成功`);
-        this.$router.back();
+        this.$router.push({name: 'columnList'});
       });
     }
   },
