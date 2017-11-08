@@ -1,6 +1,8 @@
-import diff from '../utils/diff';
+import Diff from '../utils/Diff';
 import mixinConfig from './mixinConfig';
+
 let isSubmitJump = false;
+let mainDiff = new Diff();
 export default {
   mixins: [mixinConfig],
   data () {
@@ -14,17 +16,18 @@ export default {
         addMethod: 'post',
         query: {}, // 附加query参数
         title: '', // prefix + title = 最终标题
-        action: ''
-      }
+        action: '',
+        singleDiffFields: [] // 单独diff的字段
+      },
+      singleDiffs: [] // 为单独字段diff的对象s
     };
   },
   beforeRouteLeave (to, from, next) {
-    if (!diff.oldObj || isSubmitJump) {
+    if (!mainDiff.oldObj || isSubmitJump) {
       next();
       return;
     }
-    const diffObjStr = JSON.stringify(diff.diff(this.formData));
-    if (diffObjStr !== '{}') {
+    if (mainDiff.isDiff(this.formData)) {
       this.$Modal.confirm({
         title: '确认离开？',
         content: '<p>系统可能不会保存你的更改！</p>',
@@ -52,7 +55,14 @@ export default {
       }
     },
     submit () {
-      this.$http[this.isAdd() ? this.getConfig('addMethod') : this.getConfig('editMethod')](this.getConfig('action'), diff.diff(this.formData)).then(res => {
+      let submitFormData = mainDiff.diff(this.formData);
+      this.singleDiffs.forEach(({name, diff}) => {
+        console.log(diff.diff(this.formData[name]));
+        if (diff.isDiff(this.formData[name])) {
+          submitFormData[name] = this.formData[name];
+        }
+      });
+      this.$http[this.isAdd() ? this.getConfig('addMethod') : this.getConfig('editMethod')](this.getConfig('action'), submitFormData).then(res => {
         this.$Message.success(`${this.title}成功`);
         isSubmitJump = true;
         this.$emit('on-success');
@@ -69,7 +79,7 @@ export default {
       return this.$route.meta.isAdd;
     },
     diffSave (formData) {
-      diff.save(formData);
+      mainDiff.save(formData);
     },
     init () {
       if (!this.isAdd()) {
@@ -80,11 +90,21 @@ export default {
           this.formData = res.data.data;
           this.diffSave(this.formData);
           this.$emit('on-data', this.formData);
+          // 单独diff字段
+          this.getConfig('singleDiffFields').forEach(item => {
+            let diffTmp = new Diff();
+            diffTmp.save(this.formData[item]);
+            window.diff = diffTmp;
+            this.singleDiffs.push({
+              name: item,
+              diff: diffTmp
+            });
+          });
         });
         this.title = this.getConfig('editPrefix') + this.getConfig('title');
       } else {
         // 添加表单
-        diff.clear();
+        mainDiff.clear();
         this.title = this.getConfig('addPrefix') + this.getConfig('title');
       }
     }

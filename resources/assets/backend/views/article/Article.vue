@@ -35,7 +35,7 @@
       <Panel title="发布" full size="small" width="300px">
         <Form ref="form" :rules="rules" :model="formData" label-position="top">
           <Form-item label="发布时间" :error="errors.published_at">
-            <Date-picker type="date" placeholder="选择发布时间" v-model="formData.published_at"></Date-picker>
+            <Date-picker type="datetime" placeholder="选择发布时间" v-model="formData.published_at"></Date-picker>
           </Form-item>
           <Form-item label="正文模板" prop="template" :error="errors.template">
             <Select v-model="formData.template" placeholder="请选择正文模板">
@@ -95,7 +95,7 @@ export default {
         addPrefix: '撰写新',
         query: {
           include: 'post_content,attachments,tags'
-        }
+        },
       };
     }
   },

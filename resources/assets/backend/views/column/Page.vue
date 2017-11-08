@@ -9,7 +9,8 @@
 <script>
 import FormButtomGroup from '../../components/FormButtonGroup.vue';
 import TitleWithContent from '../../components/TitleWithContent.vue';
-import diff from '../../utils/diff';
+import Diff from '../../utils/Diff';
+let mainDiff = new Diff();
 export default {
   components: { TitleWithContent, FormButtomGroup },
   data () {
@@ -24,7 +25,7 @@ export default {
   },
   methods: {
     confirm () {
-      this.$http.post(`categories/${this.$route.params.id}/page`, diff.diff(this.formData)).then(res => {
+      this.$http.post(`categories/${this.$route.params.id}/page`, mainDiff.diff(this.formData)).then(res => {
         this.$Message.success(`编辑单页成功`);
         this.$router.back();
       });
@@ -43,7 +44,7 @@ export default {
       if (res.data.meta) {
         this.title = res.data.meta.cate_name;
       }
-      diff.save(this.formData);
+      mainDiff.save(this.formData);
     }).catch(err => {
       this.errors = err.response.data.errors;
     });
