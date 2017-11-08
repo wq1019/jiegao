@@ -57,8 +57,7 @@ export default {
     submit () {
       let submitFormData = mainDiff.diff(this.formData);
       this.singleDiffs.forEach(({name, diff}) => {
-        console.log(diff.diff(this.formData[name]));
-        if (diff.isDiff(this.formData[name])) {
+        if (diff.isSerializeDiff(this.formData[name])) {
           submitFormData[name] = this.formData[name];
         }
       });
@@ -94,7 +93,6 @@ export default {
           this.getConfig('singleDiffFields').forEach(item => {
             let diffTmp = new Diff();
             diffTmp.save(this.formData[item]);
-            window.diff = diffTmp;
             this.singleDiffs.push({
               name: item,
               diff: diffTmp

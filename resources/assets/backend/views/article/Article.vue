@@ -96,6 +96,7 @@ export default {
         query: {
           include: 'post_content,attachments,tags'
         },
+        singleDiffFields: ['fields']
       };
     }
   },
