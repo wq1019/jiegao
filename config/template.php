@@ -36,9 +36,16 @@ return [
                 'file_name' => 'default',
                 'title' => '默认正文模板',
                 'default' => true
-            ],[
+            ], [
                 'file_name' => 'product',
                 'title' => '产品正文模板',
+                'default' => true
+            ]
+        ],
+        'search' => [
+            [
+                'file_name' => 'search',
+                'title' => '默认搜索模板',
                 'default' => true
             ]
         ]

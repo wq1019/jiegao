@@ -10,7 +10,7 @@
     @endphp
     @foreach($banners as $banner)
         <div>
-            <a href="{!! $banner->url !!}" target="_blank">
+            <a title="{{ $banner->title or '' }}" href="{!! $banner->url !!}" target="_blank">
                 <img lazy src="{!! image_url($banner->image) !!}">
             </a>
         </div>

@@ -104,6 +104,17 @@ if (!function_exists('view_first')) {
 
 }
 
+if (!function_exists('sign_color')) {
+
+    function view_first($views, $templateType, $data = [], $mergeData = [])
+    {
+        $view = app(TemplateService::class)
+            ->firstView($views, $templateType);
+        return view($view, $data, $mergeData);
+    }
+
+}
+
 if (!function_exists('file_size_for_humans')) {
 
     function file_size_for_humans($bytes, $times = 0)

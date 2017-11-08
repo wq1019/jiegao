@@ -43,8 +43,8 @@
             <div class="main">
                 @foreach(Facades\App\Widgets\PostList::mergeConfig(['category'=>$products,'limit'=>4])->getData()['posts'] as $post)
                     <div class="product_item">
-                        <a href="{!! $post->getPresenter()->url() !!}">
-                            <img src="{!! image_url($post->cover) !!}" alt="">
+                        <a title="{!! $post->title !!}" href="{!! $post->getPresenter()->url() !!}">
+                            <img src="{!! image_url($post->cover) !!}" alt="{!! $post->title !!}">
                             <div class="mask_wrap">
                                 <span>{!! $post->title !!}</span>
                                 <div class="mask"></div>

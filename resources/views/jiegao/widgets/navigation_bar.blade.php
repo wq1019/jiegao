@@ -50,11 +50,11 @@
             </li>
             @foreach($allNav as $category)
                 <li>
-                    <a {!! $category->equals($navigation->getActiveTopNav())?' class="active"':'' !!} {!! $category->getPresenter()->linkAttribute() !!}>{!! $category->cate_name !!}</a>
+                    <a title="{!! $category->cate_name !!}" {!! $category->equals($navigation->getActiveTopNav())?' class="active"':'' !!} {!! $category->getPresenter()->linkAttribute() !!}>{!! $category->cate_name !!}</a>
                     @if($category->hasChildren())
                         <div class="child">
                             @foreach($category->children as $children)
-                                <a class="item"{!! $children->getPresenter()->linkAttribute() !!}>{!! $children->cate_name !!}</a>
+                                <a title="{!! $children->cate_name !!}" class="item"{!! $children->getPresenter()->linkAttribute() !!}>{!! $children->cate_name !!}</a>
                             @endforeach
                         </div>
                     @endif

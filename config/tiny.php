@@ -9,7 +9,7 @@ return [
 
     'default_slug_mode' => 'pinyin',
 
-    'logo' => env('LOGO', 'tiny'),
+    'logo' => env('LOGO', '捷高有限公司'),
 
     // 阅读间隔，每个用户在此时间内重复刷新文章页面只增长 1 个阅读量，单位分钟
     'reading_interval' => 1,
