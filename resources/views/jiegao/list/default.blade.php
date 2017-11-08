@@ -18,7 +18,7 @@
                 @foreach($posts as $post)
                     <li>
                         <a href="{!! $post->getPresenter()->url() !!}">{{$post->title}}</a>
-                        <span class="time">{!! $post->published_at !!}</span>
+                        <span class="time">{!! $post->published_at->format('Y年m月d日')!!}</span>
                     </li>
                 @endforeach
             </ul>

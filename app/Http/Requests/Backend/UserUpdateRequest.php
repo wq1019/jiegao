@@ -27,7 +27,7 @@ class UserUpdateRequest extends Request
             'nick_name' => ['nullable', 'string', 'between:2,30'],
             'password' => ['nullable', 'string', 'between:5,20'],
             'email' => ['bail', 'nullable', 'email', Rule::unique('users')->ignore($user->id)],
-            'avatar' => ['bail', 'nullable', new ImageName(), new ImageNameExist()],
+            'avatar' => ['bail', 'nullable', 'string', new ImageName(), new ImageNameExist()],
             'roles' => ['nullable', 'array'],
             'permissions' => ['nullable', 'array'],
         ];

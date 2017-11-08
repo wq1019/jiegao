@@ -30,7 +30,7 @@
 @endpush
 <div class="head">
     <div class="container">
-        <a class="logo" href="#"><img src="{!! cdn('jiegao/images/logo.png') !!}" alt="捷高电子科技"></a>
+        <a class="logo" href="#"><img src="{!! cdn('jiegao/images/logo.png') !!}" alt="{{setting('site_name')}}"></a>
         <div class="right">
             <span>服务热线：{{setting('phone')}}</span>
             <div class="search">

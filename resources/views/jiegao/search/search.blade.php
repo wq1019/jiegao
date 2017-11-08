@@ -1,9 +1,11 @@
 @extends('jiegao.layouts.app')
-
-@section('keywords'){!! $category->getKeywords() !!}@endsection
-@section('description'){!! $category->getDescription() !!}@endsection
-@section('title'){{ Breadcrumbs::pageTitle(' - ', 'category', $category) }}@endsection
-
+@php
+    $categoryRepository = app(App\Repositories\CategoryRepository::class);
+    $search = $categoryRepository->findByCateName('搜索');
+@endphp
+@section('keywords'){!! $search->getKeywords() !!}@endsection
+@section('description'){!! $search->getDescription() !!}@endsection
+@section('title'){{ Breadcrumbs::pageTitle(' - ', 'category', $search) }}@endsection
 @section('content')
     @widget('navigation_bar')
     <!-- 列表正文start -->
@@ -20,28 +22,13 @@
         </div>
         <div class="main_list">
             <div class="header">
-                @php
-                    $categoryRepository = app(App\Repositories\CategoryRepository::class);
-                    $search = $categoryRepository->findByCateName('搜索');
-                @endphp
                 {{ Breadcrumbs::render('category', $search) }}
             </div>
             <ul class="post_list">
                 @foreach($posts as $post)
-                    @php
-                        $pos = strrpos($post->title,$search);
-                    if($pos==0 || $pos){
-                        $pos=true;
-                    }else{
-                        $pos=false;
-                    }
-                    if($search != '' &&  $pos){
-                        $post->title = str_ireplace($search,"<span style='color: red'>".$search."</span>",$post->title) ;
-                    }
-                    @endphp
                     <li>
-                        <a href="{!! $post->getPresenter()->url() !!}">{{$post->title}}</a>
-                        <span class="time">{!! $post->published_at !!}</span>
+                        <a href="{!! $post->getPresenter()->url() !!}">{!! sign_color($post->title, $keyword, '#FF7F24') !!}</a>
+                        <span class="time">{!! $post->published_at->format('Y年m月d日')!!}</span>
                     </li>
                 @endforeach
             </ul>

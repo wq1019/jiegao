@@ -18,7 +18,7 @@
                 <div class="title_container">
                     <h1>{!! $post->title !!}</h1>
                     <p class="info">
-                        <span>{!! $post->published_at !!}</span>
+                        <span>{!! $post->published_at->format('Y年m月d日')!!}</span>
                         <span>{!! $post->views_count !!} 人阅读</span>
                         <span class="avatar">
                             上传：

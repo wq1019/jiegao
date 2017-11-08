@@ -13,7 +13,7 @@
         <div id="env_banner">
             @foreach($banners as $banner)
                 <div>
-                    <img lazy src="{!! image_url($banner->image) !!}">
+                    <img title="{{$banner->title or ''}}" lazy src="{!! image_url($banner->image) !!}">
                     <div class="text" style="display: none;">{{ $banner->title or '' }}</div>
                 </div>
             @endforeach

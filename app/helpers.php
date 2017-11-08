@@ -106,11 +106,19 @@ if (!function_exists('view_first')) {
 
 if (!function_exists('sign_color')) {
 
-    function view_first($views, $templateType, $data = [], $mergeData = [])
+    function sign_color($primitive_string, $keywords, $color = 'red')
     {
-        $view = app(TemplateService::class)
-            ->firstView($views, $templateType);
-        return view($view, $data, $mergeData);
+        $pos = strrpos($primitive_string, $keywords);
+        if ($pos == 0 || $pos) {
+            $pos = true;
+        } else {
+            $pos = false;
+        }
+        if ($keywords != '' && $pos) {
+            $new_string = str_ireplace($keywords, "<span style='color: $color'>" . $keywords . "</span>", $primitive_string);
+        }
+        // todo >=php7
+        return $new_string ?? $primitive_string;
     }
 
 }
