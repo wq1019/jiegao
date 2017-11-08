@@ -3,7 +3,7 @@ export default class Diff {
     this.oldObj = undefined;
   }
   save (oldObj) {
-    this.oldObj = objDeepCopy(oldObj);
+    this.oldObj = {...oldObj};
   }
   isDiff (submitObj) {
     const diffObjStr = JSON.stringify(this.diff(submitObj));
@@ -15,7 +15,7 @@ export default class Diff {
     return newObjStr !== oldObjStr;
   }
   diff (submitObj) {
-    let newObj = objDeepCopy(submitObj);
+    let newObj = {...submitObj};
     if (!this.oldObj) {
       for (let index in newObj) {
         if (newObj[index] === null) {
@@ -47,11 +47,4 @@ function isObject (obj) {
 }
 function isValue (obj) {
   return !isObject(obj) && !isArray(obj);
-}
-function objDeepCopy (source) {
-  var sourceCopy = source instanceof Array ? [] : {};
-  for (var item in source) {
-    sourceCopy[item] = typeof source[item] === 'object' && !(source[item] instanceof Date) ? objDeepCopy(source[item]) : source[item];
-  }
-  return sourceCopy;
 }
