@@ -78,7 +78,7 @@ export default {
     .describe{
       margin: 5px 0 3px 0;
       color: #999;
-      height: 39px;
+      height: 38px;
       overflow: hidden;
     }
     .info{

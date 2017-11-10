@@ -21,6 +21,16 @@ class PageRepository extends BaseRepository
         return Post::class;
     }
 
+
+    public function filterData(array &$data)
+    {
+        if (isset($data['title']))
+            $data['title'] = e((new AutoCorrect())->convert($data['title']));
+        if (isset($data['content']))
+            $data['content'] = clean($data['content']);
+        return $data;
+    }
+
     public function preCreate(array &$data)
     {
         $this->filterData($data);
@@ -28,16 +38,6 @@ class PageRepository extends BaseRepository
         $data['user_id'] = Auth::id();
         $data['slug'] = $this->model->generateSlug($data['title']);
         $data['type'] = Category::TYPE_PAGE;
-        return $data;
-    }
-
-    public function filterData(array &$data)
-    {
-
-        if (isset($data['title']))
-            $data['title'] = e((new AutoCorrect())->convert($data['title']));
-        if (isset($data['content']))
-            $data['content'] = clean($data['content'], 'baidu_ueditor');
         return $data;
     }
 

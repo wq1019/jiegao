@@ -9,7 +9,7 @@
       :show-upload-list="false"
       :on-success="handleSuccess"
       :on-progress="handleProgress"
-      :format="['jpg','jpeg','png']"
+      :format="['jpg','jpeg','png', 'gif']"
       :max-size="2048"
       :on-format-error="handleFormatError"
       :on-exceeded-size="handleMaxSize"
@@ -90,7 +90,7 @@ export default {
     handleFormatError (file) {
       this.$Notice.warning({
         title: '文件格式不正确',
-        desc: `文件${file.name}格式不正确，请上传 jpg 或 png 格式的图片。`
+        desc: `文件${file.name}格式不正确，请上传 jpg, png, gif 格式的图片。`
       });
       this.handleRemove();
     },

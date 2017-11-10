@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Services\Alert;
 use App\Services\CategoryService;
 use App\Services\CustomOrder;
+use App\Services\HTMLPurifier;
 use App\Services\Navigation;
 use App\Services\PostService;
 use App\Services\SettingCacheService;
@@ -56,6 +57,10 @@ class ServiceServiceProvider extends ServiceProvider
 
         $this->app->singleton(TagService::class, function () {
             return new TagService();
+        });
+
+        $this->app->singleton(HTMLPurifier::class, function () {
+            return new HTMLPurifier();
         });
     }
 }

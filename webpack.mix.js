@@ -23,8 +23,8 @@ mix.webpackConfig({
 });
 
 // 如果网站不是更目录 setResourceRoot 设置路径
-mix.setResourceRoot('/')
-    .js('resources/assets/backend/app.js', 'public/js/backend').version();
+// mix.setResourceRoot('/')
+mix.js('resources/assets/backend/app.js', 'public/js/backend').version();
 
 mix.less('resources/assets/frontend/less/app.less', 'public/static/css')
     .js('resources/assets/frontend/js/app.js', 'public/static/js')
