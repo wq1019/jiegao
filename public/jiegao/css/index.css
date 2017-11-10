@@ -240,11 +240,14 @@ body{
     filter: alpha(opacity=0);
     display: block;
     text-align: center;
-    line-height: 220px;
     font-size: 24px;
     color: #333;
     z-index: 2;
-    position: relative;
+    position: absolute;
+    height: 95px;
+    top: 50%;
+    margin-top: -47px;
+    padding: 20px;
 }
 .prod .main .product_item .mask{
     background-color: #fff;

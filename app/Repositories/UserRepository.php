@@ -57,12 +57,13 @@ class UserRepository extends BaseRepository
         return $data;
     }
 
-    public function perUpdate(array &$data)
+    public function preUpdate(array &$data)
     {
         $this->filterData($data);
         if (isset($data['password'])) {
             $data['password'] = Hash::make($data['password']);
         }
+        return $data;
     }
 
     public function updated(array &$data, User $user)
