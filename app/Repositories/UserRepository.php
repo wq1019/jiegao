@@ -63,7 +63,7 @@ class UserRepository extends BaseRepository
         if (isset($data['password'])) {
             $data['password'] = Hash::make($data['password']);
         }
-        return $data;
+		return $data;
     }
 
     public function updated(array &$data, User $user)
