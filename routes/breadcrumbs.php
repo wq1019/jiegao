@@ -7,10 +7,9 @@ Breadcrumbs::register('index', function ($breadcrumbs) {
 
 // 搜索
 Breadcrumbs::register('search', function ($breadcrumbs, $keywords) {
-    $breadcrumbs->parent('index');
-    $breadcrumbs->push("\"$keywords\"" . ' 的搜索结果');
+    $breadcrumbs->push('首页', route('frontend.web.index'));
+    $breadcrumbs->push("\"$keywords\"".' 的搜索结果');
 });
-
 Breadcrumbs::register('category', function ($breadcrumbs, $category) {
     if ($category->isTopCategory()) {
         // 是顶级分类
@@ -24,5 +23,5 @@ Breadcrumbs::register('category', function ($breadcrumbs, $category) {
 
 Breadcrumbs::register('post', function ($breadcrumbs, $post) {
     $breadcrumbs->parent('category', $post->category);
-    $breadcrumbs->push($post->title, route('frontend.web.post.show', $post->slug));
+    $breadcrumbs->push($post->title , route('frontend.web.post.show', $post->slug));
 });

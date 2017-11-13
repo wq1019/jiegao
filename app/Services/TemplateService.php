@@ -13,7 +13,13 @@ class TemplateService
     public function __construct($config)
     {
         $this->config = $config;
-        View::prependNamespace($config['theme_namespace'], $config['current_theme_path']);
+        // 判断手机还是电脑访问
+        if (is_mobile()) {
+            $themePath = $config['mobile'];
+        } else {
+            $themePath = $config['current_theme_path'];
+        }
+        View::prependNamespace($config['theme_namespace'], $themePath);
     }
 
     public function getTemplates($templateTypes = [])

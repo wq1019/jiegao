@@ -2,7 +2,7 @@
     <script>
       $('#nav>li').hover(function () {
         var $list = $(this).find('.child')
-        $list.css('display', 'block')
+        $list.css('display', 'block');
         $list.stop().animate({
           'opacity': 1,
           'top': '60px'
@@ -13,16 +13,16 @@
           'opacity': 0,
           'top': '80px'
         }, 200, function () {
-          if ($list.css('top') == '70px') {
-            $list.css('display', 'none')
+          if($list.css('top') == '70px'){
+            $list.css('display', 'none');
           }
         })
-      })
+      });
       $(function () {
-        var $searchForm = $('#search_form')
+        var $searchForm = $('#search_form');
         $searchForm.find('input').keydown(function (e) {
           if (e.keyCode == 13) {
-            $searchForm.submit()
+            $searchForm.submit();
           }
         })
       })
@@ -54,8 +54,7 @@
                     @if($category->hasChildren())
                         <div class="child">
                             @foreach($category->children as $children)
-                                <a title="{!! $children->cate_name !!}"
-                                   class="item"{!! $children->getPresenter()->linkAttribute() !!}>{!! $children->cate_name !!}</a>
+                                <a title="{!! $children->cate_name !!}" class="item"{!! $children->getPresenter()->linkAttribute() !!}>{!! $children->cate_name !!}</a>
                             @endforeach
                         </div>
                     @endif

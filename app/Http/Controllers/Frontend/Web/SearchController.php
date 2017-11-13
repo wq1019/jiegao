@@ -16,16 +16,13 @@ class SearchController extends Controller
 {
     public function search(Request $request)
     {
-        if (is_null($request->keywords)) {
-            return redirect()->route('frontend.web.index');
-        }
         $posts = Post::withSimpleSearch($request->keywords)
             ->publishPost()
             ->with('user')
             ->paginate($this->perPage());
         return view_first(['search'], 'search', [
             'posts' => $posts,
-            'keyword' => $request->keywords,
+            'keyword' =>$request->keywords,
         ]);
     }
 }

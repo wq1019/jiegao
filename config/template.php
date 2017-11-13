@@ -9,6 +9,7 @@ return [
     'theme_namespace' => 'theme',
 
     'current_theme_path' => resource_path('views/jiegao'),
+    'mobile' => resource_path('views/mobile'),
 
     'templates' => [
 

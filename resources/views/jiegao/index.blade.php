@@ -50,8 +50,10 @@
                                 <div class="mask"></div>
                             </div>
                         </a>
+						<p class="product_item_title">{!! $post->title !!}</p>
                     </div>
                 @endforeach
+				<div style="clear: both;"></div>
             </div>
             <div class="more">
                 <a class="btn more_btn" {!! $products->getPresenter()->linkAttribute() !!}>查看更多</a>
