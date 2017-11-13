@@ -1,6 +1,6 @@
 <?php
 
-Route::middleware('record_visitor')->group(function (){
+Route::middleware('record_visitor')->group(function () {
 
     Route::get('/', 'IndexController@index')->name('index');
 

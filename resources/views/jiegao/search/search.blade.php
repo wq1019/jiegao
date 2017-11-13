@@ -1,11 +1,6 @@
 @extends('jiegao.layouts.app')
-@php
-    $categoryRepository = app(App\Repositories\CategoryRepository::class);
-    $search = $categoryRepository->findByCateName('搜索');
-@endphp
-@section('keywords'){!! $search->getKeywords() !!}@endsection
-@section('description'){!! $search->getDescription() !!}@endsection
-@section('title'){{ Breadcrumbs::pageTitle(' - ', 'category', $search) }}@endsection
+
+@section('title'){{ Breadcrumbs::pageTitle(' - ', 'search', $keyword) }}@endsection
 @section('content')
     @widget('navigation_bar')
     <!-- 列表正文start -->
@@ -22,15 +17,17 @@
         </div>
         <div class="main_list">
             <div class="header">
-                {{ Breadcrumbs::render('category', $search) }}
+                {{ Breadcrumbs::view('jiegao.layouts.search_breadcrumbs', 'search', $keyword) }}
             </div>
             <ul class="post_list">
-                @foreach($posts as $post)
+                @forelse($posts as $post)
                     <li>
                         <a href="{!! $post->getPresenter()->url() !!}">{!! sign_color($post->title, $keyword, config('tiny.keywords_color')) !!}</a>
                         <span class="time">{!! $post->published_at->format('Y年m月d日')!!}</span>
                     </li>
-                @endforeach
+                @empty
+                    <p class="no_data">暂无数据</p>
+                @endforelse
             </ul>
             {!! $posts->fragment('list')->links() !!}
         </div>

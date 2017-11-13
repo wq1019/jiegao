@@ -17,6 +17,7 @@ class SearchController extends Controller
     public function search(Request $request)
     {
         $posts = Post::withSimpleSearch($request->keywords)
+            ->publishPost()
             ->with('user')
             ->paginate($this->perPage());
         return view_first(['search'], 'search', [

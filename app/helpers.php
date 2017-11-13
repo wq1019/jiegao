@@ -121,7 +121,6 @@ if (!function_exists('sign_color')) {
         // todo >=php7
         return $new_string ?? $primitive_string;
     }
-
 }
 
 if (!function_exists('file_size_for_humans')) {
