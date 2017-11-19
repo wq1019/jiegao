@@ -9,7 +9,7 @@
     <!-- 列表正文start -->
     <div class="list_top_bg"></div>
     <div class="list_container container">
-        @widget('navigation_sidebar')
+        @widget('navigation_bar',['view'=>'navigation_sidebar'])
         <div class="main_list">
             <div class="header">
                 {!! Breadcrumbs::render('post', $post) !!}

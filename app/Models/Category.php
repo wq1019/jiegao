@@ -136,7 +136,7 @@ class Category extends BaseModel implements PresentableInterface
     }
 
     /**
-     * 判断是否为同一个分类
+     * 判断是否为同一个分类(该方法已过时)
      * 代替方法 is()
      * @deprecated
      * @param  Category $category

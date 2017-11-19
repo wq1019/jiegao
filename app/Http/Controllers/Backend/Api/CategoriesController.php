@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Http\Controllers\Backend\Api;
-
 
 use App\Http\Controllers\ApiController;
 use App\Http\Requests\Backend\CategoryCreateRequest;
@@ -19,7 +17,6 @@ use Illuminate\Http\Request;
 
 class CategoriesController extends ApiController
 {
-
     public function __construct()
     {
         $this->middleware('auth');
@@ -72,27 +69,17 @@ class CategoriesController extends ApiController
         }
     }
 
-    private function needPage(Category $category)
+    private function updatePage(Post $page, Request $request, PageRepository $pageRepository)
     {
-        if (!$category->isPage()) {
-            // todo 本地化
-            return $this->response()->errorNotFound('该栏目不是单网页');
-        }
-        return true;
-    }
-
-    public function savePage(Category $category, Request $request, PageRepository $pageRepository)
-    {
-
-        $this->needPage($category);
-        $page = $category->getPage();
-        if (is_null($page)) {
-            $this->storePage($category, $request, $pageRepository);
-        } else {
-            $this->updatePage($page, $request, $pageRepository);
-        }
-
-        return $this->response()->noContent();
+        // 更新单页
+        $data = $this->validate(
+            $request, [
+                'title' => ['nullable', 'string', 'between:1,100'],
+                'content' => ['nullable', 'string'],
+                'attachment_ids' => ['nullable', 'array']
+            ]
+        );
+        return $pageRepository->update($data, $page);
     }
 
     private function storePage(Category $category, Request $request, PageRepository $pageRepository)
@@ -101,22 +88,31 @@ class CategoriesController extends ApiController
             $request, [
                 'title' => ['required', 'string', 'between:1,100'],
                 'content' => ['required', 'string'],
+                'attachment_ids' => ['nullable', 'array']
             ]
         );
         $data['category_id'] = $category->id;
         return $pageRepository->create($data);
     }
 
-    private function updatePage(Post $page, Request $request, PageRepository $pageRepository)
+    public function savePage(Category $category, Request $request, PageRepository $pageRepository)
     {
-        // 更新单页
-        $data = $this->validate(
-            $request, [
-                'title' => ['nullable', 'string', 'between:1,100'],
-                'content' => ['nullable', 'string'],
-            ]
-        );
+        $this->needPage($category);
+        $page = $category->getPage();
+        if (is_null($page)) {
+            $this->storePage($category, $request, $pageRepository);
+        } else {
+            $this->updatePage($page, $request, $pageRepository);
+        }
+        return $this->response()->noContent();
+    }
 
-        return $pageRepository->update($data, $page);
+    private function needPage(Category $category)
+    {
+        if (!$category->isPage()) {
+            // todo 本地化
+            return $this->response()->errorNotFound('该栏目不是单网页');
+        }
+        return true;
     }
 }

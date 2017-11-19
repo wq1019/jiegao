@@ -82,7 +82,8 @@ class AppServiceProvider extends ServiceProvider
                 'source_path_prefix' => $config['source_path_prefix'],
                 'cache_path_prefix' => $config['cache_path_prefix'],
                 'base_url' => $config['base_url'],
-                'presets' => $config['presets']
+                'presets' => $config['presets'],
+                'defaults' => $config['default_style']
             ]);
         });
 

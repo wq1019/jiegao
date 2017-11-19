@@ -12,11 +12,11 @@ class Navigation
     /**
      * @var Category
      */
-    protected $activeNav;
+    protected $activeNav = null;
     /**
      * @var Category
      */
-    protected $activeTopNav;
+    protected $activeTopNav = null;
 
     public function clearCache()
     {

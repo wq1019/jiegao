@@ -27,7 +27,7 @@
                     </p>
                 </div>
             </div>
-            @widget('corporate_environment_banner')
+            @widget('banner',['type'=>'corporate_environment','view'=>'corporate_environment_banner'])
         </div>
     </div>
     @php

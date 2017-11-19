@@ -60,7 +60,7 @@ class TemplateService
         $templates = array_map(function ($template) use ($templateType) {
             return $this->config['theme_namespace'] . '::' . ($templateType ? $templateType . '.' : '') . $template;
         }, array_filter($templates));
-
+        
         $viewFactory = view();
 
         $view = collect($templates)->first(function ($template) use ($viewFactory) {

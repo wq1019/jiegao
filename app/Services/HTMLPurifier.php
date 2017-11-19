@@ -2,10 +2,17 @@
 
 namespace App\Services;
 
+use Illuminate\Filesystem\Filesystem;
 
 class HTMLPurifier
 {
     private $purifier;
+    protected $files;
+
+    public function __construct(Filesystem $files)
+    {
+        $this->files = $files;
+    }
 
     // todo 所有的配置放到配置文件中去
     public function getPurifier()
@@ -15,6 +22,7 @@ class HTMLPurifier
             $config = \HTMLPurifier_Config::createDefault();
             $config->set('HTML.Doctype', 'HTML 4.01 Transitional');
             $config->set('CSS.AllowTricky', true);
+            $this->checkCacheDirectory($c);
             $config->set('Cache.SerializerPath', $c['cachePath']);
             // Allow iframes from:
             // o YouTube.com
@@ -78,6 +86,20 @@ class HTMLPurifier
             $this->purifier = new \HTMLPurifier($config);
         }
         return $this->purifier;
+    }
+
+    /**
+     * Check/Create cache directory
+     * Array $config
+     */
+    private function checkCacheDirectory($config)
+    {
+        $cachePath = $config['cachePath'];
+        if ($cachePath) {
+            if (!$this->files->isDirectory($cachePath)) {
+                $this->files->makeDirectory($cachePath, $config['cacheFileMode'] ?: 0755);
+            }
+        }
     }
 
     public function clean($html, $config = null)

@@ -26,7 +26,7 @@
         </li>
         @foreach($allNav as $category)
             <li>
-                <a{!! $category->equals($navigation->getActiveTopNav())?' class="active"':'' !!}{!! $category->getPresenter()->linkAttribute() !!}>{!! $category->cate_name !!}</a>
+                <a{!! $category->is($navigation->getActiveTopNav())?' class="active"':'' !!}{!! $category->getPresenter()->linkAttribute() !!}>{!! $category->cate_name !!}</a>
             </li>
         @endforeach
     </ul>
@@ -35,7 +35,7 @@
     <ul class="two_level_menu">
         @foreach($navigation->getActiveChildrenNav() as $category)
             <li>
-                <a{!! $category->equals($navigation->getActiveNav())?' class="active"':'' !!}{!! $category->getPresenter()->linkAttribute() !!}>{!! $category->cate_name !!}</a>
+                <a{!! $category->is($navigation->getActiveNav())?' class="active"':'' !!}{!! $category->getPresenter()->linkAttribute() !!}>{!! $category->cate_name !!}</a>
             </li>
         @endforeach
     </ul>

@@ -15,7 +15,6 @@ class News extends AbstractWidget
     {
         $categoryRepository = app(CategoryRepository::class);
         $products = $categoryRepository->findByCateName('新闻资讯');
-        //$category = Category::byCateSlug('xin-wen-zhong-xin')->firstOrFail();
         return [
             'category' => $products,
             'posts' => $products->postListWithOrder('default')->limit($this->config['limit'])->get()

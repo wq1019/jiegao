@@ -1,7 +1,8 @@
 <?php
 
 return [
-    'cachePath' => storage_path('app/purifier'),
+    'cachePath'     => storage_path('app/purifier'),
+    'cacheFileMode' => 0755,
     'allowed' => [
         'img[src|alt|title|width|height|style|data-mce-src|data-mce-json]',
         'figure', 'figcaption',

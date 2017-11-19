@@ -47,4 +47,17 @@ class PostsController extends Controller
 
         return view_first([$post->slug, $post->template, $post->category->content_template], 'content', ['post' => $post]);
     }
+
+    /**
+     * 搜索
+     */
+    public function search(Request $request)
+    {
+        $keywords = $request->get('keywords');
+        $posts = Post::withSimpleSearch($keywords, ['title', 'excerpt'])
+            ->applyFilter(collect(['status' => Post::STATUS_PUBLISH]))
+            ->with('user')
+            ->paginate($this->perPage());
+        return view('search', ['posts' => $posts, 'keywords' => $keywords]);
+    }
 }

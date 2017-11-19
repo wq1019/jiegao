@@ -59,8 +59,8 @@ class ServiceServiceProvider extends ServiceProvider
             return new TagService();
         });
 
-        $this->app->singleton(HTMLPurifier::class, function () {
-            return new HTMLPurifier();
+        $this->app->singleton(HTMLPurifier::class, function ($app) {
+            return new HTMLPurifier($app['files']);
         });
     }
 }
