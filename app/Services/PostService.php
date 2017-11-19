@@ -5,7 +5,7 @@ namespace App\Services;
 
 class PostService
 {
-    public function makeExcerpt($content, $limit = 300)
+    public function makeExcerpt($content, $limit = 500)
     {
         $html = $content;
         $excerpt = trim(preg_replace('/\s\s+/', ' ', strip_tags($html)));

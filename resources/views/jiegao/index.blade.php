@@ -15,15 +15,19 @@
     @widget('banner', ['type' => 'top_pic'])
     <div class="content">
         <div class="container">
+            @php
+                $categoryRepository = app(App\Repositories\CategoryRepository::class);
+                $about = $categoryRepository->findByCateName('关于捷高');
+                $aboutPage = $about->getPage();
+            @endphp
             <div class="about">
                 <div class="header">
-                    <h2>关于捷高</h2>
+                    <h2>{{$about->cate_name}}</h2>
                 </div>
                 <div class="info">
-                    {{--todo 这里的图片先写死--}}
-                    <img src="{!! cdn('jiegao/images/about.png') !!}">
+                    <img src="{!! image_url($about->image) !!}">
                     <p class="text">
-                        {{setting('about_me')}}
+                        {!! $aboutPage->excerpt !!}
                     </p>
                 </div>
             </div>

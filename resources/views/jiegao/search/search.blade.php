@@ -1,6 +1,6 @@
 @extends('jiegao.layouts.app')
 
-@section('title'){{ Breadcrumbs::pageTitle(' - ', 'search', $keyword) }}@endsection
+@section('title'){{ Breadcrumbs::pageTitle(' - ', 'search', $keywords) }}@endsection
 @section('content')
     @widget('navigation_bar')
     <!-- 列表正文start -->
@@ -17,12 +17,12 @@
         </div>
         <div class="main_list">
             <div class="header">
-                {{ Breadcrumbs::view('jiegao.layouts.search_breadcrumbs', 'search', $keyword) }}
+                {{ Breadcrumbs::view('jiegao.layouts.search_breadcrumbs', 'search', $keywords) }}
             </div>
             <ul class="post_list">
                 @forelse($posts as $post)
                     <li>
-                        <a href="{!! $post->getPresenter()->url() !!}">{!! sign_color($post->title, $keyword, config('tiny.keywords_color')) !!}</a>
+                        <a href="{!! $post->getPresenter()->url() !!}">{!! sign_color($post->title, $keywords, config('tiny.keywords_color')) !!}</a>
                         <span class="time">{!! $post->published_at->format('Y年m月d日')!!}</span>
                     </li>
                 @empty

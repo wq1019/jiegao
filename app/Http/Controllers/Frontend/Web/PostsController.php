@@ -58,6 +58,10 @@ class PostsController extends Controller
             ->applyFilter(collect(['status' => Post::STATUS_PUBLISH]))
             ->with('user')
             ->paginate($this->perPage());
-        return view('search', ['posts' => $posts, 'keywords' => $keywords]);
+        //return view('jiegao.search.search', ['posts' => $posts, 'keywords' => $keywords]);
+        return view_first(['search'], 'search', [
+            'posts' => $posts,
+            'keywords' =>$request->keywords,
+        ]);
     }
 }

@@ -8,5 +8,5 @@ Route::middleware('record_visitor')->group(function (){
 
     Route::get('/posts/{slug}', 'PostsController@show')->name('post.show');
 
-    Route::get('search', 'SearchController@search')->name('search');
+    Route::get('search', 'PostsController@search')->name('search');
 });
