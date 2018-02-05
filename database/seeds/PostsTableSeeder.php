@@ -15,28 +15,28 @@ class PostsTableSeeder extends Seeder
         DB::table('posts')->insert(
             [
                 [
-                    'id' => 1,
-                    'user_id' => $user->id,
-                    'title' => 'hello world',
-                    'status' => 'publish',
-                    'type' => 'post',
-                    'top' => \Carbon\Carbon::now(),
-                    'template' => 'post.content',
+                    'id'           => 1,
+                    'user_id'      => $user->id,
+                    'title'        => 'hello world',
+                    'status'       => 'publish',
+                    'type'         => 'post',
+                    'top'          => \Carbon\Carbon::now(),
+                    'template'     => 'post.content',
                     'published_at' => \Carbon\Carbon::now(),
-                    'created_at' => \Carbon\Carbon::now(),
-                    'updated_at' => \Carbon\Carbon::now()
+                    'created_at'   => \Carbon\Carbon::now(),
+                    'updated_at'   => \Carbon\Carbon::now(),
                 ],
                 [
-                    'id' => 2,
-                    'user_id' => $user->id,
-                    'title' => 'hello world111111',
-                    'status' => 'publish',
-                    'type' => 'post',
-                    'top' => null,
-                    'template' => 'post.content',
+                    'id'           => 2,
+                    'user_id'      => $user->id,
+                    'title'        => 'hello world111111',
+                    'status'       => 'publish',
+                    'type'         => 'post',
+                    'top'          => null,
+                    'template'     => 'post.content',
                     'published_at' => \Carbon\Carbon::now(),
-                    'created_at' => \Carbon\Carbon::now(),
-                    'updated_at' => \Carbon\Carbon::now()
+                    'created_at'   => \Carbon\Carbon::now(),
+                    'updated_at'   => \Carbon\Carbon::now(),
                 ],
             ]
         );
@@ -44,17 +44,17 @@ class PostsTableSeeder extends Seeder
         DB::table('post_contents')->insert(
             [
                 [
-                    'post_id' => 1,
-                    'content' => '这是第一篇文章',
+                    'post_id'    => 1,
+                    'content'    => '这是第一篇文章',
                     'created_at' => \Carbon\Carbon::now(),
-                    'updated_at' => \Carbon\Carbon::now()
+                    'updated_at' => \Carbon\Carbon::now(),
                 ],
                 [
-                    'post_id' => 2,
-                    'content' => '这是第二篇文章11111111',
+                    'post_id'    => 2,
+                    'content'    => '这是第二篇文章11111111',
                     'created_at' => \Carbon\Carbon::now(),
-                    'updated_at' => \Carbon\Carbon::now()
-                ]
+                    'updated_at' => \Carbon\Carbon::now(),
+                ],
             ]
         );
     }

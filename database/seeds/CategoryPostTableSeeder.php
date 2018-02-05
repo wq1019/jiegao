@@ -15,11 +15,11 @@ class CategoryPostTableSeeder extends Seeder
             [
             [
                 'category_id' => 1,
-                'post_id' => 1
+                'post_id'     => 1,
             ],
             [
                 'category_id' => 5,
-                'post_id' => 2
+                'post_id'     => 2,
             ],
             ]
         );

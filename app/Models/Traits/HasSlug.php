@@ -2,12 +2,10 @@
 
 namespace App\Models\Traits;
 
-
 use App\Services\SlugGenerator;
 
 trait HasSlug
 {
-
     public function slug(): string
     {
         return $this->attributes[$this->slugKey()];
@@ -15,7 +13,6 @@ trait HasSlug
 
     public function generateSlug($text)
     {
-
         return app(SlugGenerator::class)
             ->setSlugIsUniqueFunc($this->getTable(), $this->slugKey(), $this->exists ? $this->getKey() : null, $this->getKeyName())
             ->generate($text, $this->slugMode(), $this->delimiter());
@@ -40,5 +37,4 @@ trait HasSlug
     {
         return '';
     }
-
 }

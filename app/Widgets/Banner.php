@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Widgets;
 
 use App\Models\Banner as BannerModel;
@@ -7,17 +8,16 @@ use App\Support\Widget\AbstractWidget;
 
 class Banner extends AbstractWidget
 {
-
     protected $config = [
-        'type' => 'default',
+        'type'  => 'default',
         'limit' => 10,
-        'view' => 'banner' // default view
+        'view'  => 'banner', // default view
     ];
 
     public function __construct(array $config = [])
     {
         parent::__construct($config);
-        $this->setViewName('theme::widgets.' . $this->config['view']);
+        $this->setViewName('theme::widgets.'.$this->config['view']);
     }
 
     public function getData(array $params = [])

@@ -20,7 +20,8 @@ class UsersController extends ApiController
     }
 
     /**
-     * 当前登录的用户信息
+     * 当前登录的用户信息.
+     *
      * @return \App\Support\Response\TransformerResponse
      */
     public function me()
@@ -29,7 +30,8 @@ class UsersController extends ApiController
     }
 
     /**
-     * 用户列表
+     * 用户列表.
+     *
      * @return \App\Support\Response\TransformerResponse
      */
     public function index()
@@ -38,18 +40,22 @@ class UsersController extends ApiController
             ->withSort()
             ->recent()
             ->paginate($this->perPage());
+
         return $this->response()->paginator($users, new UserTransformer())->setMeta(User::getAllowSortFieldsMeta() + User::getAllowSearchFieldsMeta());
     }
 
     public function store(UserCreateRequest $request, UserRepository $userRepository)
     {
         $userRepository->create($request->validated());
+
         return $this->response()->noContent();
     }
 
     /**
-     * 显示指定用户信息
+     * 显示指定用户信息.
+     *
      * @param User $user
+     *
      * @return \App\Support\Response\TransformerResponse
      */
     public function show(User $user)
@@ -60,18 +66,22 @@ class UsersController extends ApiController
     public function update(User $user, UserUpdateRequest $request, UserRepository $userRepository)
     {
         $userRepository->update($request->validated(), $user);
+
         return $this->response()->noContent();
     }
 
     /**
-     * 删除指定用户
+     * 删除指定用户.
+     *
      * @param User $user
+     *
      * @return \App\Support\Response\Response
      */
     public function destroy(User $user)
     {
         // todo 用户关联的数据
         $user->delete();
+
         return $this->response()->noContent();
     }
 }

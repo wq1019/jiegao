@@ -13,7 +13,7 @@ class CategoriesController extends Controller
     public function show($slug, Request $request, CategoryRepository $categoryRepository)
     {
         /**
-         * @var $category Category
+         * @var Category
          */
         $category = $categoryRepository->findBySlug($slug);
         event(new VisitedPostList($category));
@@ -31,8 +31,8 @@ class CategoriesController extends Controller
         $posts->appends($request->all());
 
         return view_first([$category->cate_slug, $category->list_template], 'list', [
-            'posts' => $posts,
-            'category' => $category
+            'posts'    => $posts,
+            'category' => $category,
         ]);
     }
 
@@ -46,7 +46,7 @@ class CategoriesController extends Controller
 
         return view_first([$category->cate_slug, $category->page_template], 'page', [
             'category' => $category,
-            'page' => $page
+            'page'     => $page,
         ]);
     }
 }

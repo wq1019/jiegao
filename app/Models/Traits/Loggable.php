@@ -30,11 +30,11 @@ trait Loggable
     public static function storeAction($actionTypeName, $userId, $model, $changes = [])
     {
         UserLog::create([
-            'user_id' => $userId,
-            'action_id' => $model->id,
+            'user_id'     => $userId,
+            'action_id'   => $model->id,
             'action_type' => get_class($model),
-            'action' => $actionTypeName,
-            'changes' => $changes,
+            'action'      => $actionTypeName,
+            'changes'     => $changes,
         ]);
     }
 
@@ -46,7 +46,9 @@ trait Loggable
             if (!in_array($key, static::getIgnoreKeys($model))) {
                 $original = $model->getOriginal($key);
 
-                if ($original == $value) continue;
+                if ($original == $value) {
+                    continue;
+                }
 
                 $changes[$key] = [
                     'old' => $original,
@@ -57,7 +59,7 @@ trait Loggable
 
         $changes = array_merge($changes, ['ip' => request()->ip()]);
 
-        return $changes ?: NULL;
+        return $changes ?: null;
     }
 
     public static function getIgnoreKeys($model)

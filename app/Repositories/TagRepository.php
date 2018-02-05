@@ -6,9 +6,8 @@ use App\Models\Tag;
 
 class TagRepository extends BaseRepository
 {
-
     /**
-     * Specify Model class name
+     * Specify Model class name.
      *
      * @return string
      */
@@ -22,13 +21,16 @@ class TagRepository extends BaseRepository
         $data = $this->filterData($data);
         $data['slug'] = $this->model->generateSlug($data['name']);
         $data['creator_id'] = auth()->id();
+
         return $data;
     }
 
     public function filterData(array &$data)
     {
-        if (isset($data['name']))
+        if (isset($data['name'])) {
             $data['name'] = e($data['name']);
+        }
+
         return $data;
     }
 
@@ -38,7 +40,7 @@ class TagRepository extends BaseRepository
         if (isset($data['name']) && $tag->name != $data['name']) {
             $data['slug'] = $this->model->generateSlug($data['name']);
         }
+
         return $data;
     }
-
 }

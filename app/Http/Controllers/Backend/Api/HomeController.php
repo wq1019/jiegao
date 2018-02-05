@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Backend\Api;
 
-
 use App\Http\Controllers\ApiController;
 use App\Models\Category;
 use App\Models\Post;
@@ -12,7 +11,6 @@ use Carbon\Carbon;
 
 class HomeController extends ApiController
 {
-
     public function __construct()
     {
         return $this->middleware('auth');
@@ -25,7 +23,7 @@ class HomeController extends ApiController
         $nowPVUV = $visitorService->getPVUVByDateWithoutCache(Carbon::today());
         $recentlyPVUV = $visitorService->getRecentlyPVUVFromCache();
         $yesterdayPVUV = $visitorService->getPVUVByDateFromCache(Carbon::yesterday());
+
         return compact('posts', 'users', 'nowPVUV', 'yesterdayPVUV', 'recentlyPVUV');
     }
-
 }

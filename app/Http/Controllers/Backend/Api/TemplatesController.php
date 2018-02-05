@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Backend\Api;
 
-
 use App\Http\Controllers\ApiController;
 use App\Services\TemplateService;
 use Illuminate\Http\Request;

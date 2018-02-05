@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App\Services;
 
 use App\Models\Category;
@@ -24,9 +23,10 @@ class Navigation
     }
 
     /**
-     * 获取当前导航
+     * 获取当前导航.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return Category
      */
     public function getActiveNav()
@@ -35,7 +35,8 @@ class Navigation
     }
 
     /**
-     * 设置当前导航
+     * 设置当前导航.
+     *
      * @param Category $activeNav
      */
     public function setActiveNav(Category $activeNav)
@@ -49,9 +50,10 @@ class Navigation
     }
 
     /**
-     * 获取当前所在的子导航的顶级导航
+     * 获取当前所在的子导航的顶级导航.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return Category
      */
     public function getActiveTopNav()
@@ -77,6 +79,7 @@ class Navigation
                 return $this->getAllNavWithoutCache();
             });
         }
+
         return $this->allNav;
     }
 

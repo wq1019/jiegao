@@ -2,7 +2,6 @@
 
 namespace App\Models\Presenter;
 
-
 use App\Support\Presenter\Presenter;
 
 class PostPresenter extends Presenter

@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Backend\Api;
 
-
 use App\Http\Controllers\ApiController;
 
 class PermissionsController extends ApiController

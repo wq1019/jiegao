@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Backend\Api;
 
-
 use App\Exceptions\ResourceException;
 use App\Http\Controllers\ApiController;
 use Illuminate\Http\Request;
@@ -20,6 +19,7 @@ class ImageController extends ApiController
         $errno = 0;
         $error = '';
         $data = [];
+
         try {
             $image = $this->upload($request);
             $data[] = $image['image_url'];
@@ -30,8 +30,8 @@ class ImageController extends ApiController
 
         return [
             'errno' => $errno,
-            'data' => $data,
-            'error' => $error
+            'data'  => $data,
+            'error' => $error,
         ];
     }
 
@@ -47,18 +47,21 @@ class ImageController extends ApiController
             $image->storeAs($config['source_path_prefix'], $hashName, ['disk' => $config['source_disk']]);
 
             $imageId = ltrim(strstr($hashName, DIRECTORY_SEPARATOR), DIRECTORY_SEPARATOR);
+
             return [
-                'image' => $imageId,
-                'image_url' => image_url($imageId)
+                'image'     => $imageId,
+                'image_url' => image_url($imageId),
             ];
         }
         $error = $image ? $image->getErrorMessage() : '图片上传失败';
+
         throw new ResourceException($error, [$config['upload_key'] => $error]);
     }
 
     protected function hashName(UploadedFile $image)
     {
         $name = md5_file($image->getRealPath());
-        return substr($name, 0, 2) . DIRECTORY_SEPARATOR . $name . '.' . $image->guessExtension();
+
+        return substr($name, 0, 2).DIRECTORY_SEPARATOR.$name.'.'.$image->guessExtension();
     }
 }

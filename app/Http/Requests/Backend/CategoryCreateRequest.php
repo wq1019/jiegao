@@ -29,17 +29,17 @@ class CategoryCreateRequest extends Request
     public function rules()
     {
         return [
-            'type' => ['required', Rule::in([Category::TYPE_POST, Category::TYPE_PAGE, Category::TYPE_LINK])],
-            'image' => ['bail', 'nullable', new ImageName(), new ImageNameExist()],
-            'parent_id' => ['bail', 'sometimes', 'integer', 'min:0'],
-            'cate_name' => ['bail', 'required', 'string', 'between:2,30', 'unique:categories'],
+            'type'        => ['required', Rule::in([Category::TYPE_POST, Category::TYPE_PAGE, Category::TYPE_LINK])],
+            'image'       => ['bail', 'nullable', new ImageName(), new ImageNameExist()],
+            'parent_id'   => ['bail', 'sometimes', 'integer', 'min:0'],
+            'cate_name'   => ['bail', 'required', 'string', 'between:2,30', 'unique:categories'],
             'description' => ['nullable', 'string', 'between:2,500'],
             // 'url' => ['required_if:type,' . Category::TYPE_LINK, 'url'],
             'url' => [],
             // 'is_target_blank' => ['required_if:type,' . Category::TYPE_LINK, 'boolean'],
             'is_target_blank' => [],
-            'is_nav' => ['sometimes', 'boolean'],
-            'order' => ['nullable', 'integer'],
+            'is_nav'          => ['sometimes', 'boolean'],
+            'order'           => ['nullable', 'integer'],
             // 'page_template' => ['required_if: type,' . Category::TYPE_PAGE, 'string', 'between:1,30'],
             'page_template' => [],
             // 'list_template' => ['required_if:type,' . Category::TYPE_POST, 'string', 'between:1,30'],

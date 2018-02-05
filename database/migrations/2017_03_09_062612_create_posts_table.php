@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreatePostsTable extends Migration
 {
@@ -34,7 +34,7 @@ class CreatePostsTable extends Migration
             $table->integer('order')->default(0)->index()->comment('排序字段');
             // 内容模板
             $table->string('template')->nullable();
-            
+
             $table->softDeletes();
             // 发布时间
             $table->timestamp('published_at')->nullable();

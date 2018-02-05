@@ -13,12 +13,12 @@ class TypesTableSeeder extends Seeder
     {
         DB::table('types')->insert([
             [
-                'id' => 1,
-                'name' => 'system',
+                'id'           => 1,
+                'name'         => 'system',
                 'display_name' => '系统配置',
-                'description' => '系统配置',
-                'model_name' => \App\Models\Setting::class
-            ]
+                'description'  => '系统配置',
+                'model_name'   => \App\Models\Setting::class,
+            ],
         ]);
     }
 }

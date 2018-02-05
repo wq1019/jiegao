@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Backend\Api;
 
-
 use App\Http\Controllers\ApiController;
 use App\Http\Requests\Backend\TagCreateRequest;
 use App\Http\Requests\Backend\TagUpdateRequest;
@@ -20,19 +19,21 @@ class TagsController extends ApiController
     public function index()
     {
         $tags = Tag::withSimpleSearch()->recent()->get();
+
         return $this->response()->collection($tags, new TagTransformer());
     }
 
     public function store(TagCreateRequest $request, TagRepository $tagRepository)
     {
         $tag = $tagRepository->create($request->validated());
+
         return $this->response()->item($tag, new TagTransformer());
     }
-
 
     public function update(Tag $tag, TagUpdateRequest $request, TagRepository $tagRepository)
     {
         $tagRepository->update($request->validated(), $tag);
+
         return $this->response()->noContent();
     }
 
@@ -44,6 +45,7 @@ class TagsController extends ApiController
     public function destroy(Tag $tag)
     {
         $tag->delete();
+
         return $this->response()->noContent();
     }
 }

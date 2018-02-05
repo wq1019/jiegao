@@ -7,7 +7,6 @@ use Cache;
 
 class SettingCacheService
 {
-
     private $allSettings = null;
 
     public function get($name)
@@ -22,6 +21,7 @@ class SettingCacheService
                 return app(SettingRepository::class)->allSettingWithoutCache();
             });
         }
+
         return $this->allSettings;
     }
 

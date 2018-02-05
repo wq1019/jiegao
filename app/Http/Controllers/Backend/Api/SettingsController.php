@@ -1,10 +1,9 @@
 <?php
 /**
- * 站点设置
+ * 站点设置.
  */
 
 namespace App\Http\Controllers\Backend\Api;
-
 
 use App\Http\Controllers\ApiController;
 use App\Http\Requests\SettingCreateRequest;
@@ -29,6 +28,7 @@ class SettingsController extends ApiController
             ->withSimpleSearch()
             ->ancient()
             ->paginate($this->perPage());
+
         return $this->response()->paginator($settings, new SettingTransformer())
             ->setMeta(Setting::getAllowSortFieldsMeta() + Setting::getAllowSearchFieldsMeta());
     }
@@ -36,12 +36,14 @@ class SettingsController extends ApiController
     public function store(SettingCreateRequest $request, SettingRepository $settingRepository)
     {
         $settingRepository->create($request->validated());
+
         return $this->response()->noContent();
     }
 
     public function update(Setting $setting, SettingUpdateRequest $request, SettingRepository $settingRepository)
     {
         $settingRepository->update($request->validated(), $setting);
+
         return $this->response()->noContent();
     }
 
@@ -53,6 +55,7 @@ class SettingsController extends ApiController
     public function destroy(Setting $setting)
     {
         $setting->delete();
+
         return $this->response()->noContent();
     }
 
@@ -61,9 +64,10 @@ class SettingsController extends ApiController
         // todo message
         $data = $this->validate($request, [
             'index_order' => 'required|array',
-            'model' => 'required|in:' . implode(',', array_keys(CustomOrder::$modelMapping))
+            'model'       => 'required|in:'.implode(',', array_keys(CustomOrder::$modelMapping)),
         ]);
         app(CustomOrder::class)->setOrder($data['index_order'], $data['model']);
+
         return $this->response()->noContent();
     }
 }

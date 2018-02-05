@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Widgets;
-
 
 use App\Models\Link as LinkModel;
 use App\Services\CustomOrder;
@@ -10,17 +8,16 @@ use App\Support\Widget\AbstractWidget;
 
 class Link extends AbstractWidget
 {
-
     protected $config = [
-        'type' => 'default',
+        'type'  => 'default',
         'limit' => 10,
-        'view' => 'link'
+        'view'  => 'link',
     ];
 
     public function __construct(array $config = [])
     {
         parent::__construct($config);
-        $this->setViewName('theme::widgets.' . $this->config['view']);
+        $this->setViewName('theme::widgets.'.$this->config['view']);
     }
 
     public function getData(array $params = [])

@@ -10,10 +10,10 @@ class TypeTransformer extends TransformerAbstract
     public function transform(Type $type)
     {
         return [
-            'id' => $type->id,
-            'name' => $type->name,
+            'id'           => $type->id,
+            'name'         => $type->name,
             'display_name' => $type->display_name,
-            'description' => $type->description,
+            'description'  => $type->description,
         ];
     }
 }

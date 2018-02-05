@@ -12,13 +12,15 @@ class Banner extends BaseModel implements InterfaceTypeable
 //    protected static $allowSortFields = ['type_name', 'is_visible'];
 //    protected static $allowSearchFields = ['title', 'url'];
     protected $casts = [
-        'is_visible' => 'boolean'
+        'is_visible' => 'boolean',
     ];
 
     /**
      * 只获取显示的查询作用域
+     *
      * @param $query
      * @param bool $isVisible
+     *
      * @return mixed
      */
     public function scopeIsVisible($query, $isVisible = true)

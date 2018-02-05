@@ -2,7 +2,6 @@
 
 namespace App\Exceptions\Debug;
 
-
 use Illuminate\Http\Request;
 
 class WantsJsonRequest

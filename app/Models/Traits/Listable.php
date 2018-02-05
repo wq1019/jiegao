@@ -6,6 +6,7 @@ trait Listable
 {
     // todo 将 protected static $allowSortFields 改为方法就不需要静态了, 参见 Illuminate\Database\Eloquent\Model 的 __callStatic
     //protected static $allowSortFields = [];
+
     /**
      * @return array
      */
@@ -36,10 +37,11 @@ trait Listable
 
     /**
      * 例子: ?orders[0][field]=id&orders[0][dir]=asc&orders[1][field]=user_name&orders[1][dir]=desc
-     * 或者 orders=id-asc,user_name-desc 不推荐
+     * 或者 orders=id-asc,user_name-desc 不推荐.
      *
      * @param  $query
-     * @param  null $order
+     * @param null $order
+     *
      * @return mixed
      */
     public function scopeWithSort($query, $orders = null)
@@ -66,14 +68,17 @@ trait Listable
                 }
             }
         }
+
         return $query;
     }
 
     /**
-     * 例子：?keywords=ty&
+     * 例子：?keywords=ty&.
+     *
      * @param $query
      * @param null $keywords
      * @param null $searchScope
+     *
      * @return mixed
      */
     public function scopeWithSimpleSearch($query, $keywords = null, $searchScope = [])
@@ -84,7 +89,9 @@ trait Listable
         if (empty($searchScope) || $searchScope === 'all') {
             $searchScope = static::$allowSearchFields;
         } else {
-            if (is_string($searchScope)) $searchScope = [$searchScope];
+            if (is_string($searchScope)) {
+                $searchScope = [$searchScope];
+            }
             $searchScope = array_intersect(static::$allowSearchFields, $searchScope);
         }
 
@@ -92,11 +99,12 @@ trait Listable
             $query->where(
                 function ($query) use ($keywords, $searchScope) {
                     foreach ($searchScope as $field) {
-                        $query->orWhere($field, 'like', '%' . $keywords . '%');
+                        $query->orWhere($field, 'like', '%'.$keywords.'%');
                     }
                 }
             );
         }
+
         return $query;
     }
 }

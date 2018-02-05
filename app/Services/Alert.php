@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-
 use Illuminate\Contracts\Session\Session;
 
 class Alert
@@ -10,7 +9,7 @@ class Alert
     const ALERT_KEY = 'ALERT_FLASH';
 
     /**
-     * @var $session Session
+     * @var Session
      */
     private $session;
 
@@ -53,10 +52,10 @@ class Alert
         $this->isCurrentSession = true;
         $this->session->flash(
             static::ALERT_KEY, [
-                'type' => $type,
-                'message' => $message,
-                'hasCloseButton' => (boolean)$hasCloseButton,
-                'needContainer' => (boolean)$needContainer
+                'type'           => $type,
+                'message'        => $message,
+                'hasCloseButton' => (bool) $hasCloseButton,
+                'needContainer'  => (bool) $needContainer,
             ]
         );
     }
@@ -79,11 +78,11 @@ class Alert
     public function getMessage()
     {
         if ($this->session->has(static::ALERT_KEY)) {
-            if ($this->isCurrentSession)
+            if ($this->isCurrentSession) {
                 return $this->session->pull(static::ALERT_KEY);
-            else
+            } else {
                 return $this->session->get(static::ALERT_KEY);
-
+            }
         } else {
             return [];
         }

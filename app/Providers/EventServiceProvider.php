@@ -16,10 +16,10 @@ class EventServiceProvider extends ServiceProvider
      */
     protected $listen = [
         PostHasBeenRead::class => [
-            PostEventListener::class
+            PostEventListener::class,
         ],
         VisitedPostList::class => [
-            PostEventListener::class
+            PostEventListener::class,
         ],
     ];
 

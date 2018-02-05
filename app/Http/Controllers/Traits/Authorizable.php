@@ -7,20 +7,21 @@ use Request;
 trait Authorizable
 {
     private $abilities = [
-        'index' => 'view',
-        'edit' => 'edit',
-        'show' => 'view',
-        'update' => 'edit',
-        'create' => 'add',
-        'store' => 'add',
-        'destroy' => 'delete'
+        'index'   => 'view',
+        'edit'    => 'edit',
+        'show'    => 'view',
+        'update'  => 'edit',
+        'create'  => 'add',
+        'store'   => 'add',
+        'destroy' => 'delete',
     ];
 
     /**
-     * Override of callAction to perform the authorization before
+     * Override of callAction to perform the authorization before.
      *
      * @param $method
      * @param $parameters
+     *
      * @return mixed
      */
     public function callAction($method, $parameters)
@@ -37,7 +38,7 @@ trait Authorizable
         $routeName = explode('.', Request::route()->getName());
         $action = array_get($this->getAbilities(), $method);
 
-        return $action ? $action . '_' . $routeName[count($routeName) - 2] : null;
+        return $action ? $action.'_'.$routeName[count($routeName) - 2] : null;
     }
 
     private function getAbilities()

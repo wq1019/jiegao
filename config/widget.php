@@ -1,5 +1,5 @@
 <?php
 
 return [
-    'root_namespace' => 'App\Widgets'
+    'root_namespace' => 'App\Widgets',
 ];

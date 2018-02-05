@@ -2,15 +2,13 @@
 
 namespace App\Models;
 
-
 use Illuminate\Database\Eloquent\Builder;
 
 class Type extends BaseModel
 {
-
     public static $modelMapWithType = [
-        'link' => Link::class,
-        'banner' => Banner::class,
+        'link'    => Link::class,
+        'banner'  => Banner::class,
         'setting' => Setting::class,
     ];
     protected $fillable = ['name', 'display_name', 'description', 'model_name', 'creator_id'];
@@ -22,7 +20,6 @@ class Type extends BaseModel
         } else {
             return $query->whereNull('model_name');
         }
-
     }
 
     public function __call($method, $args)
@@ -34,5 +31,4 @@ class Type extends BaseModel
             return parent::__call($method, $args);
         }
     }
-
 }

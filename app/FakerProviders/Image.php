@@ -6,9 +6,8 @@ use Faker\Provider\Image as BaseImage;
 
 class Image extends BaseImage
 {
-
     /**
-     * Download a remote random image to disk and return its location
+     * Download a remote random image to disk and return its location.
      *
      * Requires curl, or allow_url_fopen to be on in php.ini.
      *
@@ -25,10 +24,12 @@ class Image extends BaseImage
         // Generate a random filename. Use the server address so that a file
         // generated at the same time on a different server won't have a collision.
         $name = md5(uniqid(empty($_SERVER['SERVER_ADDR']) ? '' : $_SERVER['SERVER_ADDR'], true));
-        $filename = $name . '.jpg';
-        $path = $dir . DIRECTORY_SEPARATOR . substr($name, 0, 2);
-        if (!file_exists($path)) mkdir($path);
-        $filepath = $path . DIRECTORY_SEPARATOR . $filename;
+        $filename = $name.'.jpg';
+        $path = $dir.DIRECTORY_SEPARATOR.substr($name, 0, 2);
+        if (!file_exists($path)) {
+            mkdir($path);
+        }
+        $filepath = $path.DIRECTORY_SEPARATOR.$filename;
         $url = static::imageUrl($width, $height, $category, $randomize, $word);
 
         // save file

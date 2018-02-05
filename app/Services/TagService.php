@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-
 class TagService
 {
 }

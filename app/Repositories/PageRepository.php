@@ -2,18 +2,17 @@
 
 namespace App\Repositories;
 
-
 use App\Models\Category;
 use App\Models\Post;
 use App\Services\PostService;
+use Auth;
 use Carbon\Carbon;
 use Naux\AutoCorrect;
-use Auth;
 
 class PageRepository extends BaseRepository
 {
     /**
-     * Specify Model class name
+     * Specify Model class name.
      *
      * @return string
      */
@@ -24,10 +23,13 @@ class PageRepository extends BaseRepository
 
     public function filterData(array &$data)
     {
-        if (isset($data['title']))
+        if (isset($data['title'])) {
             $data['title'] = e((new AutoCorrect())->convert($data['title']));
-        if (isset($data['content']))
+        }
+        if (isset($data['content'])) {
             $data['content'] = clean($data['content']);
+        }
+
         return $data;
     }
 
@@ -40,8 +42,8 @@ class PageRepository extends BaseRepository
         $data['type'] = Category::TYPE_PAGE;
         $data['status'] = Post::STATUS_DRAFT;
         $data['excerpt'] = app(PostService::class)->makeExcerpt($data['content']);
-        return $data;
 
+        return $data;
     }
 
     public function created(&$data, $post)
@@ -58,6 +60,7 @@ class PageRepository extends BaseRepository
         if (!isset($data['excerpt']) && isset($data['content'])) {
             $data['excerpt'] = app(PostService::class)->makeExcerpt($data['content']);
         }
+
         return $data;
     }
 
@@ -67,7 +70,8 @@ class PageRepository extends BaseRepository
     }
 
     /**
-     * 更新或创建文章正文
+     * 更新或创建文章正文.
+     *
      * @param Post $post
      * @param $content
      */
@@ -76,10 +80,9 @@ class PageRepository extends BaseRepository
         if (isset($data['content'])) {
             $post->postContent()->updateOrCreate(
                 [], [
-                    'content' => $data['content']
+                    'content' => $data['content'],
                 ]
             );
         }
     }
-
 }

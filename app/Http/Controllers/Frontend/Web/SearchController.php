@@ -3,7 +3,7 @@
  * Created by PhpStorm.
  * User: Sunlong
  * Date: 2017/11/6
- * Time: 20:03
+ * Time: 20:03.
  */
 
 namespace App\Http\Controllers\Frontend\Web;
@@ -20,9 +20,10 @@ class SearchController extends Controller
             ->publishPost()
             ->with('user')
             ->paginate($this->perPage());
+
         return view_first(['search'], 'search', [
-            'posts' => $posts,
-            'keyword' =>$request->keywords,
+            'posts'   => $posts,
+            'keyword' => $request->keywords,
         ]);
     }
 }

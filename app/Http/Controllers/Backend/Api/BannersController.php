@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Backend\Api;
 
-
 use App\Http\Controllers\ApiController;
 use App\Http\Requests\Backend\BannerCreateRequest;
 use App\Http\Requests\Backend\BannerUpdateRequest;
@@ -23,18 +22,21 @@ class BannersController extends ApiController
     {
         $banners = Banner::byType($request->get('type_name', null))->ancient()->get();
         $banners = app(CustomOrder::class)->order($banners);
+
         return $this->response()->collection($banners, new BannerTransformer());
     }
 
     public function store(BannerCreateRequest $request, BannerRepository $bannerRepository)
     {
         $bannerRepository->create($request->validated());
+
         return $this->response()->noContent();
     }
 
     public function update(Banner $banner, BannerUpdateRequest $request, BannerRepository $bannerRepository)
     {
         $bannerRepository->update($request->validated(), $banner);
+
         return $this->response()->noContent();
     }
 
@@ -46,6 +48,7 @@ class BannersController extends ApiController
     public function destroy(Banner $banner)
     {
         $banner->delete();
+
         return $this->response()->noContent();
     }
 }

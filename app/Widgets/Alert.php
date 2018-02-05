@@ -2,7 +2,6 @@
 
 namespace App\Widgets;
 
-
 use App\Services\Alert as AlertService;
 use App\Support\Widget\AbstractWidget;
 

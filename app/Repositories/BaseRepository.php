@@ -25,8 +25,9 @@ abstract class BaseRepository
     }
 
     /**
-     * @return Model
      * @throws RepositoryException
+     *
+     * @return Model
      */
     public function makeModel()
     {
@@ -34,11 +35,12 @@ abstract class BaseRepository
         if (!$model instanceof Model) {
             throw new RepositoryException("Class {$this->model()} must be an instance of Illuminate\\Database\\Eloquent\\Model");
         }
+
         return $this->model = $model;
     }
 
     /**
-     * Specify Model class name
+     * Specify Model class name.
      *
      * @return string
      */
@@ -53,6 +55,7 @@ abstract class BaseRepository
         if (method_exists($this, 'created')) {
             $this->created($data, $model);
         }
+
         return $model;
     }
 
@@ -66,14 +69,15 @@ abstract class BaseRepository
         if ($updated && method_exists($this, 'updated')) {
             $this->updated($data, $model);
         }
+
         return $updated;
     }
 
     public function findModel($model)
     {
-        if ($model instanceof Model)
+        if ($model instanceof Model) {
             return $model;
-        else {
+        } else {
             return $this->model->findOrFail($model);
         }
     }
@@ -85,7 +89,7 @@ abstract class BaseRepository
         if (!isset($this->slugCacheMap[$slug])) {
             $this->slugCacheMap[$slug] = $this->model->bySlug($slug)->firstOrFail();
         }
+
         return $this->slugCacheMap[$slug];
     }
-
 }

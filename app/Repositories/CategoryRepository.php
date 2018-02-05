@@ -7,9 +7,8 @@ use Illuminate\Support\Arr;
 
 class CategoryRepository extends BaseRepository
 {
-
     /**
-     * Specify Model class name
+     * Specify Model class name.
      *
      * @return string
      */
@@ -24,6 +23,7 @@ class CategoryRepository extends BaseRepository
         // CategoryModel
         $data['cate_slug'] = $this->model->generateSlug($data['cate_name']);
         $data['creator_id'] = auth()->id();
+
         return $data;
     }
 
@@ -42,10 +42,13 @@ class CategoryRepository extends BaseRepository
                 break;
             }
         }
-        if (isset($data['cate_name']))
+        if (isset($data['cate_name'])) {
             $data['cate_name'] = e($data['cate_name']);
-        if (isset($data['description']))
+        }
+        if (isset($data['description'])) {
             $data['description'] = e($data['description']);
+        }
+
         return $data;
     }
 
@@ -55,6 +58,7 @@ class CategoryRepository extends BaseRepository
         if (isset($data['cate_name']) && $category->title != $data['cate_name']) {
             $data['cate_slug'] = $this->model->generateSlug($data['cate_name']);
         }
+
         return $data;
     }
 

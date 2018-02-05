@@ -2,16 +2,14 @@
 
 namespace App\Repositories;
 
-
 use App\Exceptions\ResourceException;
 use App\Models\Role;
 use Spatie\Permission\Exceptions\PermissionDoesNotExist;
 
 class RoleRepository extends BaseRepository
 {
-
     /**
-     * Specify Model class name
+     * Specify Model class name.
      *
      * @return string
      */
@@ -33,6 +31,7 @@ class RoleRepository extends BaseRepository
         if (isset($data['description'])) {
             $data['description'] = e($data['description']);
         }
+
         return $data;
     }
 
@@ -62,5 +61,4 @@ class RoleRepository extends BaseRepository
             }
         }
     }
-
 }

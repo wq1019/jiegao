@@ -2,7 +2,6 @@
 
 namespace App\Support\Response;
 
-
 use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Contracts\Support\Responsable;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
@@ -13,7 +12,6 @@ use League\Fractal\Pagination\IlluminatePaginatorAdapter;
 use League\Fractal\Resource\Collection as FractalCollection;
 use League\Fractal\Resource\Item;
 use League\Fractal\Scope;
-
 
 class TransformerResponse implements Responsable
 {
@@ -65,8 +63,10 @@ class TransformerResponse implements Responsable
     public function item($item, $transformer = null)
     {
         $this->resource = new Item($item, $transformer);
-        if (!is_null($transformer))
+        if (!is_null($transformer)) {
             $this->transformer = $transformer;
+        }
+
         return $this;
     }
 
@@ -81,8 +81,10 @@ class TransformerResponse implements Responsable
     public function collection(Collection $collection, $transformer = null)
     {
         $this->resource = new FractalCollection($collection, $transformer);
-        if (!is_null($transformer))
+        if (!is_null($transformer)) {
             $this->transformer = $transformer;
+        }
+
         return $this;
     }
 
@@ -94,8 +96,10 @@ class TransformerResponse implements Responsable
         $collection = $paginator->getCollection();
         $this->resource = new FractalCollection($collection, $transformer);
         $this->resource->setPaginator(new IlluminatePaginatorAdapter($paginator));
-        if (!is_null($transformer))
+        if (!is_null($transformer)) {
             $this->transformer = $transformer;
+        }
+
         return $this;
     }
 
@@ -103,12 +107,12 @@ class TransformerResponse implements Responsable
     {
         $this->resource->setMeta($this->meta);
         $this->response->setContent($this->fractalCreateData());
+
         return $this->response->toResponse($request);
     }
 
     private function fractalCreateData($scopeIdentifier = null, Scope $parentScopeInstance = null)
     {
-
         if (!isset(static::$fractalManager)) {
             static::setFractalManager(app(FractalManager::class));
         }
@@ -117,9 +121,11 @@ class TransformerResponse implements Responsable
 
         if ($this->shouldEagerLoad($this->resource->getData())) {
             $eagerLoads = $this->mergeEagerLoads($this->transformer, static::$fractalManager->getRequestedIncludes());
-            if (!empty($eagerLoads))
+            if (!empty($eagerLoads)) {
                 $this->resource->getData()->load($eagerLoads);
+            }
         }
+
         return static::$fractalManager->createData($this->resource, $scopeIdentifier, $parentScopeInstance)->toArray();
     }
 
@@ -162,7 +168,7 @@ class TransformerResponse implements Responsable
      * Get includes as their array keys for eager loading.
      *
      * @param \League\Fractal\TransformerAbstract $transformer
-     * @param string|array $requestedIncludes
+     * @param string|array                        $requestedIncludes
      *
      * @return array
      */
@@ -183,13 +189,14 @@ class TransformerResponse implements Responsable
      * Add a meta data key/value pair.
      *
      * @param string $key
-     * @param mixed $value
+     * @param mixed  $value
      *
      * @return TransformerResponse
      */
     public function addMeta($key, $value)
     {
         $this->meta[$key] = $value;
+
         return $this;
     }
 
@@ -213,6 +220,7 @@ class TransformerResponse implements Responsable
     public function setMeta(array $meta)
     {
         $this->meta = $meta;
+
         return $this;
     }
 
@@ -244,5 +252,4 @@ class TransformerResponse implements Responsable
 
         return $this;
     }
-
 }

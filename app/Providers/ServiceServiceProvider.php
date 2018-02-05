@@ -17,7 +17,6 @@ use Illuminate\Support\ServiceProvider;
 
 class ServiceServiceProvider extends ServiceProvider
 {
-
     public function boot()
     {
         $this->app->singleton(CategoryService::class, function () {

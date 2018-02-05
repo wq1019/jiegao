@@ -7,7 +7,6 @@ use Illuminate\Validation\Rule;
 
 class TagUpdateRequest extends Request
 {
-
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -26,6 +25,7 @@ class TagUpdateRequest extends Request
     public function rules()
     {
         $tag = $this->route('tag');
+
         return [
             'name' => ['bail', 'nullable', 'string', 'between:1,30', Rule::unique('tags')->ignore($tag->id)],
         ];
