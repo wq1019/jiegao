@@ -2,7 +2,6 @@
 
 namespace App\Providers;
 
-
 use App\FakerProviders\Image;
 use App\FakerProviders\Internet;
 use Blade;
@@ -35,7 +34,7 @@ class AppServiceProvider extends ServiceProvider
             DB::listen(function ($query) {
                 $sql = str_replace('?', '%s', $query->sql);
                 foreach ($query->bindings as $binding) {
-                    $binding = (string)$binding;
+                    $binding = (string) $binding;
                 }
                 $sql = sprintf($sql, ...$query->bindings);
                 Log::info('sql', [$sql, $query->time, url()->current()]);
@@ -45,17 +44,15 @@ class AppServiceProvider extends ServiceProvider
         Schema::defaultStringLength(191);
 
         Breadcrumbs::macro('pageTitle', function (string $delimiter = ' - ', string $name = null, ...$params) {
-
             $breadcrumb = Breadcrumbs::generate($name, ...$params);
             if ($breadcrumb->isNotEmpty()) {
-                $title = $breadcrumb->slice(1)->reverse()->implode('title', $delimiter) . $delimiter;
+                $title = $breadcrumb->slice(1)->reverse()->implode('title', $delimiter).$delimiter;
             } else {
                 $title = '';
             }
 
-            return $title . setting('site_name');
+            return $title.setting('site_name');
         });
-
     }
 
     /**
@@ -75,15 +72,16 @@ class AppServiceProvider extends ServiceProvider
 
         $this->app->singleton(\League\Glide\Server::class, function ($app) {
             $config = config('images');
+
             return ServerFactory::create([
-                'response' => new LaravelResponseFactory($this->app->make('request')),
-                'source' => Storage::disk($config['source_disk'])->getDriver(),
-                'cache' => Storage::disk($config['cache_disk'])->getDriver(),
+                'response'           => new LaravelResponseFactory($this->app->make('request')),
+                'source'             => Storage::disk($config['source_disk'])->getDriver(),
+                'cache'              => Storage::disk($config['cache_disk'])->getDriver(),
                 'source_path_prefix' => $config['source_path_prefix'],
-                'cache_path_prefix' => $config['cache_path_prefix'],
-                'base_url' => $config['base_url'],
-                'presets' => $config['presets'],
-                'defaults' => $config['default_style']
+                'cache_path_prefix'  => $config['cache_path_prefix'],
+                'base_url'           => $config['base_url'],
+                'presets'            => $config['presets'],
+                'defaults'           => $config['default_style'],
             ]);
         });
 

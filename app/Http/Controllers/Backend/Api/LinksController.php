@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Http\Controllers\Backend\Api;
-
 
 use App\Http\Controllers\ApiController;
 use App\Http\Requests\Backend\LinkCreateRequest;
@@ -24,24 +22,28 @@ class LinksController extends ApiController
     {
         $links = Link::byType($request->get('type_name', null))->ancient()->get();
         $links = app(CustomOrder::class)->order($links);
+
         return $this->response()->collection($links, new LinkTransformer());
     }
 
     public function store(LinkCreateRequest $request, LinkRepository $linkRepository)
     {
         $linkRepository->create($request->validated());
+
         return $this->response()->noContent();
     }
 
     public function update(Link $link, LinkUpdateRequest $request, LinkRepository $linkRepository)
     {
         $linkRepository->update($request->validated(), $link);
+
         return $this->response()->noContent();
     }
 
     public function destroy(Link $link)
     {
         $link->delete();
+
         return $this->response()->noContent();
     }
 
@@ -49,5 +51,4 @@ class LinksController extends ApiController
     {
         return $this->response()->item($link, new LinkTransformer());
     }
-
 }

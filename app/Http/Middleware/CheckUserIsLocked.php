@@ -11,8 +11,9 @@ class CheckUserIsLocked
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request $request
-     * @param  \Closure $next
+     * @param \Illuminate\Http\Request $request
+     * @param \Closure                 $next
+     *
      * @return mixed
      */
     public function handle($request, Closure $next)
@@ -20,6 +21,7 @@ class CheckUserIsLocked
         if (Auth::check() && Auth::user()->isLocked()) {
             throw new AuthorizationException(trans('message.your_account_has_been_locked'));
         }
+
         return $next($request);
     }
 }

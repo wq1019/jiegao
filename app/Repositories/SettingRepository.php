@@ -2,14 +2,12 @@
 
 namespace App\Repositories;
 
-
 use App\Models\Setting;
 
 class SettingRepository extends BaseRepository
 {
-
     /**
-     * Specify Model class name
+     * Specify Model class name.
      *
      * @return string
      */
@@ -22,13 +20,16 @@ class SettingRepository extends BaseRepository
     {
         $data = $this->filterData($data);
         $data['creator_id'] = auth()->id();
+
         return $data;
     }
 
     public function filterData(array &$data)
     {
-        if (isset($data['description']))
+        if (isset($data['description'])) {
             $data['description'] = e($data['description']);
+        }
+
         return $data;
     }
 

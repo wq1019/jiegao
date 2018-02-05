@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Backend\Api;
 
-
 use App\Exceptions\ResourceException;
 use App\Http\Controllers\ApiController;
 use App\Models\Attachment;
@@ -21,12 +20,12 @@ class AttachmentsController extends ApiController
     public function index()
     {
         $attachments = Attachment::recent()->paginate($this->perPage());
+
         return $this->response()->collection($attachments, new AttachmentTransformer());
     }
 
     public function update()
     {
-
     }
 
     public function show(Attachment $attachment)
@@ -42,28 +41,31 @@ class AttachmentsController extends ApiController
             $path = $attachment->storeAs('uploads\\attachment', $this->attachmentHashName($attachment));
             if ($path) {
                 $attachmentModel = $this->createAttachment($attachment, $path);
+
                 return ['attachment_id' => $attachmentModel->id];
             }
         }
 
         $error = $attachment ? $attachment->getErrorMessage() : '附件上传失败';
+
         throw new ResourceException($error, ['attachment' => $error]);
     }
 
     private function attachmentHashName(UploadedFile $attachment)
     {
         $hashName = $attachment->hashName();
-        return substr($hashName, 0, 2) . DIRECTORY_SEPARATOR . substr($hashName, 2, 0);
+
+        return substr($hashName, 0, 2).DIRECTORY_SEPARATOR.substr($hashName, 2, 0);
     }
 
     private function createAttachment(UploadedFile $attachment, $path)
     {
         return Attachment::create([
             'uploader_id' => auth()->id(),
-            'title' => $attachment->getClientOriginalName(),
-            'mime' => $attachment->getMimeType(),
-            'file_size' => $attachment->getSize(),
-            'path' => $path
+            'title'       => $attachment->getClientOriginalName(),
+            'mime'        => $attachment->getMimeType(),
+            'file_size'   => $attachment->getSize(),
+            'path'        => $path,
         ]);
     }
 
@@ -71,7 +73,7 @@ class AttachmentsController extends ApiController
     {
         Storage::delete($attachment->path);
         $attachment->delete();
+
         return $this->response()->noContent();
     }
-
 }

@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-
 use App\Support\Response\Response;
 
 class ApiController extends Controller

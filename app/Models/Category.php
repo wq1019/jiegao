@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-
 use App\Models\Presenter\CategoryPresenter;
 use App\Models\Traits\HasSlug;
 use App\Observers\ClearNavigationCache;
@@ -12,17 +11,19 @@ class Category extends BaseModel implements PresentableInterface
 {
     use HasSlug;
 
-    const TYPE_POST = 'post', TYPE_PAGE = 'page', TYPE_LINK = 'link';
+    const TYPE_POST = 'post';
+    const TYPE_PAGE = 'page';
+    const TYPE_LINK = 'link';
     protected $casts = [
-        'is_nav' => 'boolean',
-        'is_target_blank' => 'boolean'
+        'is_nav'          => 'boolean',
+        'is_target_blank' => 'boolean',
     ];
     protected $fillable = ['type', 'parent_id', 'image', 'cate_name', 'order',
         'description', 'url', 'is_target_blank', 'cate_slug', 'is_nav',
-        'page_template', 'list_template', 'content_template', 'creator_id'];
+        'page_template', 'list_template', 'content_template', 'creator_id', ];
 
     /**
-     * 数据模型的启动方法
+     * 数据模型的启动方法.
      *
      * @return void
      */
@@ -33,8 +34,10 @@ class Category extends BaseModel implements PresentableInterface
     }
 
     /**
-     * 文章列表
+     * 文章列表.
+     *
      * @param  $query
+     *
      * @return mixed
      */
     public function postListWithOrder($order = null)
@@ -54,6 +57,7 @@ class Category extends BaseModel implements PresentableInterface
                 $query->ordered()->recent();
                 break;
         }
+
         return $query;
     }
 
@@ -63,26 +67,27 @@ class Category extends BaseModel implements PresentableInterface
     }
 
     /**
-     * 获取该分类的单页
+     * 获取该分类的单页.
+     *
      * @return mixed
      */
     public function getPage()
     {
-        return $this->posts()->byType(Category::TYPE_PAGE)->first();
+        return $this->posts()->byType(self::TYPE_PAGE)->first();
     }
 
     public function parent()
     {
-        return $this->belongsTo(Category::class, 'parent_id', 'id');
+        return $this->belongsTo(self::class, 'parent_id', 'id');
     }
 
     public function children()
     {
-        return $this->hasMany(Category::class, 'parent_id', 'id');
+        return $this->hasMany(self::class, 'parent_id', 'id');
     }
 
     /**
-     * 该分类是否为顶级分类
+     * 该分类是否为顶级分类.
      *
      * @return bool
      */
@@ -93,7 +98,9 @@ class Category extends BaseModel implements PresentableInterface
 
     /**
      * 导航栏查询作用域
+     *
      * @param $query
+     *
      * @return mixed
      */
     public function scopeNav($query)
@@ -103,7 +110,9 @@ class Category extends BaseModel implements PresentableInterface
 
     /**
      * 顶级分类查询作用域
+     *
      * @param $query
+     *
      * @return mixed
      */
     public function scopeTopCategories($query)
@@ -113,8 +122,10 @@ class Category extends BaseModel implements PresentableInterface
 
     /**
      * 文章分类查询作用域
+     *
      * @param $query
      * @param null $type
+     *
      * @return mixed
      */
     public function scopeByType($query, $type = null)
@@ -122,11 +133,12 @@ class Category extends BaseModel implements PresentableInterface
         if (in_array($type, [static::TYPE_POST, static::TYPE_LINK, static::TYPE_PAGE])) {
             $query->where('type', $type);
         }
+
         return $query;
     }
 
     /**
-     * 获取该分类下的文章数量
+     * 获取该分类下的文章数量.
      *
      * @return mixed
      */
@@ -137,12 +149,15 @@ class Category extends BaseModel implements PresentableInterface
 
     /**
      * 判断是否为同一个分类(该方法已过时)
-     * 代替方法 is()
+     * 代替方法 is().
+     *
      * @deprecated
-     * @param  Category $category
+     *
+     * @param Category $category
+     *
      * @return bool
      */
-    public function equals(?Category $category)
+    public function equals(?self $category)
     {
         /*if(is_null($category)){
             return false;
@@ -152,7 +167,7 @@ class Category extends BaseModel implements PresentableInterface
     }
 
     /**
-     * 判断当前栏目(分类)是否为外部链接
+     * 判断当前栏目(分类)是否为外部链接.
      *
      * @return bool
      */
@@ -162,7 +177,7 @@ class Category extends BaseModel implements PresentableInterface
     }
 
     /**
-     * 判断当前栏目(分类)是否为单网页
+     * 判断当前栏目(分类)是否为单网页.
      *
      * @return bool
      */
@@ -172,7 +187,7 @@ class Category extends BaseModel implements PresentableInterface
     }
 
     /**
-     * 判断当前栏目(分类)是否为列表栏目
+     * 判断当前栏目(分类)是否为列表栏目.
      *
      * @return bool
      */
@@ -182,10 +197,11 @@ class Category extends BaseModel implements PresentableInterface
     }
 
     /**
-     * 获取当前分类下的热门文章
+     * 获取当前分类下的热门文章.
      *
      * @param  $limit
-     * @param  null $exceptPost
+     * @param null $exceptPost
+     *
      * @return mixed
      */
     public function getHotPosts($limit, $exceptPost = null)
@@ -198,6 +214,7 @@ class Category extends BaseModel implements PresentableInterface
                 $query->where('id', '!=', $exceptPost->id);
             }
         }
+
         return $query->orderBy('views_count', 'desc')->recent()->limit($limit)->get();
     }
 
@@ -216,23 +233,23 @@ class Category extends BaseModel implements PresentableInterface
         return 'cate_slug';
     }
 
-
     public function slugMode()
     {
         return setting('category_slug_mode');
     }
 
     /**
-     * meta keywords
+     * meta keywords.
+     *
      * @return string
      */
     public function getKeywords()
     {
-        return $this->cate_name . ',' . setting('default_keywords');
+        return $this->cate_name.','.setting('default_keywords');
     }
 
     /**
-     * meta description
+     * meta description.
      */
     public function getDescription()
     {

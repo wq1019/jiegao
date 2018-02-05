@@ -8,12 +8,12 @@ use App\Models\Traits\Listable;
 use App\Support\Presenter\PresentableInterface;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-
 class Post extends BaseModel implements PresentableInterface
 {
     use SoftDeletes, Listable, HasSlug;
 
-    const STATUS_PUBLISH = 'publish', STATUS_DRAFT = 'draft';
+    const STATUS_PUBLISH = 'publish';
+    const STATUS_DRAFT = 'draft';
 
     protected $fillable = ['title', 'user_id', 'slug', 'excerpt', 'type', 'views_count', 'cover', 'status', 'template', 'top', 'published_at', 'category_id', 'order', 'fields'];
     protected $dates = ['deleted_at', 'top', 'published_at', 'created_at', 'updated_at'];
@@ -47,6 +47,7 @@ class Post extends BaseModel implements PresentableInterface
         if (isset($data['only_trashed']) && $data['only_trashed']) {
             $query->onlyTrashed();
         }
+
         return $query->ordered()->recent();
     }
 
@@ -57,29 +58,34 @@ class Post extends BaseModel implements PresentableInterface
         } else {
             $category = intval($category);
         }
-        if ($category)
+        if ($category) {
             $query->where('category_id', $category);
+        }
     }
-
 
     public function scopeByType($query, $type)
     {
-        if (in_array($type, [Category::TYPE_POST, Category::TYPE_PAGE]))
+        if (in_array($type, [Category::TYPE_POST, Category::TYPE_PAGE])) {
             return $query->where('type', $type);
+        }
+
         return $query;
     }
 
     public function scopeByStatus($query, $status)
     {
-        if (in_array($status, [static::STATUS_PUBLISH, static::STATUS_DRAFT]))
+        if (in_array($status, [static::STATUS_PUBLISH, static::STATUS_DRAFT])) {
             return $query->where('status', $status);
-        else
+        } else {
             return $query->publishOrDraft();
+        }
     }
 
     /**
      * 获取已发布或草稿的文章的查询作用域
+     *
      * @param $query
+     *
      * @return mixed
      */
     public function scopePublishOrDraft($query)
@@ -89,7 +95,9 @@ class Post extends BaseModel implements PresentableInterface
 
     /**
      * 已发布文章的查询作用域
+     *
      * @param $query
+     *
      * @return mixed
      */
     public function scopePublishPost($query)
@@ -110,7 +118,8 @@ class Post extends BaseModel implements PresentableInterface
     }
 
     /**
-     * 一对一关联 post_content 表
+     * 一对一关联 post_content 表.
+     *
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
     public function postContent()
@@ -118,9 +127,8 @@ class Post extends BaseModel implements PresentableInterface
         return $this->hasOne(PostContent::class);
     }
 
-
     /**
-     * 文章是否置顶
+     * 文章是否置顶.
      */
     public function isTop()
     {
@@ -128,7 +136,8 @@ class Post extends BaseModel implements PresentableInterface
     }
 
     /**
-     * 获取下一篇文章
+     * 获取下一篇文章.
+     *
      * @return mixed
      */
     public function getNextPost()
@@ -146,14 +155,13 @@ class Post extends BaseModel implements PresentableInterface
         return $this->status == static::STATUS_DRAFT;
     }
 
-
     public function getPresenter()
     {
         return new PostPresenter($this);
     }
 
     /**
-     * 附件
+     * 附件.
      */
     public function attachments()
     {
@@ -161,7 +169,7 @@ class Post extends BaseModel implements PresentableInterface
     }
 
     /**
-     * 标签
+     * 标签.
      */
     public function tags()
     {
@@ -178,11 +186,13 @@ class Post extends BaseModel implements PresentableInterface
     public function getFieldsAttribute($fields)
     {
         if (is_null($this->fieldsCache)) {
-            if($fields)
+            if ($fields) {
                 $this->fieldsCache = json_decode($fields, true);
-            else
+            } else {
                 $this->fieldsCache = [];
+            }
         }
+
         return $this->fieldsCache;
     }
 
@@ -192,22 +202,22 @@ class Post extends BaseModel implements PresentableInterface
     }
 
     /**
-     * meta keywords
+     * meta keywords.
+     *
      * @return string
      */
     public function getKeywords()
     {
         $tagStr = $this->tags->implode('name', ',');
-        return $this->category->cate_name . ',' . $tagStr . setting('default_keywords');
 
+        return $this->category->cate_name.','.$tagStr.setting('default_keywords');
     }
 
     /**
-     * meta description
+     * meta description.
      */
     public function getDescription()
     {
         return $this->excerpt ?: setting('default_description');
     }
-
 }

@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-
 use App\Models\Banner;
 use App\Models\InterfaceTypeable;
 use App\Models\Link;
@@ -12,7 +11,7 @@ class CustomOrder
 {
     public static $modelMapping = [
         'banner' => Banner::class,
-        'link' => Link::class,
+        'link'   => Link::class,
     ];
 
     public function order(Collection $collection)
@@ -23,6 +22,7 @@ class CustomOrder
         }
         $indexOrder = json_decode($indexOrder, true);
         $count = count($indexOrder);
+
         return $collection->sortBy(function ($item) use ($indexOrder, $count) {
             $id = $item->getKey();
             if (array_key_exists($id, $indexOrder)) {
@@ -37,16 +37,19 @@ class CustomOrder
     {
         $result = 'custom_order:';
         if ($modelInstance instanceof InterfaceTypeable) {
-            $result .= get_class($modelInstance) . ':type_name:' . $modelInstance->type_name;
-        } else if ($modelInstance != null) {
+            $result .= get_class($modelInstance).':type_name:'.$modelInstance->type_name;
+        } elseif ($modelInstance != null) {
             $result .= get_class($modelInstance);
         }
+
         return $result;
     }
 
     public function setOrder(array $indexOrder, $model)
     {
-        if (count($indexOrder) <= 0) return;
+        if (count($indexOrder) <= 0) {
+            return;
+        }
 
         $modelInstance = app(static::$modelMapping[$model])->findOrFail($indexOrder[0]);
 
@@ -58,10 +61,10 @@ class CustomOrder
 
         setting([
             $key => [
-                'value' => json_encode($indexOrder),
+                'value'     => json_encode($indexOrder),
                 'is_system' => true,
-                'type_name' => 'system'
-            ]
+                'type_name' => 'system',
+            ],
         ]);
     }
 }

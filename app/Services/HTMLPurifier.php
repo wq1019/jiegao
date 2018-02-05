@@ -28,7 +28,7 @@ class HTMLPurifier
             // o YouTube.com
             // o Vimeo.com
             $config->set('HTML.SafeIframe', true);
-            $config->set('URI.SafeIframeRegexp', '%^' . config('app.url') . '%');
+            $config->set('URI.SafeIframeRegexp', '%^'.config('app.url').'%');
             $config->set('HTML.Allowed', implode(',', $c['allowed']));
             // Set some HTML5 properties
             $config->set('HTML.DefinitionID', 'html5-definitions'); // unqiue id
@@ -48,19 +48,19 @@ class HTMLPurifier
                 $def->addElement('figure', 'Block', 'Optional: (figcaption, Flow) | (Flow, figcaption) | Flow', 'Common');
                 $def->addElement('figcaption', 'Inline', 'Flow', 'Common');
                 // http://developers.whatwg.org/the-video-element.html#the-video-element
-                $def->addElement('video', 'Block', 'Optional: (source, Flow) | (Flow, source) | Flow', 'Common', array(
-                    'src' => 'URI',
-                    'type' => 'Text',
-                    'width' => 'Length',
-                    'height' => 'Length',
-                    'poster' => 'URI',
-                    'preload' => 'Enum#auto,metadata,none',
+                $def->addElement('video', 'Block', 'Optional: (source, Flow) | (Flow, source) | Flow', 'Common', [
+                    'src'      => 'URI',
+                    'type'     => 'Text',
+                    'width'    => 'Length',
+                    'height'   => 'Length',
+                    'poster'   => 'URI',
+                    'preload'  => 'Enum#auto,metadata,none',
                     'controls' => 'Bool',
-                ));
-                $def->addElement('source', 'Block', 'Flow', 'Common', array(
-                    'src' => 'URI',
+                ]);
+                $def->addElement('source', 'Block', 'Flow', 'Common', [
+                    'src'  => 'URI',
                     'type' => 'Text',
-                ));
+                ]);
                 // http://developers.whatwg.org/text-level-semantics.html
                 $def->addElement('s', 'Inline', 'Inline', 'Common');
                 $def->addElement('var', 'Inline', 'Inline', 'Common');
@@ -69,8 +69,8 @@ class HTMLPurifier
                 $def->addElement('mark', 'Inline', 'Inline', 'Common');
                 $def->addElement('wbr', 'Inline', 'Empty', 'Core');
                 // http://developers.whatwg.org/edits.html
-                $def->addElement('ins', 'Block', 'Flow', 'Common', array('cite' => 'URI', 'datetime' => 'CDATA'));
-                $def->addElement('del', 'Block', 'Flow', 'Common', array('cite' => 'URI', 'datetime' => 'CDATA'));
+                $def->addElement('ins', 'Block', 'Flow', 'Common', ['cite' => 'URI', 'datetime' => 'CDATA']);
+                $def->addElement('del', 'Block', 'Flow', 'Common', ['cite' => 'URI', 'datetime' => 'CDATA']);
                 // TinyMCE
                 $def->addAttribute('img', 'data-mce-src', 'Text');
                 $def->addAttribute('img', 'data-mce-json', 'Text');
@@ -85,12 +85,13 @@ class HTMLPurifier
             }
             $this->purifier = new \HTMLPurifier($config);
         }
+
         return $this->purifier;
     }
 
     /**
      * Check/Create cache directory
-     * Array $config
+     * Array $config.
      */
     private function checkCacheDirectory($config)
     {

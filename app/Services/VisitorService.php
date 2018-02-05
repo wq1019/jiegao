@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-
 use App\Models\Visitor;
 use Cache;
 use Carbon\Carbon;
@@ -28,9 +27,9 @@ class VisitorService
         if (is_null($visitor)) {
             // create
             Visitor::create([
-                'ip' => $ip,
-                'views' => 1,
-                'referring_site' => $this->request->header('referer', null)
+                'ip'             => $ip,
+                'views'          => 1,
+                'referring_site' => $this->request->header('referer', null),
             ]);
         } else {
             // increment
@@ -68,7 +67,6 @@ class VisitorService
             }
 
             Cache::forever('visitor::all_cached_dates', $shouldCacheDates);
-
         } else {
             $allCachedDates = Cache::get('visitor::all_cached_dates');
 
@@ -78,7 +76,9 @@ class VisitorService
                     // put cache
                     Cache::forever($this->getCacheKey($shouldCacheDay), $this->getPVUVByDateWithoutCache($shouldCacheDay));
 
-                    if (!$needResetCache) $needResetCache = true;
+                    if (!$needResetCache) {
+                        $needResetCache = true;
+                    }
                 }
             }
 
@@ -86,7 +86,9 @@ class VisitorService
                 if (!in_array($cachedDay, $shouldCacheDates)) {
                     // forget cache
                     Cache::forget($this->getCacheKey($cachedDay));
-                    if (!$needResetCache) $needResetCache = true;
+                    if (!$needResetCache) {
+                        $needResetCache = true;
+                    }
                 }
             }
 
@@ -94,13 +96,13 @@ class VisitorService
                 Cache::forget('visitor::all_cached_dates');
                 Cache::forever('visitor::all_cached_dates', $shouldCacheDates);
             }
-
         }
 
         $PVUVData = [];
         foreach ($shouldCacheDates as $date) {
             $PVUVData[] = $this->getPVUVByDateFromCache($date);
         }
+
         return $PVUVData;
     }
 
@@ -109,14 +111,15 @@ class VisitorService
         if ($date instanceof Carbon) {
             $date = $date->toDateString();
         }
-        return 'visitor::pv_uv::' . $date;
+
+        return 'visitor::pv_uv::'.$date;
     }
 
     public function getPVUVByDateWithoutCache(Carbon $date)
     {
         return [
-            'page_view' => Visitor::withinOneday($date)->sum('views'),
-            'unique_visitor' => Visitor::withinOneday($date)->count()
+            'page_view'      => Visitor::withinOneday($date)->sum('views'),
+            'unique_visitor' => Visitor::withinOneday($date)->count(),
         ];
     }
 
@@ -126,8 +129,7 @@ class VisitorService
         if (!Cache::has($cacheKey)) {
             Cache::put($cacheKey, config('cache.ttl'));
         }
+
         return Cache::get($cacheKey) ?: new stdClass();
     }
-
-
 }

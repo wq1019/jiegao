@@ -1,7 +1,7 @@
 <?php
 
-use Faker\Generator as Faker;
 use App\Models\Category;
+use Faker\Generator as Faker;
 
 $factory->define(App\Models\Category::class, function (Faker $faker) {
     static $imagesPath = null;
@@ -11,20 +11,21 @@ $factory->define(App\Models\Category::class, function (Faker $faker) {
         $imagesPath = $storage->path($imagesConfig['source_path_prefix']);
         $storage->exists($imagesPath) || $storage->makeDirectory($imagesConfig['source_path_prefix']);
     }
+
     return [
-        'type' => $faker->randomElement([Category::TYPE_POST, Category::TYPE_PAGE, Category::TYPE_LINK]),
+        'type'      => $faker->randomElement([Category::TYPE_POST, Category::TYPE_PAGE, Category::TYPE_LINK]),
         'parent_id' => 0,
         'cate_name' => $faker->unique()->word,
         // todo 根据 type 决定是否生成 image and windows image is null
-        'image' => $faker->image($imagesPath, 640, 480, null, false),
+        'image'       => $faker->image($imagesPath, 640, 480, null, false),
         'description' => $faker->text(190),
-        'url' => function (array $category) use ($faker) {
+        'url'         => function (array $category) use ($faker) {
             switch ($category['type']) {
                 case Category::TYPE_LINK:
                     return $faker->url;
                     break;
                 default:
-                    return null;
+                    return;
                     break;
             }
         },
@@ -42,7 +43,7 @@ $factory->define(App\Models\Category::class, function (Faker $faker) {
         },
         'created_at' => \Carbon\Carbon::now(),
         'updated_at' => \Carbon\Carbon::now(),
-        'is_nav' => $faker->boolean,
-        'order' => $faker->randomDigitNotNull,
+        'is_nav'     => $faker->boolean,
+        'order'      => $faker->randomDigitNotNull,
     ];
 });

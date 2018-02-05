@@ -17,8 +17,8 @@ return [
     */
     'include' => [
         'directories' => ['public'],
-        'extensions' => [],
-        'patterns' => [],
+        'extensions'  => [],
+        'patterns'    => [],
     ],
 
     /*
@@ -34,10 +34,10 @@ return [
     */
     'exclude' => [
         'directories' => ['vendor'],
-        'files' => ['favicon.ico'],
-        'extensions' => ['php', 'txt', 'config', 'json'],
-        'patterns' => [],
-        'hidden' => true,
+        'files'       => ['favicon.ico'],
+        'extensions'  => ['php', 'txt', 'config', 'json'],
+        'patterns'    => [],
+        'hidden'      => true,
     ],
 
 ];

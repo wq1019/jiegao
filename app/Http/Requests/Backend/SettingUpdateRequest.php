@@ -25,12 +25,12 @@ class SettingUpdateRequest extends Request
     public function rules()
     {
         $setting = $this->route('setting');
+
         return [
-            'name' => ['bail', 'nullable', 'alpha_dash', 'between:1,30', Rule::unique('settings')->ignore($setting->id)],
-            'value' => ['nullable', 'string'],
+            'name'        => ['bail', 'nullable', 'alpha_dash', 'between:1,30', Rule::unique('settings')->ignore($setting->id)],
+            'value'       => ['nullable', 'string'],
             'description' => ['nullable', 'string', 'between:2,190'],
-            'type_name' => ['bail', 'nullable', 'string', 'between:1,30', Rule::exists('types', 'name')->where('model_name', Setting::class)],
+            'type_name'   => ['bail', 'nullable', 'string', 'between:1,30', Rule::exists('types', 'name')->where('model_name', Setting::class)],
         ];
     }
-
 }

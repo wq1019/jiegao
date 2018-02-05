@@ -7,18 +7,19 @@ use Storage;
 
 class ImageNameExist implements Rule
 {
-
     /**
      * Determine if the validation rule passes.
      *
-     * @param  string $attribute
-     * @param  mixed $value
+     * @param string $attribute
+     * @param mixed  $value
+     *
      * @return bool
      */
     public function passes($attribute, $value)
     {
         $config = config('images');
-        $imageRealPath = $config['source_path_prefix'] . DIRECTORY_SEPARATOR . substr($value, 0, 2) . DIRECTORY_SEPARATOR . $value;
+        $imageRealPath = $config['source_path_prefix'].DIRECTORY_SEPARATOR.substr($value, 0, 2).DIRECTORY_SEPARATOR.$value;
+
         return Storage::disk($config['source_disk'])->exists($imageRealPath);
     }
 

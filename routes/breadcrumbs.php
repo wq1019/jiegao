@@ -23,5 +23,5 @@ Breadcrumbs::register('category', function ($breadcrumbs, $category) {
 
 Breadcrumbs::register('post', function ($breadcrumbs, $post) {
     $breadcrumbs->parent('category', $post->category);
-    $breadcrumbs->push($post->title , route('frontend.web.post.show', $post->slug));
+    $breadcrumbs->push($post->title, route('frontend.web.post.show', $post->slug));
 });

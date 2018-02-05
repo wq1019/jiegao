@@ -12,7 +12,6 @@ use Illuminate\Foundation\Auth\Access\Authorizable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
 
-
 class User extends BaseModel implements
     AuthenticatableContract,
     AuthorizableContract,
@@ -29,7 +28,7 @@ class User extends BaseModel implements
      * @var array
      */
     protected $fillable = [
-        'user_name', 'nick_name', 'email', 'password', 'avatar', 'locked_at'
+        'user_name', 'nick_name', 'email', 'password', 'avatar', 'locked_at',
     ];
     /**
      * The attributes that should be hidden for arrays.

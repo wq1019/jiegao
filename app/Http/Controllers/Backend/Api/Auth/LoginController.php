@@ -32,12 +32,13 @@ class LoginController extends ApiController
     public function needVerificationCodeRequest(Request $request)
     {
         return [
-            'need' => $this->needVerificationCode($request->ip())
+            'need' => $this->needVerificationCode($request->ip()),
         ];
     }
 
     /**
      * 是否需要验证码
+     *
      * @return bool
      */
     protected function needVerificationCode($ip)
@@ -47,18 +48,20 @@ class LoginController extends ApiController
             return false;
         }
         $times = Cache::get($key);
+
         return $times > config('tiny.need_not_verification_code_times', 5);
     }
 
     protected function getAttemptLoginTimesKey($ip)
     {
-        return 'attempt_login_times:' . $ip;
+        return 'attempt_login_times:'.$ip;
     }
 
     /**
      * Handle a login request to the application.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\Response
      */
     public function login(Request $request)
@@ -79,7 +82,7 @@ class LoginController extends ApiController
         if ($this->needVerificationCode($ip)) {
             // 验证码
             $this->validate($request, [
-                'captcha' => 'required|captcha'
+                'captcha' => 'required|captcha',
             ]);
         }
 
@@ -98,7 +101,8 @@ class LoginController extends ApiController
     /**
      * 验证登录请求
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return void
      */
     protected function validateLogin($request)
@@ -106,8 +110,8 @@ class LoginController extends ApiController
         $credentials = $this->credentials($request);
         $rules = [
             'user_name' => ['bail', 'required', 'regex:/^[a-zA-Z0-9_]+$/'],
-            'email' => ['bail', 'required', 'email', 'exists:users'],
-            'password' => ['required']
+            'email'     => ['bail', 'required', 'email', 'exists:users'],
+            'password'  => ['required'],
         ];
 
         $validator = Validator::make(
@@ -122,6 +126,7 @@ class LoginController extends ApiController
                 $messages[$this->loginKey()] = $messages[$this->username()];
                 $errors = Arr::except($messages, $this->username());
             }
+
             throw new ResourceException(null, $errors);
         }
     }
@@ -129,7 +134,8 @@ class LoginController extends ApiController
     /**
      * Get the needed authorization credentials from the request.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return array
      */
     protected function credentials(Request $request)
@@ -138,11 +144,11 @@ class LoginController extends ApiController
         if (!isset($credentials[$this->loginKey()])) {
             $credentials[$this->loginKey()] = null;
         }
+
         return [
             $this->username() => $credentials[$this->loginKey()],
-            'password' => $credentials['password']
+            'password'        => $credentials['password'],
         ];
-
     }
 
     /**
@@ -164,13 +170,15 @@ class LoginController extends ApiController
                 $this->userName = 'email';
             }
         }
+
         return $this->userName;
     }
 
     /**
      * Redirect the user after determining they are locked out.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
     protected function sendLockoutResponse(Request $request)
@@ -178,6 +186,7 @@ class LoginController extends ApiController
         $seconds = $this->limiter()->availableIn(
             $this->throttleKey($request)
         );
+
         throw new HttpException(423, Lang::get('auth.throttle', ['seconds' => $seconds]));
     }
 
@@ -195,7 +204,8 @@ class LoginController extends ApiController
     /**
      * Attempt to log the user into the application.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return bool
      */
     protected function attemptLogin(Request $request)
@@ -217,7 +227,9 @@ class LoginController extends ApiController
 
     /**
      * Send the response after the user was authenticated.
+     *
      * @param Request $request
+     *
      * @return \App\Support\Response\Response|void
      */
     protected function sendLoginResponse(Request $request)
@@ -228,14 +240,15 @@ class LoginController extends ApiController
 
         if ($this->guard()->user()->isLocked()) {
             $this->logout($request);
+
             return abort('423', Lang::get('auth.user_locked'));
         }
+
         return $this->response()->noContent();
     }
 
     /**
      * Log the user out of the application.
-     *
      */
     public function logout(Request $request)
     {
@@ -249,7 +262,8 @@ class LoginController extends ApiController
     /**
      * Get the failed login response instance.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
     protected function sendFailedLoginResponse(Request $request)
@@ -257,5 +271,4 @@ class LoginController extends ApiController
         // 用户名或密码错误
         throw new ResourceException(null, ['password' => Lang::get('auth.password_error')]);
     }
-
 }

@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-
 use Closure;
 use DB;
 use GuzzleHttp\Client;
@@ -28,9 +27,10 @@ class SlugGenerator
             if ('str_random' == $slugMode) {
                 $slug .= str_random(5);
             } else {
-                $slug .= '-' . str_random(5);
+                $slug .= '-'.str_random(5);
             }
         }
+
         return $slug;
     }
 
@@ -51,16 +51,16 @@ class SlugGenerator
         }
         // http://api.fanyi.baidu.com/api/trans/product/apidoc
         // appid+q+salt+密钥 的MD5值
-        $sign = md5($appid . $text . $salt . $key);
+        $sign = md5($appid.$text.$salt.$key);
         $query = http_build_query([
-            'q' => $text,
-            'from' => 'zh',
-            'to' => 'en',
+            'q'     => $text,
+            'from'  => 'zh',
+            'to'    => 'en',
             'appid' => $appid,
-            'salt' => $salt,
-            'sign' => $sign,
+            'salt'  => $salt,
+            'sign'  => $sign,
         ]);
-        $url = $api . $query;
+        $url = $api.$query;
         $response = $http->get($url);
         $result = json_decode($response->getBody(), true);
         if (isset($result['trans_result'][0]['dst'])) {
@@ -75,6 +75,7 @@ class SlugGenerator
         if (preg_match("/\p{Han}+/u", $text)) {
             return false;
         }
+
         return true;
     }
 
@@ -88,11 +89,12 @@ class SlugGenerator
         if (!is_null($this->slugIsUniqueFunc)) {
             return call_user_func($this->slugIsUniqueFunc, $slug);
         }
+
         return true;
     }
 
     /**
-     * 设置判断 slug 是否唯一的函数
+     * 设置判断 slug 是否唯一的函数.
      *
      * setSlugIsUniqueFunc(function ($slug){
      *     return Post::where('slug', $slug)->count() <= 0;
@@ -102,6 +104,7 @@ class SlugGenerator
      *
      * @param $slugIsUniqueFuncOrTableName
      * @param string $field
+     *
      * @return $this
      */
     public function setSlugIsUniqueFunc($slugIsUniqueFuncOrTableName, string $slugField = '', $ignore = null, $ignorekeyName = 'id')
@@ -114,6 +117,7 @@ class SlugGenerator
                 if ($ignore) {
                     $query->where($ignorekeyName, $ignore);
                 }
+
                 return $query->count() <= 0;
             };
         }

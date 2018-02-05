@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Support\Response;
-
 
 use Illuminate\Contracts\Support\Jsonable;
 use Illuminate\Contracts\Support\Responsable;
@@ -11,7 +9,8 @@ use stdClass;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
 /**
- * Class Response
+ * Class Response.
+ *
  * @method TransformerResponse item($item, $transformer)
  * @method TransformerResponse collection(\Illuminate\Support\Collection $collection, $transformer)
  * @method TransformerResponse paginator(\Illuminate\Contracts\Pagination\Paginator $paginator, $transformer)
@@ -20,7 +19,6 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
  * @method TransformerResponse setMeta(array $meta)
  * @method TransformerResponse addMeta($key, $value)
  * @method void getMeta()
- * @package App\Support
  */
 class Response implements Responsable
 {
@@ -40,18 +38,21 @@ class Response implements Responsable
     public function setContent($content)
     {
         $this->content = $content;
+
         return $this;
     }
 
     public function setStatus($status)
     {
         $this->status = $status;
+
         return $this;
     }
 
     public function setHeaders($headers)
     {
         $this->headers = $headers;
+
         return $this;
     }
 
@@ -67,6 +68,7 @@ class Response implements Responsable
     {
         $this->setContent(null);
         $this->setStatus(204);
+
         return $this;
     }
 
@@ -88,7 +90,7 @@ class Response implements Responsable
      * Return an error response.
      *
      * @param string $message
-     * @param int $statusCode
+     * @param int    $statusCode
      *
      * @throws \Symfony\Component\HttpKernel\Exception\HttpException
      *
@@ -106,14 +108,13 @@ class Response implements Responsable
 
     public function null()
     {
-
-        $this->setContent(new class () implements Jsonable
-        {
+        $this->setContent(new class() implements Jsonable {
             public function toJson($options = 0)
             {
                 return json_encode(new stdClass(), $options);
             }
         });
+
         return $this;
     }
 }

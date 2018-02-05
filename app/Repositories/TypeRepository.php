@@ -2,14 +2,12 @@
 
 namespace App\Repositories;
 
-
 use App\Models\Type;
 
 class TypeRepository extends BaseRepository
 {
-
     /**
-     * Specify Model class name
+     * Specify Model class name.
      *
      * @return string
      */
@@ -22,6 +20,7 @@ class TypeRepository extends BaseRepository
     {
         $data = $this->filterData($data);
         $data['creator_id'] = auth()->id();
+
         return $data;
     }
 
@@ -31,11 +30,14 @@ class TypeRepository extends BaseRepository
             $data['model_name'] = Type::$modelMapWithType[$data['model_name']];
         }
 
-        if (isset($data['display_name']))
+        if (isset($data['display_name'])) {
             $data['display_name'] = e($data['display_name']);
+        }
 
-        if (isset($data['description']))
+        if (isset($data['description'])) {
             $data['description'] = e($data['description']);
+        }
+
         return $data;
     }
 
@@ -43,5 +45,4 @@ class TypeRepository extends BaseRepository
     {
         return $this->filterData($data);
     }
-
 }

@@ -2,14 +2,12 @@
 
 namespace App\Repositories;
 
-
 use App\Models\Link;
 
 class LinkRepository extends BaseRepository
 {
-
     /**
-     * Specify Model class name
+     * Specify Model class name.
      *
      * @return string
      */
@@ -22,15 +20,19 @@ class LinkRepository extends BaseRepository
     {
         $data = $this->filterData($data);
         $data['creator_id'] = auth()->id();
+
         return $data;
     }
 
     public function filterData(array &$data)
     {
-        if (isset($data['name']))
+        if (isset($data['name'])) {
             $data['name'] = e($data['name']);
-        if (isset($data['linkman']))
+        }
+        if (isset($data['linkman'])) {
             $data['linkman'] = e($data['linkman']);
+        }
+
         return $data;
     }
 
@@ -38,5 +40,4 @@ class LinkRepository extends BaseRepository
     {
         return $this->filterData($data);
     }
-
 }

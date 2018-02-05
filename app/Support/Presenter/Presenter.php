@@ -2,7 +2,6 @@
 
 namespace App\Support\Presenter;
 
-
 class Presenter
 {
     protected $object;

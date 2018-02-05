@@ -30,24 +30,28 @@ class CategoriesController extends ApiController
     public function store(CategoryCreateRequest $request, CategoryRepository $categoryRepository)
     {
         $categoryRepository->create($request->validated());
+
         return $this->response()->noContent();
     }
 
     public function update(Category $category, CategoryUpdateRequest $request, CategoryRepository $categoryRepository)
     {
         $categoryRepository->update($request->validated(), $category);
+
         return $this->response()->noContent();
     }
 
     public function index(Request $request, CategoryService $categoryService)
     {
         $topicCategories = $categoryService->getAllByType($request->get('type', null));
+
         return $this->response()->collection($topicCategories, (new CategoryTransformer())->setDefaultIncludes(['children']))->disableEagerLoading();
     }
 
     public function visualOutput(Request $request, CategoryService $categoryService)
     {
         $categories = $categoryService->visualOutput($request->get('type'), '　∟　');
+
         return $this->response()->collection($categories, new VisualCategoryTransformer());
     }
 
@@ -55,6 +59,7 @@ class CategoriesController extends ApiController
     {
         $category->children()->delete();
         $category->delete();
+
         return $this->response()->noContent();
     }
 
@@ -74,11 +79,12 @@ class CategoriesController extends ApiController
         // 更新单页
         $data = $this->validate(
             $request, [
-                'title' => ['nullable', 'string', 'between:1,100'],
-                'content' => ['nullable', 'string'],
-                'attachment_ids' => ['nullable', 'array']
+                'title'          => ['nullable', 'string', 'between:1,100'],
+                'content'        => ['nullable', 'string'],
+                'attachment_ids' => ['nullable', 'array'],
             ]
         );
+
         return $pageRepository->update($data, $page);
     }
 
@@ -86,12 +92,13 @@ class CategoriesController extends ApiController
     {
         $data = $this->validate(
             $request, [
-                'title' => ['required', 'string', 'between:1,100'],
-                'content' => ['required', 'string'],
-                'attachment_ids' => ['nullable', 'array']
+                'title'          => ['required', 'string', 'between:1,100'],
+                'content'        => ['required', 'string'],
+                'attachment_ids' => ['nullable', 'array'],
             ]
         );
         $data['category_id'] = $category->id;
+
         return $pageRepository->create($data);
     }
 
@@ -104,6 +111,7 @@ class CategoriesController extends ApiController
         } else {
             $this->updatePage($page, $request, $pageRepository);
         }
+
         return $this->response()->noContent();
     }
 
@@ -113,6 +121,7 @@ class CategoriesController extends ApiController
             // todo 本地化
             return $this->response()->errorNotFound('该栏目不是单网页');
         }
+
         return true;
     }
 }

@@ -6,11 +6,9 @@ use App\Models\Category;
 
 class CategoryService
 {
-
     // todo cache
     public function visualOutput($type = null, $indentStr = '-')
     {
-
         $topicCategories = $this->getAllByType($type);
         $collect = collect([]);
         foreach ($topicCategories as $topicCategory) {
@@ -19,6 +17,7 @@ class CategoryService
                 $collect->push(['indent_str' => $indentStr, 'data' => $child]);
             }
         }
+
         return $collect;
     }
 
@@ -33,6 +32,7 @@ class CategoryService
                 return $category->type == $type || $category->children->isNotEmpty();
             });
         }
+
         return $topicCategories;
     }
 }

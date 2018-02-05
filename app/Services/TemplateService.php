@@ -41,6 +41,7 @@ class TemplateService
                 );
             }
         }
+
         return $templates;
     }
 
@@ -51,31 +52,29 @@ class TemplateService
                 return $key;
             }
         }
+
         return 0;
     }
 
     public function firstView(array $templates, $templateType = null)
     {
-
         $templates = array_map(function ($template) use ($templateType) {
-            return $this->config['theme_namespace'] . '::' . ($templateType ? $templateType . '.' : '') . $template;
+            return $this->config['theme_namespace'].'::'.($templateType ? $templateType.'.' : '').$template;
         }, array_filter($templates));
-        
+
         $viewFactory = view();
 
         $view = collect($templates)->first(function ($template) use ($viewFactory) {
             return $viewFactory->exists($template);
         });
         if (!$view && $templateType) {
-
             $defaultTemplate = $this->getDefaultTemplate($templateType);
-            $view = is_null($defaultTemplate) ? null : $this->config['theme_namespace'] . '::' . $templateType . '.' . $defaultTemplate['file_name'];
+            $view = is_null($defaultTemplate) ? null : $this->config['theme_namespace'].'::'.$templateType.'.'.$defaultTemplate['file_name'];
         }
 
         if (!$view) {
             throw new InvalidArgumentException('None of the views in the given array exist.');
         }
-
 
         return $view;
     }
@@ -83,8 +82,10 @@ class TemplateService
     public function getDefaultTemplate($templateType)
     {
         $templates = $this->config['templates'][$templateType] ?? [];
-        if (empty($templates))
-            return null;
+        if (empty($templates)) {
+            return;
+        }
+
         return $templates[$this->getDefaultTemplateIndex($templates)];
     }
 }

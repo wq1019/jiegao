@@ -2,12 +2,13 @@
 
 namespace App\Models\Traits;
 
-
 trait Sortable
 {
     /**
-     * 按 created_at 降序排序
+     * 按 created_at 降序排序.
+     *
      * @param $query
+     *
      * @return mixed
      */
     public function scopeRecent($query)
@@ -16,8 +17,10 @@ trait Sortable
     }
 
     /**
-     * 按 created_at 升序排序
+     * 按 created_at 升序排序.
+     *
      * @param $query
+     *
      * @return mixed
      */
     public function scopeAncient($query)
@@ -26,8 +29,10 @@ trait Sortable
     }
 
     /**
-     * 按 order 降序排序
+     * 按 order 降序排序.
+     *
      * @param $query
+     *
      * @return mixed
      */
     public function scopeOrdered($query)

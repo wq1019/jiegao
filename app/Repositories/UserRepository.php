@@ -2,7 +2,6 @@
 
 namespace App\Repositories;
 
-
 use App\Exceptions\ResourceException;
 use App\Models\User;
 use DB;
@@ -12,9 +11,8 @@ use Spatie\Permission\Exceptions\RoleDoesNotExist;
 
 class UserRepository extends BaseRepository
 {
-
     /**
-     * Specify Model class name
+     * Specify Model class name.
      *
      * @return string
      */
@@ -47,13 +45,16 @@ class UserRepository extends BaseRepository
                 }
             }
         });
+
         return $user;
     }
 
     public function filterData(array &$data)
     {
-        if (isset($data['nick_name']))
+        if (isset($data['nick_name'])) {
             $data['nick_name'] = e($data['nick_name']);
+        }
+
         return $data;
     }
 
@@ -63,7 +64,8 @@ class UserRepository extends BaseRepository
         if (isset($data['password'])) {
             $data['password'] = Hash::make($data['password']);
         }
-		return $data;
+
+        return $data;
     }
 
     public function updated(array &$data, User $user)
@@ -84,5 +86,4 @@ class UserRepository extends BaseRepository
             }
         }
     }
-
 }

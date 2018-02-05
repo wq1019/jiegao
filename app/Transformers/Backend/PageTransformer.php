@@ -12,14 +12,14 @@ class PageTransformer extends TransformerAbstract
     public function transform(Post $post)
     {
         return [
-            'id' => $post->id,
-            'title' => $post->title,
-            'type' => $post->type,
-            'views_count' => $post->views_count,
-            'template' => $post->template,
+            'id'           => $post->id,
+            'title'        => $post->title,
+            'type'         => $post->type,
+            'views_count'  => $post->views_count,
+            'template'     => $post->template,
             'published_at' => $post->published_at->toDateTimeString(),
-            'created_at' => $post->created_at->toDateTimeString(),
-            'updated_at' => $post->updated_at->toDateTimeString()
+            'created_at'   => $post->created_at->toDateTimeString(),
+            'updated_at'   => $post->updated_at->toDateTimeString(),
         ];
     }
 

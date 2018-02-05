@@ -38,7 +38,8 @@ class Handler extends ExceptionHandler
      *
      * This is a great spot to send exceptions to Sentry, Bugsnag, etc.
      *
-     * @param  \Exception $exception
+     * @param \Exception $exception
+     *
      * @return void
      */
     public function report(Exception $exception)
@@ -50,8 +51,9 @@ class Handler extends ExceptionHandler
     /**
      * Render an exception into an HTTP response.
      *
-     * @param  \Illuminate\Http\Request $request
-     * @param  \Exception $exception
+     * @param \Illuminate\Http\Request $request
+     * @param \Exception               $exception
+     *
      * @return \Illuminate\Http\Response
      */
     public function render($request, Exception $exception)
@@ -59,14 +61,16 @@ class Handler extends ExceptionHandler
         if (config('app.debug')) {
             $request = new WantsJsonRequest($request);
         }
+
         return parent::render($request, $exception);
     }
 
     /**
      * Convert a validation exception into a JSON response.
      *
-     * @param  \Illuminate\Http\Request $request
-     * @param  \Illuminate\Validation\ValidationException $exception
+     * @param \Illuminate\Http\Request                   $request
+     * @param \Illuminate\Validation\ValidationException $exception
+     *
      * @return \Illuminate\Http\JsonResponse
      */
     protected function invalidJson($request, ValidationException $exception)
@@ -84,7 +88,7 @@ class Handler extends ExceptionHandler
         }
 
         $replacements = [
-            ':message' => $message,
+            ':message'     => $message,
             ':status_code' => $statusCode,
         ];
 
@@ -97,8 +101,8 @@ class Handler extends ExceptionHandler
         }
         if (config('app.debug')) {
             $replacements[':debug'] = [
-                'line' => $e->getLine(),
-                'file' => $e->getFile(),
+                'line'  => $e->getLine(),
+                'file'  => $e->getFile(),
                 'class' => get_class($e),
                 'trace' => explode("\n", $e->getTraceAsString()),
             ];
@@ -108,6 +112,7 @@ class Handler extends ExceptionHandler
                 $value = $replacements[$value];
             }
         });
+
         return $this->recursivelyRemoveEmptyReplacements($errorFormat);
     }
 
@@ -150,7 +155,8 @@ class Handler extends ExceptionHandler
     /**
      * Convert the given exception to an array.
      *
-     * @param  \Exception $e
+     * @param \Exception $e
+     *
      * @return array
      */
     protected function convertExceptionToArray(Exception $e)
@@ -161,17 +167,19 @@ class Handler extends ExceptionHandler
     /**
      * Convert an authentication exception into an unauthenticated response.
      *
-     * @param  \Illuminate\Http\Request $request
-     * @param  \Illuminate\Auth\AuthenticationException $exception
+     * @param \Illuminate\Http\Request                 $request
+     * @param \Illuminate\Auth\AuthenticationException $exception
+     *
      * @return \Illuminate\Http\Response
      */
     protected function unauthenticated($request, AuthenticationException $exception)
     {
         if ($request->expectsJson()) {
             $e = new HttpException(401, Lang::get('auth.please_login_first'), null, [], 401);
+
             return response()->json($this->errorFormat($e), $e->getStatusCode());
         }
+
         return redirect()->guest('login');
     }
-
 }

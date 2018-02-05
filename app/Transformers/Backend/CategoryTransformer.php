@@ -14,32 +14,33 @@ class CategoryTransformer extends TransformerAbstract
     public function transform(Category $category)
     {
         return [
-            'id' => $category->id,
-            'type' => $category->type,
-            'image' => $category->image,
-            'image_url' => image_url($category->image),
-            'parent_id' => $category->parent_id,
-            'cate_name' => $category->cate_name,
-            'description' => $category->description,
-            'url' => $category->url,
-            'slug' => $category->cate_slug,
-            'is_nav' => $category->is_nav,
-            'order' => $category->order,
-            'page_template' => $category->page_template,
-            'list_template' => $category->list_template,
+            'id'               => $category->id,
+            'type'             => $category->type,
+            'image'            => $category->image,
+            'image_url'        => image_url($category->image),
+            'parent_id'        => $category->parent_id,
+            'cate_name'        => $category->cate_name,
+            'description'      => $category->description,
+            'url'              => $category->url,
+            'slug'             => $category->cate_slug,
+            'is_nav'           => $category->is_nav,
+            'order'            => $category->order,
+            'page_template'    => $category->page_template,
+            'list_template'    => $category->list_template,
             'content_template' => $category->content_template,
             // 'setting' => $category->setting,
             'is_target_blank' => $category->is_target_blank,
-            'created_at' => $category->created_at->toDateTimeString(),
-            'updated_at' => $category->updated_at->toDateTimeString()
+            'created_at'      => $category->created_at->toDateTimeString(),
+            'updated_at'      => $category->updated_at->toDateTimeString(),
         ];
     }
 
     public function includeChildren(Category $category)
     {
-        $transformer = new static;
+        $transformer = new static();
         $transformer->setAvailableIncludes([]);
         $transformer->setDefaultIncludes([]);
+
         return $this->collection($category->children, $transformer);
     }
 }

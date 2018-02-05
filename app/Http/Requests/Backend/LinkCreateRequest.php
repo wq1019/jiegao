@@ -10,7 +10,6 @@ use Illuminate\Validation\Rule;
 
 class LinkCreateRequest extends Request
 {
-
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -29,13 +28,12 @@ class LinkCreateRequest extends Request
     public function rules()
     {
         return [
-            'url' => ['required', 'url'],
-            'name' => ['required', 'string', 'between:1,20'],
-            'logo' => ['bail', 'nullable', new ImageName(), new ImageNameExist()],
-            'linkman' => ['nullable', 'string', 'between:2,20'],
-            'type_name' => ['bail', 'required', 'string', 'between:1,30', Rule::exists('types', 'name')->where('model_name', Link::class)],
-            'is_visible' => ['nullable', 'boolean']
+            'url'        => ['required', 'url'],
+            'name'       => ['required', 'string', 'between:1,20'],
+            'logo'       => ['bail', 'nullable', new ImageName(), new ImageNameExist()],
+            'linkman'    => ['nullable', 'string', 'between:2,20'],
+            'type_name'  => ['bail', 'required', 'string', 'between:1,30', Rule::exists('types', 'name')->where('model_name', Link::class)],
+            'is_visible' => ['nullable', 'boolean'],
         ];
     }
-
 }

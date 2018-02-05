@@ -4,7 +4,7 @@ return [
     // 用户的默认密码
     'default_user_password' => 'tiny',
 
-    'max_per_page' => 40,
+    'max_per_page'     => 40,
     'default_per_page' => 15,
 
     'default_slug_mode' => 'pinyin',
@@ -18,9 +18,9 @@ return [
     'need_not_verification_code_times' => 3,
 
     // 尝试登录不需要验证码的时间间隔
-    'not_verification_code_time_interval' => 60*24,
+    'not_verification_code_time_interval' => 60 * 24,
 
     // 搜索时标记关键字颜色
-    'keywords_color' =>env('KEYWORDS_COLOR', 'red'),
+    'keywords_color' => env('KEYWORDS_COLOR', 'red'),
 
 ];

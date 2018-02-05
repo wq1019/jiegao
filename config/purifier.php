@@ -3,7 +3,7 @@
 return [
     'cachePath'     => storage_path('app/purifier'),
     'cacheFileMode' => 0755,
-    'allowed' => [
+    'allowed'       => [
         'img[src|alt|title|width|height|style|data-mce-src|data-mce-json]',
         'figure', 'figcaption',
         'video[src|type|width|height|poster|preload|controls]', 'source[src|type]',
@@ -16,6 +16,6 @@ return [
         'ul', 'ol', 'li',
         'table[width|height|border|style]', 'th[width|height|border|style]',
         'tr[width|height|border|style]', 'td[width|height|border|style]',
-        'hr'
+        'hr',
     ],
 ];

@@ -12,7 +12,7 @@ use Naux\AutoCorrect;
 class PostRepository extends BaseRepository
 {
     /**
-     * Specify Model class name
+     * Specify Model class name.
      *
      * @return string
      */
@@ -23,12 +23,15 @@ class PostRepository extends BaseRepository
 
     public function filterData(array &$data)
     {
-        if (isset($data['title']))
+        if (isset($data['title'])) {
             $data['title'] = e((new AutoCorrect())->convert($data['title']));
-        if (isset($data['excerpt']))
+        }
+        if (isset($data['excerpt'])) {
             $data['excerpt'] = e($data['excerpt']);
-        if (isset($data['content']))
+        }
+        if (isset($data['content'])) {
             $data['content'] = clean($data['content']);
+        }
         // 处理置顶
         if (isset($data['top'])) {
             if ($data['top']) {
@@ -37,10 +40,12 @@ class PostRepository extends BaseRepository
                 $data['top'] = null;
             }
         }
-        if (isset($data['published_at']))
+        if (isset($data['published_at'])) {
             $data['published_at'] = Carbon::createFromTimestamp(strtotime($data['published_at']));
-        if (isset($data['fields']))
+        }
+        if (isset($data['fields'])) {
             $data['fields'] = json_encode($data['fields']);
+        }
 
         return $data;
     }
@@ -54,17 +59,21 @@ class PostRepository extends BaseRepository
             $data['published_at'] = Carbon::now();
         }
         // 创建文章时 如果没有传入 type 字段，type 默认设置为 Category::TYPE_POST
-        if (!isset($data['type']))
+        if (!isset($data['type'])) {
             $data['type'] = Category::TYPE_POST;
+        }
         // 创建文章时 如果没有传入 status 字段，status 默认设置为 Post::STATUS_DRAFT
-        if (!isset($data['status']))
+        if (!isset($data['status'])) {
             $data['status'] = Post::STATUS_DRAFT;
+        }
 
-        if (!isset($data['excerpt']))
+        if (!isset($data['excerpt'])) {
             $data['excerpt'] = $postService->makeExcerpt($data['content']);
+        }
 
         $data['user_id'] = Auth::id();
         $data['slug'] = $this->model->generateSlug($data['title']);
+
         return $data;
     }
 
@@ -76,7 +85,8 @@ class PostRepository extends BaseRepository
     }
 
     /**
-     * 更新或创建文章正文
+     * 更新或创建文章正文.
+     *
      * @param Post $post
      * @param $content
      */
@@ -85,14 +95,15 @@ class PostRepository extends BaseRepository
         if (isset($data['content'])) {
             $post->postContent()->updateOrCreate(
                 [], [
-                    'content' => $data['content']
+                    'content' => $data['content'],
                 ]
             );
         }
     }
 
     /**
-     * 添加附件
+     * 添加附件.
+     *
      * @param Post $post
      * @param $data
      */
@@ -104,7 +115,8 @@ class PostRepository extends BaseRepository
     }
 
     /**
-     * 添加标签
+     * 添加标签.
+     *
      * @param Post $post
      * @param $data
      */
@@ -124,6 +136,7 @@ class PostRepository extends BaseRepository
         if (!isset($data['excerpt']) && isset($data['content'])) {
             $data['excerpt'] = app(PostService::class)->makeExcerpt($data['content']);
         }
+
         return $data;
     }
 
@@ -135,7 +148,8 @@ class PostRepository extends BaseRepository
     }
 
     /**
-     * 同步附件
+     * 同步附件.
+     *
      * @param Post $post
      * @param $data
      */
@@ -147,7 +161,8 @@ class PostRepository extends BaseRepository
     }
 
     /**
-     * 同步标签
+     * 同步标签.
+     *
      * @param Post $post
      * @param $data
      */

@@ -15,12 +15,12 @@ class Setting extends BaseModel implements InterfaceTypeable
 
     protected $fillable = ['name', 'value', 'description', 'type_name', 'is_system', 'creator_id'];
     protected $casts = [
-        'is_visible' => 'boolean'
+        'is_visible' => 'boolean',
     ];
     protected static $allowSearchFields = ['name', 'value', 'description'];
 
     /**
-     * 数据模型的启动方法
+     * 数据模型的启动方法.
      *
      * @return void
      */
@@ -34,5 +34,4 @@ class Setting extends BaseModel implements InterfaceTypeable
 
         static::observe(ClearSettingCache::class);
     }
-
 }

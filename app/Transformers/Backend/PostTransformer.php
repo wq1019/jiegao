@@ -12,25 +12,25 @@ class PostTransformer extends TransformerAbstract
     public function transform(Post $post)
     {
         return [
-            'id' => $post->id,
-            'title' => $post->title,
-            'slug' => $post->slug,
-            'excerpt' => $post->excerpt,
-            'cover' => $post->cover,
-            'cover_url' => image_url($post->cover),
-            'category_id' => $post->category_id,
-            'status' => $post->status,
-            'type' => $post->type,
-            'views_count' => $post->views_count,
-            'template' => $post->template,
-            'preview_url' => $post->getPresenter()->url(),
-            'order' => $post->order,
-            'top' => !is_null($post->top),
-            'top_time' => is_null($post->top) ? null : $post->top->toDateTimeString(),
-            'fields' => $post->fields,
+            'id'           => $post->id,
+            'title'        => $post->title,
+            'slug'         => $post->slug,
+            'excerpt'      => $post->excerpt,
+            'cover'        => $post->cover,
+            'cover_url'    => image_url($post->cover),
+            'category_id'  => $post->category_id,
+            'status'       => $post->status,
+            'type'         => $post->type,
+            'views_count'  => $post->views_count,
+            'template'     => $post->template,
+            'preview_url'  => $post->getPresenter()->url(),
+            'order'        => $post->order,
+            'top'          => !is_null($post->top),
+            'top_time'     => is_null($post->top) ? null : $post->top->toDateTimeString(),
+            'fields'       => $post->fields,
             'published_at' => $post->published_at->toDateTimeString(),
-            'created_at' => $post->created_at->toDateTimeString(),
-            'updated_at' => $post->updated_at->toDateTimeString()
+            'created_at'   => $post->created_at->toDateTimeString(),
+            'updated_at'   => $post->updated_at->toDateTimeString(),
         ];
     }
 
@@ -60,6 +60,7 @@ class PostTransformer extends TransformerAbstract
         if (is_null($category)) {
             return $this->null();
         }
+
         return $this->item($category, new CategoryTransformer());
     }
 
@@ -69,6 +70,7 @@ class PostTransformer extends TransformerAbstract
         if (is_null($attachments)) {
             return $this->null();
         }
+
         return $this->collection($attachments, new AttachmentTransformer());
     }
 
@@ -78,6 +80,7 @@ class PostTransformer extends TransformerAbstract
         if (is_null($tags)) {
             return $this->null();
         }
+
         return $this->collection($tags, new TagTransformer());
     }
 }
